@@ -1,9 +1,9 @@
-onebrick-android
-================
-
-Android Application
+About OneBrick
+===============
+One Brick provides support to local non-profit and community organizations by creating a unique, social and flexible volunteer environment for those interested in making a concrete difference in the community. We enable people to get involved, have an impact and have fun, without the requirements of individual long-term commitments.
 
 User Stories
+==============
 
 * As a user, I want to login to app, to my user account.
 * As a user, I want to use the app without doing  a login as a guest
