@@ -2,6 +2,13 @@ About OneBrick
 ===============
 One Brick provides support to local non-profit and community organizations by creating a unique, social and flexible volunteer environment for those interested in making a concrete difference in the community. We enable people to get involved, have an impact and have fun, without the requirements of individual long-term commitments.
 
+About The App
+==================
+OneBrick does not yet have any mobile application. Our goal is to prvide onebrick users/volunteers with android mobile application.
+
+
+
+
 User Stories
 ==============
 
