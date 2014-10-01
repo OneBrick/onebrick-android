@@ -12,35 +12,29 @@ OneBrick does not yet have any mobile application. Our goal is to prvide onebric
 User Stories
 ==============
 
-Browse:
--------
+## Browse:
 * Select Chapter (Location)
 * Browse current events (API Ready)
 * Tap to see details of an event (API Ready)
 
-RSVP:
-----
+## RSVP:
 * Show events for selected chapter or current location (API Ready)
 * Go to detail view
 * RSVP
 * Request log in if not logged in / Sign up
 
-Un-RSVP:
----------------------
+## Un-RSVP:
 * Go to Drawer (Profile)
 * History
 * Un-RSVP
 
-Donate:
---------
+## Donate:
 * Go to Drawer (Profile)
 * Donate to organization
 
-Profile:
---------
+## Profile:
 * Look at history of events RSVPed
 * Name and details
 
-Share:
--------
+## Share:
 * Event, RSVP
