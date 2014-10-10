@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- OneBrick brand resources -->
+    <color name="onebrick_blue">#2698d4</color>
+    <color name="onebrick_orange">#dd7129</color>
+
+</resources>
