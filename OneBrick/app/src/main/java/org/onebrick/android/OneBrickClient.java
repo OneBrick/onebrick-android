@@ -29,7 +29,7 @@ public class OneBrickClient extends OAuthBaseClient {
     public static final String REST_URL = "http://dev-v3.gotpantheon.com/noauth"; // Change this, base API URL
     public static final String REST_CONSUMER_KEY = "CrsegfjpmNEX30TFdt6TEGXcS";       // Change this
     public static final String REST_CONSUMER_SECRET = "m3ZrCoSElkF2QuPQJBG0cF9YDkouIWCYtmCUpfdVAu6EnHbWiP"; // Change this
-    public static final String REST_CALLBACK_URL = "oauth://cpbasictweets"; // Change this (here and in manifest)
+    public static final String REST_CALLBACK_URL = "oauth://onebrick-android"; // Change this (here and in manifest)
 
     public OneBrickClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
