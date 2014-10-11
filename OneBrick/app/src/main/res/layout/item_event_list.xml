@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    >
+
     <TextView
         android:id="@+id/tvEventTitle"
         android:layout_width="wrap_content"
@@ -12,10 +14,13 @@
         android:id="@+id/tvEventStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEventTitle"
         android:text="StartDate" />
     <TextView
         android:id="@+id/tvEventEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEventStartDate"
         android:text="EndDate" />
-</LinearLayout>
+
+</RelativeLayout>

@@ -7,11 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
-import org.onebrick.android.OneBrickApplication;
-import org.onebrick.android.OneBrickClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.EventsListAdapter;
 import org.onebrick.android.models.Event;
@@ -20,8 +22,9 @@ import java.util.ArrayList;
 
 
 public class EventsActivity extends Activity {
-    private OneBrickClient client;
+    //private OneBrickClient client;
     private EventsListAdapter adapter;
+    //private ArrayList<Event> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +42,86 @@ public class EventsActivity extends Activity {
     }
 
     private void populateJSONData() {
-        client = OneBrickApplication.getRestClient();
+        //client = OneBrickApplication.getRestClient();
         String chapterId = null;
-        client.getEventsList(chapterId, new JsonHttpResponseHandler(){
+//        client.getEventsList(chapterId, new JsonHttpResponseHandler(){
+//
+//            public void onSuccess(JSONArray array) {
+//                //Log.d("debug", json.toString());
+//                ArrayList<Event> events = Event.fromJSONArray(array);
+//                adapter.addAll(events);
+//            }
+//            public void onFailure(Throwable e, String s) {
+//                Log.d("debug fail", e.toString());
+//                Log.d("debug fail", s);
+//            }
+//            protected void handleFailureMessage(Throwable e, String s) {
+//                Log.d("debug fail", e.toString());
+//                Log.d("debug fail", s);
+//            }
+//        });
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://dev-v3.gotpantheon.com/noauth/event.json?chapter=101",new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(JSONArray array) {
-                //Log.d("debug", json.toString());
-                ArrayList<Event> events = Event.fromJSONArray(array);
-                adapter.addAll(events);
+            public void onSuccess(int statusCode, Header[] headers,
+                                  JSONObject response) {
+
             }
+
             @Override
-            public void onFailure(Throwable e, String s) {
-                Log.d("debug fail", e.toString());
-                Log.d("debug fail", s);
+            public void onFailure(int statusCode, Header[] headers,
+                                  String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
             }
+
             @Override
-            protected void handleFailureMessage(Throwable e, String s) {
-                Log.d("debug fail", e.toString());
-                Log.d("debug fail", s);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                super.onSuccess(statusCode, headers, responseString);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                // once success response comes back
+                Log.i("INFO", response.toString()); // logcat log
+
+                if (response != null){
+//                    if (events != null){
+//                        events.clear();
+//                    }else{
+//                        events = new ArrayList<Event>();
+//                    }
+                    JSONObject eventJsonObject;
+                    for (int i = 0; i < response.length(); i++) {
+                        Event event = null;
+                        try {
+                            eventJsonObject = (JSONObject) response.get(i);
+                            event = new Event();
+                            event.setTitle(eventJsonObject.optString("title"));
+                            event.setEventStartDate(eventJsonObject.optString("field_event_date_value"));
+                            event.setEventEndDate(eventJsonObject.optString("field_event_date_value2"));
+                            adapter.add(event);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                // notify adapter so new data is displayed
+                adapter.notifyDataSetChanged();
             }
         });
+
     }
 
     @Override
