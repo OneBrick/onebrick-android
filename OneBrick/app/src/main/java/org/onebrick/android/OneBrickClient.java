@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
@@ -41,5 +42,15 @@ public class OneBrickClient extends OAuthBaseClient {
         //params.put("since_id", "1");
         Log.d(TAG, "getChapters params");
         client.get(apiUri, null, handler);
+    }
+    public void getEventsList(String chapterId, AsyncHttpResponseHandler handler){
+        String apiUri = getApiUrl("/event.json");
+        RequestParams params = new RequestParams();
+        if (chapterId == null && chapterId.isEmpty()){
+            chapterId = "101";
+        }
+        params.put("chapter", chapterId);
+        params.put("uid", "1");
+        client.get(apiUri, params, handler);
     }
 }
