@@ -3,10 +3,12 @@
     package="org.onebrick.android" >
 
     <application
+        android:name=".OneBrickApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".activities.EventsActivity"
             android:label="@string/app_name" >
