@@ -54,3 +54,5 @@ local.properties
 
 # PDT-specific
 .buildpath
+OneBrick/.gradle
+OneBrick/build
