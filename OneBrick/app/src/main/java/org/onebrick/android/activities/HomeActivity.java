@@ -22,7 +22,7 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
-import org.onebrick.android.fragments.EventListFragment;
+import org.onebrick.android.fragments.EventsListFragment;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
@@ -80,8 +80,6 @@ public class HomeActivity extends FragmentActivity {
 
     private void setupActionBar() {
         actionBar.setBackgroundDrawable(OneBrickApplication.obColorBlue);
-        //actionBar.setStackedBackgroundDrawable(OneBrickApplication.obColorWhite);
-        actionBar.setTitle("Home");
     }
 
     @Override
@@ -105,15 +103,12 @@ public class HomeActivity extends FragmentActivity {
                 displayEventsInChapter(ch);
             }
         });
-
     }
 
     private void displayEventsInChapter(Chapter ch) {
-        Fragment eventListFragment = new EventListFragment();
-        Bundle args = new Bundle();
-        args.putInt("chapterId",ch.getChapterId());
-        args.putString("chapterName",ch.getChapterName());
-        eventListFragment.setArguments(args);
+        Fragment eventListFragment = EventsListFragment.newInstance(ch.getChapterName(),
+                ch.getChapterId());
+
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.fragment_container, eventListFragment)
