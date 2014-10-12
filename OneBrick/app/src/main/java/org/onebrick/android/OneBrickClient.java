@@ -36,10 +36,11 @@ public class OneBrickClient extends OAuthBaseClient {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
 
+    /*
+        This Function access the endpoint to get the list of chapters.
+     */
     public void getChapters(AsyncHttpResponseHandler handler) {
         String apiUri = getApiUrl("/chapters.json");
-        //RequestParams params = new RequestParams();
-        //params.put("since_id", "1");
         Log.d(TAG, "getChapters params");
         client.get(apiUri, null, handler);
     }
