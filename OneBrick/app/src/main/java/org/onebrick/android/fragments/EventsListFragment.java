@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -28,6 +29,7 @@ public class EventsListFragment extends Fragment {
 
     private String chapterName;
     private int chapterId;
+    private ProgressBar pbEventsList;
 
     private EventsListAdapter adapter;
 
@@ -63,6 +65,7 @@ public class EventsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
         ListView listView = (ListView) view.findViewById(R.id.lvEvents);
         listView.setAdapter(adapter);
+        pbEventsList = (ProgressBar) view.findViewById(R.id.pbEventsList);
 
         populateJSONData(chapterId);
 
@@ -71,6 +74,11 @@ public class EventsListFragment extends Fragment {
     private void populateJSONData(int chapterId) {
         OneBrickClient client = OneBrickApplication.getRestClient();
         client.getEventsList(chapterId, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                pbEventsList.setVisibility(ProgressBar.VISIBLE);
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -93,6 +101,7 @@ public class EventsListFragment extends Fragment {
                         }
                     }
                 }
+                pbEventsList.setVisibility(ProgressBar.GONE);
                 // notify adapter so new data is displayed
                 adapter.notifyDataSetChanged();
             }
@@ -100,11 +109,13 @@ public class EventsListFragment extends Fragment {
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+                pbEventsList.setVisibility(ProgressBar.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                pbEventsList.setVisibility(ProgressBar.GONE);
             }
 
         });
