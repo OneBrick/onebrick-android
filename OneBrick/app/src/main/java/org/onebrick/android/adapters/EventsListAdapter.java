@@ -11,31 +11,60 @@ import org.onebrick.android.R;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by rush on 10/11/14.
- */
+
 public class EventsListAdapter extends ArrayAdapter<Event>{
+
+    private List<Event> eventsList = new ArrayList<Event>();
+
+    // View lookup cache
+    private static class ViewHolder {
+        TextView tvEventTitle;
+        TextView tvEventStartDate;
+        TextView tvEventEndDate;
+    }
+
     public EventsListAdapter(Context context, ArrayList<Event> events) {
         super(context, 0, events);
+    }
+    @Override
+    public void add(Event object) {
+        eventsList.add(object);
+        super.add(object);
+    }
+
+    @Override
+    public int getCount() {
+        return this.eventsList.size();
+    }
+
+    @Override
+    public Event getItem(int index) {
+        return this.eventsList.get(index);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         Event event = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
+        ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_event_list, parent, false);
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.item_event_list, parent, false);
+            viewHolder.tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
+            viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventStartDate);
+            viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        // Lookup view for data population
-        TextView tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
-        TextView tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventStartDate);
-        TextView tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
+
         // Populate the data into the template view using the data object
-        tvEventTitle.setText(event.getTitle());
-        tvEventStartDate.setText(event.getEventStartDate());
-        tvEventEndDate.setText(event.getEventEndDate());
+        viewHolder.tvEventTitle.setText(event.getTitle());
+        viewHolder.tvEventStartDate.setText(event.getEventStartDate());
+        viewHolder.tvEventEndDate.setText(event.getEventEndDate());
         // Return the completed view to render on screen
         return convertView;
     }
