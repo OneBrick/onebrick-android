@@ -1,6 +1,8 @@
 package org.onebrick.android;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -10,6 +12,9 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
 
     private static Context context;
+    public static Drawable obColorBlue = new ColorDrawable(R.color.onebrick_blue);
+    public static Drawable obColorOrange = new ColorDrawable(R.color.onebrick_orange);
+    public static Drawable obColorWhite = new ColorDrawable(R.color.white);
 
     @Override
     public void onCreate() {
