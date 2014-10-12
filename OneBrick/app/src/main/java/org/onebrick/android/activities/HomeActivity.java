@@ -1,13 +1,17 @@
 package org.onebrick.android.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,11 +22,12 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
+import org.onebrick.android.fragments.EventListFragment;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends FragmentActivity {
     private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient = OneBrickApplication.getRestClient();
     ArrayList<Chapter> chaptersList;
@@ -32,6 +37,7 @@ public class HomeActivity extends Activity {
     private ListView lvDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationChapterListAdapter aLvDrawerList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +64,10 @@ public class HomeActivity extends Activity {
         lvDrawerList = (ListView) findViewById(R.id.lvDrawer);
         aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
         lvDrawerList.setAdapter(aLvDrawerList);
+        setupListeners();
     }
+
+    
 
 
     @Override
@@ -85,5 +94,30 @@ public class HomeActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setupListeners() {
+        lvDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Chapter ch = aLvDrawerList.getItem(position);
+                lvDrawerList.setItemChecked(position, true);
+                displayEventsInChapter(ch);
+            }
+        });
+
+    }
+
+    private void displayEventsInChapter(Chapter ch) {
+        Fragment eventListFragment = new EventListFragment();
+        Bundle args = new Bundle();
+        args.putInt("chapterId",ch.getChapterId());
+        args.putString("chapterName",ch.getChapterName());
+        eventListFragment.setArguments(args);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, eventListFragment)
+                .commit();
+        dlDrawerLayout.closeDrawer(lvDrawerList);
     }
 }
