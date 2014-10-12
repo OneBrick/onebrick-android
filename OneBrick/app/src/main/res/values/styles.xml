@@ -6,7 +6,7 @@
     </style>
 
     <style name="AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/onebrick_orange</item>
+        <item name="android:background">@color/onebrick_blue</item>
         <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
     </style>
 

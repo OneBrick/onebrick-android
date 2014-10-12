@@ -46,7 +46,6 @@ public class OneBrickClient extends OAuthBaseClient {
     }
     public void getEventsList(int chapterId, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/event.json");
-        //String apiUri = "http://dev-v3.gotpantheon.com/noauth/event.json";
         RequestParams params = new RequestParams();
         params.put("chapter", chapterId);
         client.get(apiUri, params, handler);

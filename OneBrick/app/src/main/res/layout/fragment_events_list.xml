@@ -2,17 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e2e4fe"
     android:orientation="vertical"
     tools:context="org.onebrick.android.fragments.EventsListFragment">
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/lvEvents"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@null"
-        android:dividerHeight="10dp" />
+        android:dividerHeight="4dp"
+        android:padding="8dp" />
 
 </FrameLayout>

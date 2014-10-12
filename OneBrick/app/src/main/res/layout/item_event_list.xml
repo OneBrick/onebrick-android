@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/card_background_selector"
-    android:padding="8dp" >
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvEventTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/card_background_selector"
-        android:descendantFocusability="afterDescendants"
-        android:orientation="vertical"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp">
+        android:layout_height="match_parent"
+        android:text="Title"/>
 
-        <TextView
-            android:id="@+id/tvEventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Title" />
+    <TextView
+        android:id="@+id/tvEventStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvEventTitle"
+        android:text="StartDate"/>
 
-        <TextView
-            android:id="@+id/tvEventStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/tvEventTitle"
-            android:text="StartDate" />
-
-        <TextView
-            android:id="@+id/tvEventEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/tvEventStartDate"
-            android:text="EndDate" />
-
-    </LinearLayout>
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvEventEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvEventStartDate"
+        android:text="EndDate"/>
+</LinearLayout>

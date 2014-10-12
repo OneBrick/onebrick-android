@@ -1,12 +1,11 @@
 package org.onebrick.android.activities;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,15 +26,13 @@ import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends ActionBarActivity {
     private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient = OneBrickApplication.getRestClient();
     ArrayList<Chapter> chaptersList;
-    ActionBar actionBar;
 
     private DrawerLayout dlDrawerLayout;
     private ListView lvDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
     private NavigationChapterListAdapter aLvDrawerList;
 
     @Override
@@ -59,7 +56,6 @@ public class HomeActivity extends FragmentActivity {
             }
         };
         obClient.getChapters(responseHandler);
-        actionBar = getActionBar();
         dlDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         lvDrawerList = (ListView) findViewById(R.id.lvDrawer);
         aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
@@ -74,13 +70,9 @@ public class HomeActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
-        setupActionBar();
         return true;
     }
 
-    private void setupActionBar() {
-        actionBar.setBackgroundDrawable(OneBrickApplication.obColorBlue);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

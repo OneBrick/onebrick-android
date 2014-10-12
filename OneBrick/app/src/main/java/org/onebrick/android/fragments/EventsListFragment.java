@@ -23,8 +23,8 @@ import org.onebrick.android.models.Event;
 import java.util.ArrayList;
 
 public class EventsListFragment extends Fragment {
-    private static final String ARG_CHAPTER_NAME = "param1";
-    private static final String ARG_CHAPTER_ID = "param2";
+    private static final String ARG_CHAPTER_NAME = "chapter_name";
+    private static final String ARG_CHAPTER_ID = "chapter_id";
 
     private String chapterName;
     private int chapterId;
