@@ -2,6 +2,7 @@ package org.onebrick.android.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import org.onebrick.android.models.Event;
 import java.util.ArrayList;
 
 
-public class EventsActivity extends Activity {
+public class EventsActivity extends ActionBarActivity {
     //private OneBrickClient client;
     private EventsListAdapter adapter;
     //private ArrayList<Event> events;
