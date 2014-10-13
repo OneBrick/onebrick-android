@@ -79,7 +79,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     private void setupActionBar() {
-        actionBar.setBackgroundDrawable(OneBrickApplication.obColorBlue);
+        //actionBar.setBackgroundDrawable(OneBrickApplication.obColorBlue);
     }
 
     @Override
