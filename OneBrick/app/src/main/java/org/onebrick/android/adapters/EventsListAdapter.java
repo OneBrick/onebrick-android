@@ -11,13 +11,9 @@ import org.onebrick.android.R;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class EventsListAdapter extends ArrayAdapter<Event>{
-
-    private List<Event> eventsList = new ArrayList<Event>();
-
     // View lookup cache
     private static class ViewHolder {
         TextView tvEventTitle;
@@ -26,23 +22,9 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
     }
 
     public EventsListAdapter(Context context, ArrayList<Event> events) {
-        super(context, 0, events);
-    }
-    @Override
-    public void add(Event object) {
-        eventsList.add(object);
-        super.add(object);
+        super(context, R.layout.item_event_list, events);
     }
 
-    @Override
-    public int getCount() {
-        return this.eventsList.size();
-    }
-
-    @Override
-    public Event getItem(int index) {
-        return this.eventsList.get(index);
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

@@ -13,8 +13,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
@@ -24,14 +22,17 @@ import org.onebrick.android.models.Event;
 import java.util.ArrayList;
 
 public class EventsListFragment extends Fragment {
+
+    private static final String TAG = EventsListFragment.class.getName().toString();
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
 
     private String chapterName;
     private int chapterId;
     private ProgressBar pbEventsList;
-
+    private ListView lvEventList;
     private EventsListAdapter adapter;
+    public ArrayList<Event> arrayOfEvents;
 
     public static EventsListFragment newInstance(String chapterName, int chapterId) {
         EventsListFragment fragment = new EventsListFragment();
@@ -48,9 +49,8 @@ public class EventsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Event> arrayOfEvents = new ArrayList<Event>();
+        arrayOfEvents = new ArrayList<Event>();
         adapter = new EventsListAdapter(getActivity(), arrayOfEvents);
-
         final Bundle args = getArguments();
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
@@ -63,14 +63,14 @@ public class EventsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.lvEvents);
-        listView.setAdapter(adapter);
+
         pbEventsList = (ProgressBar) view.findViewById(R.id.pbEventsList);
-
+        lvEventList = (ListView) view.findViewById(R.id.lvEvents);
+        lvEventList.setAdapter(adapter);
         populateJSONData(chapterId);
-
         return view;
     }
+
     private void populateJSONData(int chapterId) {
         OneBrickClient client = OneBrickApplication.getRestClient();
         client.getEventsList(chapterId, new JsonHttpResponseHandler() {
@@ -81,29 +81,15 @@ public class EventsListFragment extends Fragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                // once success response comes back
-                Log.i("INFO", "callback success"); // logcat log
-
-                if (response != null){
-                    JSONObject eventJsonObject;
-                    for (int i = 0; i < response.length(); i++) {
-                        Event event = null;
-                        try {
-                            eventJsonObject = (JSONObject) response.get(i);
-                            event = new Event();
-                            event.setTitle(eventJsonObject.optString("title"));
-                            event.setEventStartDate(eventJsonObject.optString("field_event_date_value"));
-                            event.setEventEndDate(eventJsonObject.optString("field_event_date_value2"));
-                            adapter.add(event);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
                 pbEventsList.setVisibility(ProgressBar.GONE);
-                // notify adapter so new data is displayed
-                adapter.notifyDataSetChanged();
+                Log.i("INFO", "callback success"); // logcat log
+                adapter.clear();
+                arrayOfEvents.clear();
+                if (response != null){
+                    arrayOfEvents = Event.fromJSONArray(response);
+                    adapter.addAll(arrayOfEvents);
+                    adapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onFailure(int statusCode, Header[] headers,
@@ -113,7 +99,8 @@ public class EventsListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+            public void onFailure(int statusCode, Header[] headers,
+                                  Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 pbEventsList.setVisibility(ProgressBar.GONE);
             }
