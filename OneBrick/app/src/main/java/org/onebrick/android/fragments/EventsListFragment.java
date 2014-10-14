@@ -1,11 +1,13 @@
 package org.onebrick.android.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -16,6 +18,7 @@ import org.json.JSONArray;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
+import org.onebrick.android.activities.EventInfoActivity;
 import org.onebrick.android.adapters.EventsListAdapter;
 import org.onebrick.android.models.Event;
 
@@ -56,6 +59,17 @@ public class EventsListFragment extends Fragment {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
         }
+
+    }
+
+    private void setupListeners() {
+        lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
+                startActivity(eventInfo);
+            }
+        });
     }
 
     @Override
@@ -68,6 +82,7 @@ public class EventsListFragment extends Fragment {
         lvEventList = (ListView) view.findViewById(R.id.lvEvents);
         lvEventList.setAdapter(adapter);
         populateJSONData(chapterId);
+        setupListeners();
         return view;
     }
 
@@ -106,6 +121,5 @@ public class EventsListFragment extends Fragment {
             }
 
         });
-
     }
 }
