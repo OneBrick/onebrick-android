@@ -56,8 +56,7 @@ public class Event extends Model {
     public int maxRsvpCapacity;
 
 
-    @Column(name="RsvpCount",
-            notNull = true)
+    @Column(name="RsvpCount")
     public int rsvpCount;
 
     public String toString() {
@@ -82,19 +81,23 @@ public class Event extends Model {
     public void setEventEndDate(String eventEndDate){
         this.eventEndDate = eventEndDate;
     }
+    public String getEventAddress() {
+        return eventAddress;
+    }
+    public void setEventAddress(String eventAddress) { this.eventAddress = eventAddress; }
 
     public static Event fromJSON(JSONObject jsonObject){
         Event event = new Event();
         try{
-            event.title = jsonObject.getString("title");
-            event.eventId = jsonObject.getInt("nid");
-            event.locationName = jsonObject.getString("esn_title");
-            event.eventStartDate = jsonObject.getString("field_event_date_value");
+            event.title = jsonObject.optString("title");
+            event.eventId = jsonObject.optInt("nid");
+            event.locationName = jsonObject.optString("esn_title");
+            event.eventStartDate = jsonObject.optString("field_event_date_value");
             event.eventEndDate = jsonObject.getString("field_event_date_value2");
-            event.maxRsvpCapacity = jsonObject.getInt("field_event_max_rsvp_capacity_value");
-            event.eventSummary = jsonObject.getString("body_summary");
-            event.eventAddress = jsonObject.getString("address");
-            event.rsvpCount = jsonObject.getInt("rsvpCnt");
+            event.maxRsvpCapacity = jsonObject.optInt("field_event_max_rsvp_capacity_value");
+            event.eventSummary = jsonObject.optString("body_summary");
+            event.eventAddress = jsonObject.optString("address");
+            event.rsvpCount = jsonObject.optInt("rsvpCnt");
         }catch(JSONException e){
             e.printStackTrace();
             return null;
