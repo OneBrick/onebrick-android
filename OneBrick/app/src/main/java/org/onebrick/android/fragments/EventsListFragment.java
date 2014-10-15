@@ -65,8 +65,11 @@ public class EventsListFragment extends Fragment {
     private void setupListeners() {
         lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
+                Event event = (Event) adapter.getItem(position);
+                //Toast.makeText(getActivity(), "The Event Title to display is :"+event.getTitle()+" with id "+event.getEventId(), Toast.LENGTH_LONG).show();
+                eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
             }
         });
