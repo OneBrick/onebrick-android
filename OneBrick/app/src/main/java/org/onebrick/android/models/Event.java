@@ -5,6 +5,7 @@ import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +60,16 @@ public class Event extends Model {
     @Column(name="RsvpCount")
     public int rsvpCount;
 
+    @Column(name="Description")
+    public String description;
+
+
+    @Column(name="CoordinatorEmail")
+    public String coordinatorEmail;
+
+    @Column(name="ManagerEmail")
+    public String managerEmail;
+
     public String toString() {
        return ""+title;
     }
@@ -85,6 +96,13 @@ public class Event extends Model {
         return eventAddress;
     }
     public void setEventAddress(String eventAddress) { this.eventAddress = eventAddress; }
+    public int getEventId() {
+        return this.eventId;
+    }
+
+    public String getEventDescription() {
+        return this.description;
+    }
 
     public static Event fromJSON(JSONObject jsonObject){
         Event event = new Event();
@@ -106,6 +124,72 @@ public class Event extends Model {
         event.save();
         return event;
     }
+
+    // Finds existing user based on remoteId or creates new user and returns
+    public static Event findOrCreateFromJson(JSONObject json) {
+        Event event = Event.fromJSON(json);
+        Event existingEvent =
+                new Select().from(Event.class).where("EventId = ?", event.getEventId()).executeSingle();
+        if (existingEvent != null) {
+            // found and return existing
+            return existingEvent;
+        } else {
+            // create and return new
+            event.save();
+            return event;
+        }
+    }
+
+    /*
+        Returns null if no event found
+     */
+    public static Event findEvent(int eventId   ) {
+        return new Select()
+                .from(Event.class)
+                .where("eventId = ?", eventId)
+                .executeSingle();
+    }
+
+
+    /*
+    Returns a updated event with manager email co-ordinator email
+    and event description from json object.
+
+    Note : The event should have already been created when this method
+    is getting invoked. The existing event is searched by calling the method
+    findEvent(<event_id>). find event can return null in such a scenario
+    IllegalArgumentException is thrown;
+     */
+    public static Event getUpdatedEvent(JSONObject jEventObject) {
+        int eventId;
+        String mgrEmail;
+        String coordEmail;
+        String eventDesc;
+        try{
+            eventId = jEventObject.optInt("nid");
+            mgrEmail = jEventObject.optString("manager_email");
+            coordEmail = jEventObject.optString("coordinator_email");
+            eventDesc = jEventObject.optString("body_value");
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        Event e = findEvent(eventId);
+        if(e == null){
+            throw new IllegalArgumentException("Event cannot be null for update");
+        }
+        e.description = eventDesc;
+        e.managerEmail = mgrEmail;
+        e.coordinatorEmail = coordEmail;
+        e.save();
+        return e;
+    }
+
+
+
+
+
+
     public static ArrayList<Event> fromJSONArray(JSONArray jsonArray) {
         ArrayList<Event> events = new ArrayList<Event>();
 
