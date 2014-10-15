@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         TextView tvEventTitle;
         TextView tvEventStartDate;
         TextView tvEventEndDate;
+        TextView tvDateDisplay;
+        TextView tvEventAddress;
     }
 
     public EventsListAdapter(Context context, ArrayList<Event> events) {
@@ -38,6 +41,8 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
             viewHolder.tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
             viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventStartDate);
             viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
+            viewHolder.tvDateDisplay = (TextView) convertView.findViewById(R.id.tvDateDisplay);
+            viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvEventAddress);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -45,8 +50,10 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
 
         // Populate the data into the template view using the data object
         viewHolder.tvEventTitle.setText(event.getTitle());
-        viewHolder.tvEventStartDate.setText(event.getEventStartDate());
-        viewHolder.tvEventEndDate.setText(event.getEventEndDate());
+        viewHolder.tvEventStartDate.setText(Utils.getFormattedTime(event.getEventStartDate()));
+        viewHolder.tvEventEndDate.setText(" - " + Utils.getFormattedTimeEndOnly(event.getEventStartDate(), event.getEventEndDate()));
+        viewHolder.tvDateDisplay.setText(Utils.getFormattedTimeDateOnly(event.getEventStartDate()));
+        viewHolder.tvEventAddress.setText(event.getEventAddress());
         // Return the completed view to render on screen
         return convertView;
     }

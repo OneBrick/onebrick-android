@@ -67,19 +67,11 @@ public class HomeActivity extends FragmentActivity {
         setupListeners();
     }
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
-        setupActionBar();
         return true;
-    }
-
-    private void setupActionBar() {
-        //actionBar.setBackgroundDrawable(OneBrickApplication.obColorBlue);
     }
 
     @Override
