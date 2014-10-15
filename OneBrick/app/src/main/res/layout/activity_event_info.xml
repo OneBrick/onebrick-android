@@ -21,6 +21,17 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/onebrick_sf_banner"
                 android:alpha="0.4">
+                <TextView
+                    android:id="@+id/tvEventName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="30dp"
+                    android:textColor="@android:color/black"
+                    android:text="EventTitle"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:gravity="center_horizontal"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlDateInfo"
@@ -75,8 +86,9 @@
                     android:background="@drawable/item_seperation_border"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:maxLines="4"
+                    android:lineSpacingExtra="5dp"
                     android:ellipsize="end"
                     android:text="Some small description about the event not more than 4 lines of description here"/>
 
