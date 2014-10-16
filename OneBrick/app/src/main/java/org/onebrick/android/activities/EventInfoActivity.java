@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,12 +97,14 @@ public class EventInfoActivity extends FragmentActivity implements
     TextView tvEventDateTime;
     TextView tvEventBrief;
     TextView tvEventLocation;
+    TextView tvLearnMore;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Geocoder geocoder;
     private LocationClient mLocationClient;
     private MarkerOptions marker;
+    Event selectedEvent;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -109,7 +112,8 @@ public class EventInfoActivity extends FragmentActivity implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     private void updateViews(Event updatedEvent) {
-        tvEventName.setText(updatedEvent.getTitle());
+        selectedEvent = updatedEvent;
+                tvEventName.setText(updatedEvent.getTitle());
         tvEventDateTime.setText(updatedEvent.getEventStartDate()
                 +" to "
                 +updatedEvent.getEventEndDate());
@@ -132,6 +136,7 @@ public class EventInfoActivity extends FragmentActivity implements
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
         map.animateCamera(cu);
 
+
     }
 
     @Override
@@ -142,6 +147,7 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
         tvEventLocation = (TextView) findViewById(R.id.tvEventLocation);
+        tvLearnMore = (TextView) findViewById(R.id.tvLearnMore);
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
 
@@ -166,6 +172,23 @@ public class EventInfoActivity extends FragmentActivity implements
         } else {
            // Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
         }
+        setupListeners();
+    }
+
+    private void setupListeners() {
+        /*
+        Setting up onClick listener on Learn more
+        which when clicked the user will be taken to a new
+        activity where he will get more detail description on the event.
+         */
+        tvLearnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
+                eventDetails.putExtra("Details",""+selectedEvent.getEventDescription());
+                startActivity(eventDetails);
+            }
+        });
     }
 
 
