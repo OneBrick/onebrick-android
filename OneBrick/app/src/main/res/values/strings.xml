@@ -21,5 +21,6 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_event_info">EventInfoActivity</string>
+    <string name="title_activity_event_description">EventDescription</string>
 
 </resources>
