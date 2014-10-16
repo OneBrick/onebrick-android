@@ -64,4 +64,11 @@ public class OneBrickClient extends OAuthBaseClient {
         Log.i(TAG,"get request for URL"+apiUri.toString());
         client.get(apiUri, null, handler);
     }
+
+    public void getLatLongFromAddress(String address, AsyncHttpResponseHandler handler){
+        //String apiUri = getApiUrl("/event/"+eventId+".json");
+        String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA";
+        Log.i(TAG,"get request for URL"+apiUrl);
+        client.get(apiUrl, null, handler);
+    }
 }
