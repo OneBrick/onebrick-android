@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -31,6 +34,9 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.models.Event;
+
+import java.io.IOException;
+import java.util.List;
 
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -62,6 +68,29 @@ public class EventInfoActivity extends FragmentActivity implements
         }
 
     };
+    /*
+    Not Sure if we really need this now so just commenting it out.
+    JsonHttpResponseHandler geoDecodeResponseHandler = new JsonHttpResponseHandler(){
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
+            Log.i("TAG","Success"+response.toString());
+            //placeMarkerOnMap()
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.i("TAG","Json Request to fetch event info failed");
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            Log.i("TAG","FAIL "+responseString);
+            super.onFailure(statusCode, headers, responseString, throwable);
+        }
+
+    };*/
 
     TextView tvEventName;
     TextView tvEventDateTime;
@@ -70,7 +99,9 @@ public class EventInfoActivity extends FragmentActivity implements
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
+    private Geocoder geocoder;
     private LocationClient mLocationClient;
+    private MarkerOptions marker;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -84,6 +115,23 @@ public class EventInfoActivity extends FragmentActivity implements
                 +updatedEvent.getEventEndDate());
         tvEventBrief.setText(updatedEvent.getEventDescription());
         tvEventLocation.setText(updatedEvent.getEventAddress());
+        List<Address> eventAddress = null;
+        try {
+            eventAddress  = geocoder.getFromLocationName(updatedEvent.getEventAddress(),1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        double latitude = eventAddress.get(0).getLatitude();
+        double longitude = eventAddress.get(0).getLongitude();
+        //Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
+        // create marker
+        MarkerOptions marker = new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title("Event Location");
+        map.addMarker(marker);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
+        map.animateCamera(cu);
+
     }
 
     @Override
@@ -96,9 +144,12 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventLocation = (TextView) findViewById(R.id.tvEventLocation);
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
-        getActionBar().setTitle("Event Info");
-        obClient.getEventInfo(eventId, responseHandler);
 
+        // Setting the action bar title
+        getActionBar().setTitle("Event Info");
+        // Using GeoCoder so not using he api call
+        obClient.getEventInfo(eventId, responseHandler);
+        geocoder = new Geocoder(this);
         /*
         Loading map
          */
@@ -108,13 +159,12 @@ public class EventInfoActivity extends FragmentActivity implements
         if (mapFragment != null) {
             map = mapFragment.getMap();
             if (map != null) {
-                Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
-                map.setMyLocationEnabled(true);
+
             } else {
-                Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
         }
     }
 
