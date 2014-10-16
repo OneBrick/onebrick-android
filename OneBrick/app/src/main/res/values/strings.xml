@@ -22,5 +22,6 @@
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_event_info">EventInfoActivity</string>
     <string name="title_activity_event_description">EventDescription</string>
+    <string name="title_activity_event_location_view">EventLocationView</string>
 
 </resources>
