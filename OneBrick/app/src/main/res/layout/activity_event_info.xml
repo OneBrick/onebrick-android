@@ -109,11 +109,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/item_seperation_border">
-                <FrameLayout
+                <fragment
                     android:id="@+id/mapFrame"
+                    class="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="200dp">
-                </FrameLayout>
+                </fragment>
                 <TextView
                     android:id="@+id/tvEventLocation"
                     android:layout_width="match_parent"
