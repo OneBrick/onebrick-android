@@ -93,6 +93,7 @@
                     android:text="Some small description about the event not more than 4 lines of description here"/>
 
                 <TextView
+                    android:id="@+id/tvLearnMore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvEventBrief"
