@@ -105,6 +105,8 @@ public class EventInfoActivity extends FragmentActivity implements
     private LocationClient mLocationClient;
     private MarkerOptions marker;
     Event selectedEvent;
+    double lat;
+    double lng;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -125,18 +127,17 @@ public class EventInfoActivity extends FragmentActivity implements
         } catch (IOException e) {
             e.printStackTrace();
         }
-        double latitude = eventAddress.get(0).getLatitude();
-        double longitude = eventAddress.get(0).getLongitude();
-        //Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
+        lat = eventAddress.get(0).getLatitude();
+        lng = eventAddress.get(0).getLongitude();
+
+        // Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
         // create marker
         MarkerOptions marker = new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
+                .position(new LatLng(lat, lng))
                 .title("Event Location");
         map.addMarker(marker);
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
         map.animateCamera(cu);
-
-
     }
 
     @Override
@@ -187,6 +188,23 @@ public class EventInfoActivity extends FragmentActivity implements
                 Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
                 eventDetails.putExtra("Details",""+selectedEvent.getEventDescription());
                 startActivity(eventDetails);
+            }
+        });
+
+         /*
+        Setting up onClick listener on the map
+        which when clicked the user will be taken to a new
+        activity where he will see the map in a might bigger screen
+         */
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
+                Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                eventLocationMap.putExtra("Latitude",lat);
+                eventLocationMap.putExtra("Longitude",lng);
+                eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
+                startActivity(eventLocationMap);
             }
         });
     }
