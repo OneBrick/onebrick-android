@@ -14,4 +14,14 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+
+    <!-- card styles -->
+    <style name="card">
+        <item name="android:paddingBottom">@dimen/card_padding_top_bottom</item>
+        <item name="android:paddingTop">@dimen/card_padding_top_bottom</item>
+        <item name="android:paddingLeft">@dimen/card_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/card_padding_left_right</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
 </resources>

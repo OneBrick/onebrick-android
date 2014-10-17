@@ -66,6 +66,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
+        <activity
+            android:name=".activities.MyEventsActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

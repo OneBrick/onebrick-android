@@ -21,5 +21,15 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_event_info">EventInfoActivity</string>
+    <string name="title_activity_profile">My Profile</string>
 
+    <string name="name_label">Full Name</string>
+    <string name="email_label">email@id.com</string>
+
+    <string name="upcoming">Upcoming</string>
+    <string name="past_events">Past Events</string>
+
+    <!-- Drawer items -->
+    <string name="login">Login</string>
+    <string name="my_events">My Events</string>
 </resources>

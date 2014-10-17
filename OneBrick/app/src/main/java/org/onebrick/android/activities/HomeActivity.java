@@ -1,6 +1,7 @@
 package org.onebrick.android.activities;
 
 import android.app.ActionBar;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,6 @@ public class HomeActivity extends FragmentActivity {
     private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient = OneBrickApplication.getRestClient();
     ArrayList<Chapter> chaptersList;
-    ActionBar actionBar;
 
     private DrawerLayout dlDrawerLayout;
     private ListView lvDrawerList;
@@ -59,11 +59,14 @@ public class HomeActivity extends FragmentActivity {
             }
         };
         obClient.getChapters(responseHandler);
-        actionBar = getActionBar();
         dlDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = setupDrawerToggle();
+        dlDrawerLayout.setDrawerListener(mDrawerToggle);
         lvDrawerList = (ListView) findViewById(R.id.lvDrawer);
         aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
         lvDrawerList.setAdapter(aLvDrawerList);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         setupListeners();
     }
 
@@ -83,7 +86,26 @@ public class HomeActivity extends FragmentActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     public void setupListeners() {
@@ -105,5 +127,26 @@ public class HomeActivity extends FragmentActivity {
                 .replace(R.id.fragment_container, eventListFragment)
                 .commit();
         dlDrawerLayout.closeDrawer(lvDrawerList);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, /* host Activity */
+                dlDrawerLayout, /* DrawerLayout object */
+                R.drawable.ic_navigation_drawer, /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open, /* "open drawer" description for accessibility */
+                R.string.drawer_close /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+                // setTitle(getCurrentTitle());
+                // call onPrepareOptionsMenu()
+                supportInvalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                // setTitle("Navigate");
+                // call onPrepareOptionsMenu()
+                supportInvalidateOptionsMenu();
+            }
+        };
     }
 }
