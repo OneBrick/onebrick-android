@@ -92,6 +92,10 @@
             android:name=".activities.EventLocationView"
             android:label="@string/title_activity_event_location_view" >
         </activity>
+        <activity
+            android:name=".activities.MyEventsActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

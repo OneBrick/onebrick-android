@@ -58,6 +58,8 @@ public class EventsListFragment extends Fragment {
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
+        } else {
+            chapterId = 101;
         }
 
     }

@@ -1,8 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.onebrick.android.activities.EventHomeActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_login"
+        android:title="@string/login"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>
