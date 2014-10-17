@@ -83,7 +83,8 @@ public class HomeActivity extends FragmentActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_login) {
+            // Hye: For now plugin user login here, later I will add to navigation drawer
             return true;
         }
         // The action bar home/up action should open or close the drawer.
