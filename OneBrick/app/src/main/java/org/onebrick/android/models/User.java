@@ -11,10 +11,8 @@ public class User extends Model {
 
     private static final String TAG = User.class.getName().toString();
 
-    @Column(name="FirstName")
-    public String firstName;
-    @Column(name="LastName")
-    public String lastName;
+    @Column(name="Name")
+    public String name;
     @Column(name="Email")
     public String email;
     @Column(name="ChapterId")
@@ -29,14 +27,14 @@ public class User extends Model {
     if this value is -1 ==> un authenticated. And login activity will be prompted.
      */
     @Column(name="UID")
-    public int UID = -1;
+    public long UID = -1;
 
     private String profileImageUrl;
 
     public static User fromJSON(JSONObject jsonObject){
         User user = new User();
         try{
-            user.uId = jsonObject.getJSONObject("user").optString("uid");
+            user.UID = jsonObject.getJSONObject("user").optLong("uid");
             user.name = jsonObject.getJSONObject("user").optString("signature");
             // regular user doesn't have mail object - probably only onebrick.org domanin
             user.email = jsonObject.getJSONObject("user").optString("name");
@@ -47,11 +45,11 @@ public class User extends Model {
         }
         return user;
     }
-    public String getUId() {
-        return uId;
+    public long getUId() {
+        return UID;
     }
-    public void setUId(String uId) {
-        this.uId = uId;
+    public void setUId(long uId) {
+        this.UID = uId;
     }
     public String getProfileImageUrl() {
         return profileImageUrl;
@@ -61,11 +59,11 @@ public class User extends Model {
     }
 
 //    public String getFirstName() {
-//        return firstName;
+//        return name;
 //    }
 //
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
+//    public void setFirstName(String name) {
+//        this.name = name;
 //    }
 //
 //    public String getLastName() {

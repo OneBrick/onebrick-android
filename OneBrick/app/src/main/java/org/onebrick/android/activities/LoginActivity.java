@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.onebrick.android.LoginManager;
@@ -113,7 +114,7 @@ public class LoginActivity extends Activity{
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);
             getAuthentication(email, password);
         }
     }
@@ -131,6 +132,19 @@ public class LoginActivity extends Activity{
         client.getUserLogin(username, password, new JsonHttpResponseHandler() {
 
             @Override
+            public void onStart() {
+                super.onStart();
+                mProgressView.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mProgressView.setVisibility(ProgressBar.GONE);
+                finish();
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //super.onSuccess(statusCode, headers, response);
                 Log.i("login success1", response.toString());
@@ -141,21 +155,18 @@ public class LoginActivity extends Activity{
                     manager.requestLogin(user);
 
                     Toast.makeText(getApplicationContext(), "login status: " + manager.isLoggedIn(), Toast.LENGTH_SHORT).show();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 //Toast.makeText(getApplicationContext(), "1 " + response.toString(), Toast.LENGTH_SHORT).show();
-                mProgressView.setVisibility(ProgressBar.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("login failure1", responseString);
                 Log.e("login failure1", throwable.toString());
-                //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
-                mProgressView.setVisibility(ProgressBar.GONE);
+                Toast.makeText(getApplicationContext(), "Couldn't login", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -163,7 +174,6 @@ public class LoginActivity extends Activity{
                 Log.e("login failure2", errorResponse.toString());
                 Log.e("login failure2", throwable.toString());
                 //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
-                mProgressView.setVisibility(ProgressBar.GONE);
             }
 
         });
