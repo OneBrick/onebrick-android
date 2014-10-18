@@ -14,11 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
+import org.onebrick.android.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
@@ -70,32 +72,56 @@ public class HomeActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        findViewById(R.id.tvLogin).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                HomeActivity.this.startActivity(intent);
-
-                // on login success change login button to profile view
-            }
-        });
-
-        findViewById(R.id.ibSetting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // open setting activity
-            }
-        });
-
         findViewById(R.id.tvMyEvents).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(HomeActivity.this, MyEventsActivity.class);
                 HomeActivity.this.startActivity(intent);
-
-                // on login success change login button to profile view
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setupLoginUi();
+    }
+
+    // change UI based on login status
+    private void setupLoginUi() {
+
+        final LoginManager loginManager = LoginManager.getInstance(this);
+        if (loginManager.isLoggedIn()) {
+            findViewById(R.id.ivUserPic).setVisibility(View.VISIBLE);
+            findViewById(R.id.tvLogin).setVisibility(View.GONE);
+
+            final TextView tvName = (TextView)findViewById(R.id.tvName);
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(loginManager.getCurrentUser().getName());
+            //tvName.setOnTouchListener(new Right);
+        } else {
+            findViewById(R.id.tvName).setVisibility(View.GONE);
+            findViewById(R.id.ivUserPic).setVisibility(View.GONE);
+
+            final TextView tvLogin = (TextView)findViewById(R.id.tvLogin);
+            tvLogin.setText(R.string.login);
+            tvLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    HomeActivity.this.startActivity(intent);
+                    // on login success change login button to profile view
+                }
+            });
+
+//            findViewById(R.id.ibSetting).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // open setting activity
+//                }
+//            });
+        }
     }
 
     private void fetchChapters() {

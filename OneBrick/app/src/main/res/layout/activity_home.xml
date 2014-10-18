@@ -32,20 +32,39 @@
         android:layout_gravity="start"
         android:background="@android:color/white">
 
+        <ImageView
+            android:id="@+id/ivUserPic"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/profile_pic"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_below="@id/ivUserPic"
+            android:text="@string/name_label"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textStyle="bold"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_settings"/>
+
         <TextView
             android:id="@+id/tvLogin"
+            android:layout_below="@id/tvName"
             android:text="@string/login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/onebrick_background_selector"/>
 
-        <ImageButton
-            android:id="@+id/ibSetting"
-            android:layout_alignRight="@id/tvLogin"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_settings"
-            android:background="@android:color/transparent"/>
+        <!--<ImageButton-->
+            <!--android:id="@+id/ibSetting"-->
+            <!--android:layout_alignRight="@id/tvLogin"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:src="@drawable/ic_settings"-->
+            <!--android:background="@android:color/transparent"/>-->
 
         <TextView
             android:id="@+id/tvMyEvents"
