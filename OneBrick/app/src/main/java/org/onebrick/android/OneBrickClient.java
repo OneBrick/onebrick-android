@@ -73,4 +73,21 @@ public class OneBrickClient extends OAuthBaseClient {
         Log.i(TAG,"get request for URL"+apiUrl);
         client.get(apiUrl, null, handler);
     }
+
+    /*
+    This function is called to post rsvp request to an event
+     */
+    public void postRsvpToEvent(int eventId, long userId, AsyncHttpResponseHandler handler) {
+        String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
+        RequestParams params = new RequestParams();
+        params.put("uid", userId);
+        client.post(apiUri, params, handler);
+    }
+
+    public void postUnRsvpToEvent(int eventId, long userId, AsyncHttpResponseHandler handler) {
+        String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
+        RequestParams params = new RequestParams();
+        params.put("uid", userId);
+        client.post(apiUri, params, handler);
+    }
 }
