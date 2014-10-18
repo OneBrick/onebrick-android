@@ -48,6 +48,15 @@ public class HomeActivity extends FragmentActivity {
         setupUi();
         setupListeners();
         fetchChapters();
+        Intent i = getIntent();
+        int chapterId = i.getIntExtra("ChapterId", -1);
+        String chapterName = i.getStringExtra("ChapterName");
+        Fragment eventListFragment = EventsListFragment.newInstance(chapterName,
+                chapterId);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, eventListFragment)
+                .commit();
     }
 
     private void setupUi() {
