@@ -14,17 +14,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.onebrick.android.LoginManager;
+import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
+import org.onebrick.android.models.User;
 
 //public class LoginActivity extends OAuthLoginActivity<OneBrickClient> {
 public class LoginActivity extends Activity{
@@ -115,31 +118,54 @@ public class LoginActivity extends Activity{
         }
     }
     private void getAuthentication(String username, String password) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.add("username", username);
-        params.add("password", password);
-        client.post("http://dev-v3.gotpantheon.com/noauth/user/login.json", params, new JsonHttpResponseHandler(){
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                //super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("login failure", errorResponse.toString());
-                Log.e("login failure", throwable.toString());
-                Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
-            }
+//        OneBrickClient client = OneBrickApplication.getRestClient();
+//        client.getUserLogin(username, password, new JsonHttpResponseHandler() {
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        RequestParams params = new RequestParams();
+//        params.add("username", username);
+//        params.add("password", password);
+        String url = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
+//        client.post(url, new JsonHttpResponseHandler(){
+        OneBrickClient client = OneBrickApplication.getRestClient();
+        client.getUserLogin(username, password, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                Log.i("login success", response.toString());
+                //super.onSuccess(statusCode, headers, response);
+                Log.i("login success1", response.toString());
+                try {
+                    Log.i("id", response.getJSONObject("user").optString("uid"));
+                    User user = User.fromJSON(response);
+                    LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+                    manager.requestLogin(user);
+
+                    Toast.makeText(getApplicationContext(), "login status: " + manager.isLoggedIn(), Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Toast.makeText(getApplicationContext(), "1 " + response.toString(), Toast.LENGTH_SHORT).show();
+                mProgressView.setVisibility(ProgressBar.GONE);
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Log.i("login success", response.toString());
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("login failure1", responseString);
+                Log.e("login failure1", throwable.toString());
+                //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
+                mProgressView.setVisibility(ProgressBar.GONE);
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.e("login failure2", errorResponse.toString());
+                Log.e("login failure2", throwable.toString());
+                //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
+                mProgressView.setVisibility(ProgressBar.GONE);
+            }
+
         });
 
     }

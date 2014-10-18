@@ -51,17 +51,19 @@ public class OneBrickClient extends OAuthBaseClient {
         client.get(apiUri, params, handler);
     }
 
-
-
-
-
-
-
-
+    public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
+        //String apiUri = getApiUrl("/user/login.json");
+        String apiUri = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
+//        RequestParams params = new RequestParams();
+//        params.put("username", username);
+//        params.put("password", password);
+        Log.i(TAG,"get request for user login URL: "+apiUri);
+        client.post(apiUri, null, handler);
+    }
 
     public void getEventInfo(String eventId, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/event/"+eventId+".json");
-        Log.i(TAG,"get request for URL"+apiUri.toString());
+        Log.i(TAG,"get request for URL"+apiUri);
         client.get(apiUri, null, handler);
     }
 
