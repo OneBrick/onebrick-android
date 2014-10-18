@@ -75,6 +75,64 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
+
+    JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler(){
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
+            Log.i("TAG","RSVP Success"+response.toString());
+            Drawable unrsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+            btnRsvp.setCompoundDrawablesWithIntrinsicBounds(unrsvp, null, null, null);
+            btnRsvp.setText("UnRsvp");
+            ivRsvpInfo.setImageDrawable(
+                    getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+            tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.i("TAG","Json Request to fetch event info failed");
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            Log.i("TAG","FAIL "+responseString);
+            super.onFailure(statusCode, headers, responseString, throwable);
+        }
+
+    };
+
+    JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler(){
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
+            Log.i("TAG","RSVP Un-Success"+response.toString());
+            Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+            //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+            btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+            btnRsvp.setText("Rsvp");
+            ivRsvpInfo.setImageDrawable(
+                    getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+            tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.i("TAG","Json Request to fetch event info failed");
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            Log.i("TAG","FAIL "+responseString);
+            super.onFailure(statusCode, headers, responseString, throwable);
+        }
+
+    };
+
     TextView tvEventName;
     TextView tvEventDateTime;
     TextView tvEventBrief;
@@ -94,6 +152,7 @@ public class EventInfoActivity extends FragmentActivity implements
     User user;
     double lat;
     double lng;
+    OneBrickClient obclient;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -147,6 +206,7 @@ public class EventInfoActivity extends FragmentActivity implements
         ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
+        obclient = OneBrickApplication.getRestClient();
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
 
@@ -219,21 +279,12 @@ public class EventInfoActivity extends FragmentActivity implements
                 user = loginMgr.getCurrentUser();
                 Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
                 if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
-                    Drawable unrsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
-                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(unrsvp, null, null, null);
-                    btnRsvp.setText("UnRsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+
+                    obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
+
                 } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
-                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
-                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                    btnRsvp.setText("Rsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                    obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(),unRsvpResponseHandler);
+
                 } else {
                 }
             }
