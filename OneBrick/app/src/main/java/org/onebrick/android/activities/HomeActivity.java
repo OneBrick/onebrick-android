@@ -1,6 +1,6 @@
 package org.onebrick.android.activities;
 
-import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -34,6 +34,7 @@ public class HomeActivity extends FragmentActivity {
     ArrayList<Chapter> chaptersList;
 
     private DrawerLayout dlDrawerLayout;
+    private View llDrawer;
     private ListView lvDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationChapterListAdapter aLvDrawerList;
@@ -43,10 +44,56 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         chaptersList = new ArrayList<Chapter>();
-        JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
 
+        setupUi();
+        setupListeners();
+        fetchChapters();
+    }
+
+    private void setupUi() {
+        dlDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        llDrawer = findViewById(R.id.rlDrawer);
+        mDrawerToggle = setupDrawerToggle();
+        dlDrawerLayout.setDrawerListener(mDrawerToggle);
+        lvDrawerList = (ListView) findViewById(R.id.lvChapters);
+        aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
+        lvDrawerList.setAdapter(aLvDrawerList);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        findViewById(R.id.tvLogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                HomeActivity.this.startActivity(intent);
+
+                // on login success change login button to profile view
+            }
+        });
+
+        findViewById(R.id.ibSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open setting activity
+            }
+        });
+
+        findViewById(R.id.tvMyEvents).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(HomeActivity.this, MyEventsActivity.class);
+                HomeActivity.this.startActivity(intent);
+
+                // on login success change login button to profile view
+            }
+        });
+    }
+
+    private void fetchChapters() {
+        JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                chaptersList.clear();
                 chaptersList.addAll(Chapter.getChapterListFromJsonObject(response));
                 aLvDrawerList.addAll(chaptersList);
                 aLvDrawerList.notifyDataSetChanged();
@@ -59,15 +106,6 @@ public class HomeActivity extends FragmentActivity {
             }
         };
         obClient.getChapters(responseHandler);
-        dlDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = setupDrawerToggle();
-        dlDrawerLayout.setDrawerListener(mDrawerToggle);
-        lvDrawerList = (ListView) findViewById(R.id.lvDrawer);
-        aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
-        lvDrawerList.setAdapter(aLvDrawerList);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        setupListeners();
     }
 
     @Override
@@ -127,7 +165,7 @@ public class HomeActivity extends FragmentActivity {
         fm.beginTransaction()
                 .replace(R.id.fragment_container, eventListFragment)
                 .commit();
-        dlDrawerLayout.closeDrawer(lvDrawerList);
+        dlDrawerLayout.closeDrawer(llDrawer);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -150,4 +188,6 @@ public class HomeActivity extends FragmentActivity {
             }
         };
     }
+
+
 }

@@ -3,33 +3,65 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5" >
+    android:background="#f5f5f5">
 
     <!-- The main content view -->
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <!--<TextView-->
-        <!--android:id="@+id/tvLogin"-->
-        <!--android:text="@string/login"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
+    <!--android:id="@+id/tvLogin"-->
+    <!--android:text="@string/login"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"/>-->
 
     <!--<TextView-->
-        <!--android:id="@+id/tvMyEvents"-->
-        <!--android:text="@string/my_events"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
+    <!--android:id="@+id/tvMyEvents"-->
+    <!--android:text="@string/my_events"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"/>-->
 
     <!-- The navigation drawer -->
-    <ListView android:id="@+id/lvDrawer"
+    <RelativeLayout
+        android:id="@+id/rlDrawer"
         android:layout_width="240dp"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="1dp"
-        android:background="@android:color/white"
-        android:divider="@android:color/transparent" />
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tvLogin"
+            android:text="@string/login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/onebrick_background_selector"/>
+
+        <ImageButton
+            android:id="@+id/ibSetting"
+            android:layout_alignRight="@id/tvLogin"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_settings"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/tvMyEvents"
+            android:layout_below="@id/tvLogin"
+            android:text="@string/my_events"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/onebrick_background_selector"/>
+
+        <ListView
+            android:id="@+id/lvChapters"
+            android:layout_below="@id/tvMyEvents"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="1dp"
+            android:divider="@android:color/transparent"/>
+    </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

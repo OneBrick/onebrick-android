@@ -23,7 +23,7 @@
     <string name="title_activity_event_info">EventInfoActivity</string>
     <string name="title_activity_event_description">EventDescription</string>
     <string name="title_activity_event_location_view">EventLocationView</string>
-    <string name="title_activity_profile">My Profile</string>
+    <string name="title_activity_my_events">My Events</string>
 
     <string name="name_label">Full Name</string>
     <string name="email_label">email@id.com</string>

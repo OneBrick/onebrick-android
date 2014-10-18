@@ -58,10 +58,11 @@ public class EventsListFragment extends Fragment {
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
-        } else {
+        }
+        // TODO: Prakash this is hack need to remove
+        if (chapterId == 0) {
             chapterId = 101;
         }
-
     }
 
     private void setupListeners() {

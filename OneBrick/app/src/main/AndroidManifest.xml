@@ -94,7 +94,8 @@
         </activity>
         <activity
             android:name=".activities.MyEventsActivity"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_my_events"
+            android:parentActivityName=".activities.HomeActivity">
         </activity>
     </application>
 
