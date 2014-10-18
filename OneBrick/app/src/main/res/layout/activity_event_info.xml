@@ -72,6 +72,40 @@
                     android:src="@drawable/ic_add_calendar"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rlRsvpInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/item_seperation_border">
+                <ImageView
+                    android:id="@+id/ivRsvpPeople"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:scaleType="fitCenter"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toLeftOf="@+id/tvRsvpInfo"
+                    android:src="@drawable/ic_rsvp_info_75dip"/>
+                <TextView
+                    android:id="@+id/tvRsvpInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/charcoal"
+                    android:textSize="16dp"
+                    android:text="You have not RSVP-ed to this event yet!"/>
+                </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -201,7 +235,7 @@
                     android:drawablePadding="10dp"
                     android:background="@android:color/transparent"
                     android:textColor="@color/charcoal"
-                    android:drawableStart="@drawable/ic_rsvp"
+                    android:drawableStart="@drawable/ic_rsvp_50dip"
                     android:text="RSVP"
                     android:gravity="center"/>
             </RelativeLayout>
