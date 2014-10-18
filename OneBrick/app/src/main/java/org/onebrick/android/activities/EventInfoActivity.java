@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +101,9 @@ public class EventInfoActivity extends FragmentActivity implements
     TextView tvEventBrief;
     TextView tvEventLocation;
     TextView tvLearnMore;
+    Button btnRsvp;
+    ImageView ivRsvpInfo;
+    TextView tvRsvpInfo;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -123,7 +129,12 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventLocation.setText(updatedEvent.getEventAddress());
         List<Address> eventAddress = null;
         try {
+            Log.i(TAG,"Event address is "+updatedEvent.getEventAddress());
+            Log.i(TAG,"Is Geocode present "+geocoder.isPresent());
             eventAddress  = geocoder.getFromLocationName(updatedEvent.getEventAddress(),1);
+            //eventAddress  = geocoder.getFromLocationName("1600 Amphitheatre Parkway, Mountain View, CA",1);
+
+            Log.i(TAG,"Geocoded Event address is "+eventAddress);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -149,6 +160,10 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
         tvEventLocation = (TextView) findViewById(R.id.tvEventLocation);
         tvLearnMore = (TextView) findViewById(R.id.tvLearnMore);
+
+        btnRsvp = (Button) findViewById(R.id.btnRsvp);
+        tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
+        ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
 
@@ -205,6 +220,30 @@ public class EventInfoActivity extends FragmentActivity implements
                 eventLocationMap.putExtra("Longitude",lng);
                 eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
                 startActivity(eventLocationMap);
+            }
+        });
+
+        btnRsvp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
+                    Drawable unrsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(unrsvp, null, null, null);
+                    btnRsvp.setText("UnRsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+                } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
+                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                    btnRsvp.setText("Rsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                } else {
+                }
             }
         });
     }
