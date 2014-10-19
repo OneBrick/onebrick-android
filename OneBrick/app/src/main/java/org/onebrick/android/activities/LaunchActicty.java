@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 
 public class LaunchActicty extends Activity {
@@ -16,15 +18,35 @@ public class LaunchActicty extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_acticty);
         getActionBar().hide();
+        final String  myChapterName = OneBrickApplication
+                .getApplicationSharedPreference()
+                .getString("MyChapterName", null);
+        final int myChapterId = OneBrickApplication
+                .getApplicationSharedPreference()
+                .getInt("MyChapterId", -1);
+        if(myChapterName == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+                    Intent i = new Intent(LaunchActicty.this, SelectChapterActivity.class);
+                    startActivity(i);
+                }
+            }, 2500);
+        } else {
+            Toast.makeText(this,"My Chapter is "+myChapterName,Toast.LENGTH_LONG).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-                Intent i=new Intent(LaunchActicty.this,SelectChapterActivity.class);
-                startActivity(i);
-            }
-        }, 3000);
+                    Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                    i.putExtra("ChapterId",myChapterId);
+                    i.putExtra("ChapterName", myChapterName);
+                    startActivity(i);
+                }
+            }, 2500);
+
+        }
     }
 
 

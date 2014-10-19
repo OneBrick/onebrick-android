@@ -70,6 +70,7 @@ public class Event extends Model {
     @Column(name="ManagerEmail")
     public String managerEmail;
 
+
     public String toString() {
        return ""+title;
     }
@@ -120,22 +121,23 @@ public class Event extends Model {
             e.printStackTrace();
             return null;
         }
-        Log.i(TAG,"Saving event to database");
+        Log.i(TAG, "Saving event to database");
         event.save();
         return event;
     }
 
     // Finds existing user based on remoteId or creates new user and returns
-    public static Event findOrCreateFromJson(JSONObject json) {
-        Event event = Event.fromJSON(json);
+    public static Event findOrCreateFromJson(JSONObject jsonObj) {
+        int eventId = jsonObj.optInt("nid");
         Event existingEvent =
-                new Select().from(Event.class).where("EventId = ?", event.getEventId()).executeSingle();
+                new Select().from(Event.class).where("EventId = ?", eventId).executeSingle();
         if (existingEvent != null) {
             // found and return existing
+            Log.i(TAG, "Returning existing event. Not saving new events to DB");
             return existingEvent;
         } else {
             // create and return new
-            event.save();
+            Event event = fromJSON(jsonObj);
             return event;
         }
     }
@@ -198,7 +200,7 @@ public class Event extends Model {
             try{
                 // individual event
                 eventJson = jsonArray.getJSONObject(i);
-                Event event = Event.fromJSON(eventJson);
+                Event event = Event.findOrCreateFromJson(eventJson);
                 if (event != null){
                     events.add(event);
                 }

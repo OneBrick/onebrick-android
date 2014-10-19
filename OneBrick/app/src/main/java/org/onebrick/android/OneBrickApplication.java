@@ -1,6 +1,7 @@
 package org.onebrick.android;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -9,7 +10,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
     private static Context context;
-
+    private static SharedPreferences sharedPref;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -22,11 +23,17 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
+        sharedPref = this.getSharedPreferences("OneBrickSharedPref", Context.MODE_PRIVATE);
 
     }
 
     public static OneBrickClient getRestClient() {
-        return (OneBrickClient) OneBrickClient.getInstance(OneBrickClient.class, OneBrickApplication.context);
+        return (OneBrickClient) OneBrickClient.getInstance(OneBrickClient.class,
+                OneBrickApplication.context);
     }
-    
+
+    public static SharedPreferences getApplicationSharedPreference() {
+        return sharedPref;
+    }
+
 }

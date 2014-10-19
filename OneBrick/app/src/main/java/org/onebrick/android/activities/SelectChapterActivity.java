@@ -2,6 +2,7 @@ package org.onebrick.android.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -64,6 +65,13 @@ public class SelectChapterActivity extends Activity {
                 i.putExtra("ChapterId",ch.getChapterId());
                 i.putExtra("ChapterName", ch.getChapterName());
                 startActivity(i);
+                SharedPreferences sp = OneBrickApplication.getApplicationSharedPreference();
+                SharedPreferences.Editor editor;
+                editor = sp.edit();
+                editor.putInt("MyChapterId", ch.getChapterId());
+                editor.putString("MyChapterName", ch.getChapterName());
+                editor.commit();
+
             }
         });
     }

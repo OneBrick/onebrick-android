@@ -1,6 +1,7 @@
 package org.onebrick.android.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -53,6 +54,7 @@ public class HomeActivity extends FragmentActivity {
         Intent i = getIntent();
         int chapterId = i.getIntExtra("ChapterId", -1);
         String chapterName = i.getStringExtra("ChapterName");
+        getActionBar().setTitle(chapterName);
         Fragment eventListFragment = EventsListFragment.newInstance(chapterName,
                 chapterId);
         FragmentManager fm = getSupportFragmentManager();
@@ -201,6 +203,21 @@ public class HomeActivity extends FragmentActivity {
                 .replace(R.id.fragment_container, eventListFragment)
                 .commit();
         dlDrawerLayout.closeDrawer(llDrawer);
+        SharedPreferences sp = OneBrickApplication.getApplicationSharedPreference();
+
+        /*
+        Saving the new chapter information if the user changes chapter
+         */
+        SharedPreferences.Editor editor;
+        editor = sp.edit();
+        editor.putInt("MyChapterId", ch.getChapterId());
+        editor.putString("MyChapterName", ch.getChapterName());
+        editor.commit();
+
+        /*
+        Changing the action bar title
+         */
+        getActionBar().setTitle(ch.getChapterName());
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {

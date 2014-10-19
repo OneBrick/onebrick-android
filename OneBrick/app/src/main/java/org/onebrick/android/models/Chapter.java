@@ -4,9 +4,12 @@ package org.onebrick.android.models;
  * Created by AshwinGV on 10/11/14.
  */
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +19,10 @@ import java.util.Iterator;
 
 @Table(name="Chapters")
 public class Chapter extends Model {
+
+    private static final String TAG = Chapter.class.getName().toString();
+
+
     @Column(name="Name",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
@@ -62,6 +69,7 @@ public class Chapter extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.i(TAG,"Saving Chapter to DB");
         newChapter.save();
         return newChapter;
     }
@@ -74,7 +82,7 @@ public class Chapter extends Model {
             try {
                 JSONObject chapterJsonObject = jsonObject.getJSONObject(key);
                 //Log.i("PASS",""+object.toString());
-                Chapter toAdd = getChapterFromJsonObject(chapterJsonObject);
+                Chapter toAdd = findOrCreateFromJson(chapterJsonObject);
                 if(toAdd != null) {
                     chapterList.add(toAdd);
                 }
@@ -83,6 +91,22 @@ public class Chapter extends Model {
             }
         }
         return chapterList;
+    }
+
+    // Finds existing user based on remoteId or creates new user and returns
+    public static Chapter findOrCreateFromJson(JSONObject jsonObj) {
+        int eventId = jsonObj.optInt("nid");
+        Chapter existingChapter =
+                new Select().from(Chapter.class).where("ChapterId = ?", eventId).executeSingle();
+        if (existingChapter != null) {
+            // found and return existing
+            Log.i(TAG, "Returning existing chapter. Not saving new chapter to DB");
+            return existingChapter;
+        } else {
+            // create and return new
+            Chapter chapter = getChapterFromJsonObject(jsonObj);
+            return chapter;
+        }
     }
 
 }
