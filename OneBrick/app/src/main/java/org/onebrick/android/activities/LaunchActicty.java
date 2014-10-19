@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
@@ -34,7 +33,7 @@ public class LaunchActicty extends Activity {
                 }
             }, 2500);
         } else {
-            Toast.makeText(this,"My Chapter is "+myChapterName,Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"My Chapter is "+myChapterName,Toast.LENGTH_LONG).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
