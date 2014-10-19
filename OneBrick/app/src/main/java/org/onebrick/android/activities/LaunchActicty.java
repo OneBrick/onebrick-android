@@ -15,7 +15,7 @@ public class LaunchActicty extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_acticty);
-
+        getActionBar().hide();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -24,7 +24,7 @@ public class LaunchActicty extends Activity {
                 Intent i=new Intent(LaunchActicty.this,SelectChapterActivity.class);
                 startActivity(i);
             }
-        }, 2000);
+        }, 3000);
     }
 
 
