@@ -37,7 +37,7 @@ public class Event extends Model {
     @Column(name="EventId",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
-    public int eventId;
+    public long eventId;
 
 
     @Column(name="EventAddress",
@@ -60,9 +60,11 @@ public class Event extends Model {
     @Column(name="RsvpCount")
     public int rsvpCount;
 
+    @Column(name="usrRSVP")
+    public int usrRSVP;
+
     @Column(name="Description")
     public String description;
-
 
     @Column(name="CoordinatorEmail")
     public String coordinatorEmail;
@@ -97,7 +99,7 @@ public class Event extends Model {
         return eventAddress;
     }
     public void setEventAddress(String eventAddress) { this.eventAddress = eventAddress; }
-    public int getEventId() {
+    public long getEventId() {
         return this.eventId;
     }
 
@@ -109,14 +111,28 @@ public class Event extends Model {
         Event event = new Event();
         try{
             event.title = jsonObject.optString("title");
-            event.eventId = jsonObject.optInt("nid");
+            event.eventId = jsonObject.optLong("nid");
             event.locationName = jsonObject.optString("esn_title");
             event.eventStartDate = jsonObject.optString("field_event_date_value");
             event.eventEndDate = jsonObject.getString("field_event_date_value2");
             event.maxRsvpCapacity = jsonObject.optInt("field_event_max_rsvp_capacity_value");
-            event.eventSummary = jsonObject.optString("body_summary");
+            if (!jsonObject.isNull("manager_email")){
+                event.managerEmail = jsonObject.optString("manager_email");
+            }
+            // should check json return. sometimes, there are multiple coordinators
+            if (!jsonObject.isNull("coordinator_email")){
+                event.coordinatorEmail = jsonObject.optString("coordinator_email");
+            }
+            if (!jsonObject.isNull("body_summary")){
+                event.eventSummary = jsonObject.optString("body_summary");
+            }else if (!jsonObject.isNull("body_value")){
+                event.eventSummary = jsonObject.optString("body_value");
+            }
             event.eventAddress = jsonObject.optString("address");
             event.rsvpCount = jsonObject.optInt("rsvpCnt");
+            if (!jsonObject.isNull("usrRSVP")){
+                event.usrRSVP = jsonObject.optInt("usrRSVP");
+            }
         }catch(JSONException e){
             e.printStackTrace();
             return null;

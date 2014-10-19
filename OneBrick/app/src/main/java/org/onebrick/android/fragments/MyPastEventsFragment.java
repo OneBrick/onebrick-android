@@ -2,8 +2,8 @@ package org.onebrick.android.fragments;
 
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,10 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.onebrick.android.LoginManager;
 import org.onebrick.android.OneBrickApplication;
-import org.onebrick.android.OneBrickClient;
-import org.onebrick.android.R;
 import org.onebrick.android.models.Event;
+import org.onebrick.android.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,15 +40,26 @@ public class MyPastEventsFragment extends EventsListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_past_events, container, false);
+        View v = super.onCreateView( inflater, container, savedInstanceState);
+        User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
+        if (user != null){
+            setupEventsListeners();
+            populatePastEvents(user.getUId());
+        }
+        return v;
     }
 
-    private void populatePastEvents(int chapterId) {
-        OneBrickClient client = OneBrickApplication.getRestClient();
-        client.getEventsList(chapterId, new JsonHttpResponseHandler() {
+    private void populatePastEvents(long userId) {
+        client.getMyEvents(userId, true, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 pbEventsList.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pbEventsList.setVisibility(ProgressBar.GONE);
             }
 
             @Override
@@ -57,24 +68,27 @@ public class MyPastEventsFragment extends EventsListFragment {
                 Log.i("INFO", "callback success"); // logcat log
                 adapter.clear();
                 arrayOfEvents.clear();
-                if (response != null){
+                if (response != null) {
                     arrayOfEvents = Event.fromJSONArray(response);
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                Log.e("ERROR", responseString);
+                Log.e("ERROR", throwable.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                Log.e("ERROR", errorResponse.toString());
+                Log.e("ERROR", throwable.toString());
             }
 
         });
