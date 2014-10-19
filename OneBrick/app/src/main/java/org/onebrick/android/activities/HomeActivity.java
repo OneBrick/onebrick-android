@@ -77,6 +77,7 @@ public class HomeActivity extends FragmentActivity {
         findViewById(R.id.tvMyEvents).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeDrawer();
                 final Intent intent = new Intent(HomeActivity.this, MyEventsActivity.class);
                 HomeActivity.this.startActivity(intent);
             }
@@ -111,6 +112,7 @@ public class HomeActivity extends FragmentActivity {
             tvLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    closeDrawer();
                     final Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                     HomeActivity.this.startActivity(intent);
                     // on login success change login button to profile view
@@ -124,6 +126,10 @@ public class HomeActivity extends FragmentActivity {
 //                }
 //            });
         }
+    }
+
+    private void closeDrawer() {
+        dlDrawerLayout.closeDrawer(llDrawer);
     }
 
     private void fetchChapters() {
@@ -202,7 +208,7 @@ public class HomeActivity extends FragmentActivity {
         fm.beginTransaction()
                 .replace(R.id.fragment_container, eventListFragment)
                 .commit();
-        dlDrawerLayout.closeDrawer(llDrawer);
+        closeDrawer();
         SharedPreferences sp = OneBrickApplication.getApplicationSharedPreference();
 
         /*
