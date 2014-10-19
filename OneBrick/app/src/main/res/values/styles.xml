@@ -3,6 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
+        <!--<item name="android:actionBarTabStyle">@style/AppTheme.ActionBar.TabView</item>-->
+        <item name="android:actionBarTabBarStyle">@style/AppTheme.ActionBar.TabBar</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
@@ -14,6 +17,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.ActionBar.TabBar" parent="android:style/Widget.Holo.Light.ActionBar.TabBar">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabView" parent="android:style/Widget.Holo.ActionBar.TabView">
+        <!-- This is a GREEN background -->
+        <item name="android:background">@color/onebrick_orange</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabText" parent="android:style/Widget.Holo.ActionBar.TabText">
+        <!-- This is a WHITE tab color -->
+        <item name="android:textColor">@color/onebrick_blue</item>
+    </style>
 
     <!-- card styles -->
     <style name="card">
