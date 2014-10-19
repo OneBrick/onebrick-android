@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -27,36 +29,33 @@ import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
 import org.onebrick.android.fragments.EventsListFragment;
+import org.onebrick.android.fragments.SelectChapterFragment;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity
+        implements SelectChapterFragment.OnSelectChapterFragmentListener {
+
     private static final String TAG = HomeActivity.class.getName().toString();
-    OneBrickClient obClient = OneBrickApplication.getRestClient();
-    ArrayList<Chapter> chaptersList;
+    public static final String SELECT_CHAPTER_FRAGMENT_TAG = "select_chapter";
 
     private DrawerLayout dlDrawerLayout;
     private View llDrawer;
-    private ListView lvDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private NavigationChapterListAdapter aLvDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        chaptersList = new ArrayList<Chapter>();
 
         setupUi();
-        setupListeners();
-        fetchChapters();
         Intent i = getIntent();
         int chapterId = i.getIntExtra("ChapterId", -1);
         String chapterName = i.getStringExtra("ChapterName");
         getActionBar().setTitle(chapterName);
-        Fragment eventListFragment = EventsListFragment.newInstance(chapterName,
-                chapterId);
+
+        Fragment eventListFragment = EventsListFragment.newInstance(chapterName, chapterId);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.fragment_container, eventListFragment)
@@ -68,9 +67,6 @@ public class HomeActivity extends FragmentActivity {
         llDrawer = findViewById(R.id.rlDrawer);
         mDrawerToggle = setupDrawerToggle();
         dlDrawerLayout.setDrawerListener(mDrawerToggle);
-        lvDrawerList = (ListView) findViewById(R.id.lvChapters);
-        aLvDrawerList = new NavigationChapterListAdapter(getApplicationContext(),R.layout.drawer_nav_item,chaptersList);
-        lvDrawerList.setAdapter(aLvDrawerList);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -96,16 +92,19 @@ public class HomeActivity extends FragmentActivity {
 
         final LoginManager loginManager = LoginManager.getInstance(this);
         if (loginManager.isLoggedIn()) {
-            findViewById(R.id.ivUserPic).setVisibility(View.VISIBLE);
-            findViewById(R.id.tvLogin).setVisibility(View.GONE);
-
             final TextView tvName = (TextView)findViewById(R.id.tvName);
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(loginManager.getCurrentUser().getName());
-            //tvName.setOnTouchListener(new Right);
+
+            findViewById(R.id.ivUserPic).setVisibility(View.VISIBLE);
+            findViewById(R.id.tvMyEvents).setVisibility(View.VISIBLE);
+            findViewById(R.id.tvLogin).setVisibility(View.GONE);
+
         } else {
             findViewById(R.id.tvName).setVisibility(View.GONE);
             findViewById(R.id.ivUserPic).setVisibility(View.GONE);
+            findViewById(R.id.tvMyEvents).setVisibility(View.GONE);
+            findViewById(R.id.tvLogin).setVisibility(View.VISIBLE);
 
             final TextView tvLogin = (TextView)findViewById(R.id.tvLogin);
             tvLogin.setText(R.string.login);
@@ -115,7 +114,6 @@ public class HomeActivity extends FragmentActivity {
                     closeDrawer();
                     final Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                     HomeActivity.this.startActivity(intent);
-                    // on login success change login button to profile view
                 }
             });
 
@@ -126,29 +124,28 @@ public class HomeActivity extends FragmentActivity {
 //                }
 //            });
         }
+
+        findViewById(R.id.tvSelectChapter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment fragment = fm.findFragmentByTag(SELECT_CHAPTER_FRAGMENT_TAG);
+                if (fragment != null) {
+                    removeSelectChapterFragment();
+                } else {
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.add(R.id.flChaptersContainer,
+                            SelectChapterFragment.newInstance(),
+                            SELECT_CHAPTER_FRAGMENT_TAG);
+                    ft.commit();
+                }
+            }
+        });
     }
 
     private void closeDrawer() {
         dlDrawerLayout.closeDrawer(llDrawer);
-    }
-
-    private void fetchChapters() {
-        JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                chaptersList.clear();
-                chaptersList.addAll(Chapter.getChapterListFromJsonObject(response));
-                aLvDrawerList.addAll(chaptersList);
-                aLvDrawerList.notifyDataSetChanged();
-                Log.i(TAG,""+chaptersList);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.i(TAG,"Api called failed!");
-            }
-        };
-        obClient.getChapters(responseHandler);
     }
 
     @Override
@@ -190,17 +187,6 @@ public class HomeActivity extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public void setupListeners() {
-        lvDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Chapter ch = aLvDrawerList.getItem(position);
-                lvDrawerList.setItemChecked(position, true);
-                displayEventsInChapter(ch);
-            }
-        });
-    }
-
     private void displayEventsInChapter(Chapter ch) {
         Fragment eventListFragment = EventsListFragment.newInstance(ch.getChapterName(),
                 ch.getChapterId());
@@ -209,21 +195,34 @@ public class HomeActivity extends FragmentActivity {
                 .replace(R.id.fragment_container, eventListFragment)
                 .commit();
         closeDrawer();
-        SharedPreferences sp = OneBrickApplication.getApplicationSharedPreference();
+
+        getActionBar().setTitle(ch.getChapterName());
 
         /*
         Saving the new chapter information if the user changes chapter
          */
-        SharedPreferences.Editor editor;
-        editor = sp.edit();
+        SharedPreferences.Editor editor = OneBrickApplication.getApplicationSharedPreference().edit();
         editor.putInt("MyChapterId", ch.getChapterId());
         editor.putString("MyChapterName", ch.getChapterName());
-        editor.commit();
+        editor.apply();
 
-        /*
-        Changing the action bar title
-         */
-        getActionBar().setTitle(ch.getChapterName());
+    }
+
+    @Override
+    public void onSelectChapter(@NonNull Chapter chapter) {
+        displayEventsInChapter(chapter);
+        removeSelectChapterFragment();
+    }
+
+    private void removeSelectChapterFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag(SELECT_CHAPTER_FRAGMENT_TAG);
+        if (fragment != null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.remove(fragment);
+            ft.commit();
+        }
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -234,6 +233,7 @@ public class HomeActivity extends FragmentActivity {
                 R.string.drawer_close /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
+                removeSelectChapterFragment();
                 // setTitle(getCurrentTitle());
                 // call onPrepareOptionsMenu()
                 supportInvalidateOptionsMenu();
@@ -247,5 +247,9 @@ public class HomeActivity extends FragmentActivity {
         };
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+    }
 }

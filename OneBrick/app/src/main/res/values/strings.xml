@@ -33,6 +33,7 @@
     <!-- Drawer items -->
     <string name="login">Login</string>
     <string name="my_events">My Events</string>
+    <string name="select_chapter">Select Chapter</string>
     <string name="title_activity_launch_acticty">LaunchActicty</string>
     <string name="title_activity_select_chapter">SelectChapterActivity</string>
 

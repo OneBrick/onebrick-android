@@ -40,4 +40,11 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <!-- Drawer Items -->
+    <style name="drawerItem">
+        <item name="android:padding">8dp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:background">@drawable/onebrick_background_selector</item>
+    </style>
+
 </resources>

@@ -44,7 +44,7 @@
             android:layout_below="@id/ivUserPic"
             android:text="@string/name_label"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:textStyle="bold"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
@@ -55,7 +55,7 @@
             android:text="@string/login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/onebrick_background_selector"/>
+            style="@style/drawerItem"/>
 
         <!--<ImageButton-->
             <!--android:id="@+id/ibSetting"-->
@@ -71,15 +71,29 @@
             android:text="@string/my_events"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/onebrick_background_selector"/>
+            style="@style/drawerItem"/>
 
-        <ListView
-            android:id="@+id/lvChapters"
+        <TextView
+            android:id="@+id/tvSelectChapter"
             android:layout_below="@id/tvMyEvents"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:choiceMode="singleChoice"
-            android:dividerHeight="1dp"
-            android:divider="@android:color/transparent"/>
+            android:text="@string/select_chapter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/drawerItem"/>
+
+        <FrameLayout
+            android:id="@+id/flChaptersContainer"
+            android:layout_below="@id/tvSelectChapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--<ListView-->
+            <!--android:id="@+id/lvChapters"-->
+            <!--android:layout_below="@id/tvMyEvents"-->
+            <!--android:layout_width="240dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:choiceMode="singleChoice"-->
+            <!--android:dividerHeight="1dp"-->
+            <!--android:divider="@android:color/transparent"/>-->
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

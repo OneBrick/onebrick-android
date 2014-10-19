@@ -25,11 +25,12 @@ import java.util.ArrayList;
 
 public class SelectChapterActivity extends Activity {
 
+    private static final String TAG = SelectChapterActivity.class.getName().toString();
+
     ListView lvChapters;
     NavigationChapterListAdapter chapterListAdapter;
     ArrayList<Chapter> chapterList;
     OneBrickClient obClient;
-    private static final String TAG = HomeActivity.class.getName().toString();
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
         @Override
@@ -46,6 +47,7 @@ public class SelectChapterActivity extends Activity {
             Log.i(TAG,"Api called failed!");
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
