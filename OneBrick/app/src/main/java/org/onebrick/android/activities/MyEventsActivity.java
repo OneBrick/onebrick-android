@@ -50,5 +50,4 @@ public class MyEventsActivity extends ActionBarActivity {
         intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
         startActivity(Intent.createChooser(intent, "share"));
     }
-
 }

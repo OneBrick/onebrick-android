@@ -21,6 +21,7 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.fragments.HomeEventsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
+
 import org.onebrick.android.models.Chapter;
 
 public class HomeActivity extends FragmentActivity
