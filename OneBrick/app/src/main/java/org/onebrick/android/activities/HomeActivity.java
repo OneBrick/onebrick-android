@@ -11,29 +11,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 import org.onebrick.android.LoginManager;
 import org.onebrick.android.OneBrickApplication;
-import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
-import org.onebrick.android.adapters.NavigationChapterListAdapter;
-import org.onebrick.android.fragments.EventsListFragment;
-import org.onebrick.android.fragments.SelectChapterFragment;
 import org.onebrick.android.fragments.HomeEventsFragment;
+import org.onebrick.android.fragments.SelectChapterFragment;
 import org.onebrick.android.models.Chapter;
-
-import java.util.ArrayList;
 
 public class HomeActivity extends FragmentActivity
         implements SelectChapterFragment.OnSelectChapterFragmentListener {
@@ -245,12 +233,13 @@ public class HomeActivity extends FragmentActivity
     }
 
     // Event title, date, location. onebrick link
-    public void onShareThis(View view){
-        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
+    public void onShareThis(View view) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         // Add data to the intent, the receiving app will decide what to do with it.
         intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
         intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
         startActivity(Intent.createChooser(intent, "share"));
+    }
 }
