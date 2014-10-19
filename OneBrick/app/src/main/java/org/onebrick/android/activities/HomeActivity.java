@@ -232,9 +232,8 @@ public class HomeActivity extends FragmentActivity
         };
     }
 
-    // Event title, date, location. onebrick link
-    public void onShareThis(View view) {
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+    public void onShareThis(View view){
+        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         // Add data to the intent, the receiving app will decide what to do with it.

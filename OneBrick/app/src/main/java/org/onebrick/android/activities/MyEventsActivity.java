@@ -52,4 +52,14 @@ public class MyEventsActivity extends ActionBarActivity {
         intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
         startActivity(Intent.createChooser(intent, "share"));
     }
+
+    public void onShareThis(){
+        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        // Add data to the intent, the receiving app will decide what to do with it.
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
+        intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
+        startActivity(Intent.createChooser(intent, "share"));
+    }
 }
