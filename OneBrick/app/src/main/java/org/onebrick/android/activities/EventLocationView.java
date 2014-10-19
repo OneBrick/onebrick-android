@@ -61,8 +61,7 @@ public class EventLocationView extends FragmentActivity implements
         if (mapFragment != null) {
             map = mapFragment.getMap();
             if (map != null) {
-                Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
-                //map.setMyLocationEnabled(true);
+                //Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
                 MarkerOptions marker = new MarkerOptions()
                         .position(new LatLng(lat, lng))
                         .title("Event Location");

@@ -28,8 +28,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -40,11 +38,9 @@ import org.onebrick.android.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.OneBrickGeoCoder;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
-
-import java.io.IOException;
-import java.util.List;
 
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -155,7 +151,7 @@ public class EventInfoActivity extends FragmentActivity implements
     double lat;
     double lng;
     OneBrickClient obclient;
-    BitmapDescriptor customMarker;
+    Geocoder obGeoCoder;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -170,26 +166,20 @@ public class EventInfoActivity extends FragmentActivity implements
                 +updatedEvent.getEventEndDate());
         tvEventBrief.setText(updatedEvent.getEventDescription());
         tvEventLocation.setText(updatedEvent.getEventAddress());
-        List<Address> eventAddress = null;
-        try {
-            Log.i(TAG,"Event address is "+updatedEvent.getEventAddress());
-            Log.i(TAG,"Is Geocode present "+geocoder.isPresent());
-            eventAddress  = geocoder.getFromLocationName(updatedEvent.getEventAddress(),1);
-            //eventAddress  = geocoder.getFromLocationName("1600 Amphitheatre Parkway, Mountain View, CA",1);
+        Address eventAddress;
 
-            Log.i(TAG,"Geocoded Event address is "+eventAddress);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        lat = eventAddress.get(0).getLatitude();
-        lng = eventAddress.get(0).getLongitude();
+        Log.i(TAG,"Event address is "+updatedEvent.getEventAddress());
+        Log.i(TAG,"Is Geocode present "+obGeoCoder.isPresent());
+        eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
+        Log.i(TAG,"Geocoded Event address is "+eventAddress);
+        lat = eventAddress.getLatitude();
+        lng = eventAddress.getLongitude();
 
         // Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
         // create marker
 
         MarkerOptions marker = new MarkerOptions()
                 .position(new LatLng(lat, lng))
-                .icon(customMarker)
                 .title("Event Location");
         map.addMarker(marker);
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
@@ -200,8 +190,6 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
-
-        customMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_custom_marker);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
@@ -214,6 +202,7 @@ public class EventInfoActivity extends FragmentActivity implements
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();
+        obGeoCoder = OneBrickGeoCoder.getInstance();
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
 
@@ -233,10 +222,10 @@ public class EventInfoActivity extends FragmentActivity implements
             if (map != null) {
 
             } else {
-               // Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
+               Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
             }
         } else {
-           // Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
+           Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
         }
         setupListeners();
     }

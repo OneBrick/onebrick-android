@@ -36,4 +36,7 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
         return sharedPref;
     }
 
+    public static Context getContext() {
+        return OneBrickApplication.context;
+    }
 }
