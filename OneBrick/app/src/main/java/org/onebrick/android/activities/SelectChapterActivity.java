@@ -49,6 +49,7 @@ public class SelectChapterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
+        getActionBar().setTitle("Select your chapter");
         lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
         chapterList = new ArrayList<Chapter>();
         obClient = OneBrickApplication.getRestClient();
