@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.onebrick.android.LoginManager;
@@ -158,15 +157,13 @@ public class LoginActivity extends Activity{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //Toast.makeText(getApplicationContext(), "1 " + response.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("login failure1", responseString);
                 Log.e("login failure1", throwable.toString());
-                Toast.makeText(getApplicationContext(), "Couldn't login", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Couldn't login", Toast.LENGTH_LONG).show();
             }
 
             @Override

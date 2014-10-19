@@ -52,8 +52,9 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
-        //String apiUri = getApiUrl("/user/login.json");
-        String apiUri = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
+        String apiUri = getApiUrl("/user/login.json");
+        apiUri = apiUri + "?username=" + username + "&password=" + password;
+//        String apiUri = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
 //        RequestParams params = new RequestParams();
 //        params.put("username", username);
 //        params.put("password", password);
@@ -77,17 +78,29 @@ public class OneBrickClient extends OAuthBaseClient {
     /*
     This function is called to post rsvp request to an event
      */
-    public void postRsvpToEvent(int eventId, long userId, AsyncHttpResponseHandler handler) {
+    public void postRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
         String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);
         client.post(apiUri, params, handler);
     }
 
-    public void postUnRsvpToEvent(int eventId, long userId, AsyncHttpResponseHandler handler) {
+    public void postUnRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
         String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);
         client.post(apiUri, params, handler);
+    }
+
+    public void getMyEvents(long userId, boolean isPastEvent, AsyncHttpResponseHandler handler){
+        String apiUri = getApiUrl("/event.json");
+        RequestParams params = new RequestParams();
+        params.put("uid", userId);
+        if (isPastEvent){
+            params.put("includePastEvents", 1);
+        }else{
+            params.put("includePastEvents", 0);
+        }
+        client.get(apiUri, params, handler);
     }
 }
