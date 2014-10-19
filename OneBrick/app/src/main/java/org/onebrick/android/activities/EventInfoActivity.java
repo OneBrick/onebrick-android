@@ -28,6 +28,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -153,6 +155,7 @@ public class EventInfoActivity extends FragmentActivity implements
     double lat;
     double lng;
     OneBrickClient obclient;
+    BitmapDescriptor customMarker;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -183,8 +186,10 @@ public class EventInfoActivity extends FragmentActivity implements
 
         // Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
         // create marker
+
         MarkerOptions marker = new MarkerOptions()
                 .position(new LatLng(lat, lng))
+                .icon(customMarker)
                 .title("Event Location");
         map.addMarker(marker);
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
@@ -195,6 +200,8 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
+
+        customMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_custom_marker);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
@@ -283,7 +290,7 @@ public class EventInfoActivity extends FragmentActivity implements
                     obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
 
                 } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
-                    obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(),unRsvpResponseHandler);
+                    obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
 
                 } else {
                 }

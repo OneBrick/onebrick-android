@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -38,6 +39,7 @@ public class EventLocationView extends FragmentActivity implements
     double lng;
     String address;
     TextView tvEventAddress;
+    BitmapDescriptor customMarker;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -48,6 +50,7 @@ public class EventLocationView extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_location_view);
+        //customMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_custom_green_marker48);
         tvEventAddress = (TextView) findViewById(R.id.tvEventLocation);
         Intent eventMap = getIntent();
         lat = eventMap.getDoubleExtra("Latitude", 0.0);
