@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -34,20 +35,22 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-import org.onebrick.android.helpers.DateTimeFormatter;
-import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.DateTimeFormatter;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
+
+import java.util.Calendar;
 
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
-
+    Event updatedEvent;
     String eventId;
     private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient = OneBrickApplication.getRestClient();
@@ -56,7 +59,7 @@ public class EventInfoActivity extends FragmentActivity implements
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
             Log.i("TAG","Success"+response.toString());
-            Event updatedEvent = Event.getUpdatedEvent(response);
+            updatedEvent = Event.getUpdatedEvent(response);
             updateViews(updatedEvent);
         }
 
@@ -140,6 +143,7 @@ public class EventInfoActivity extends FragmentActivity implements
     Button btnRsvp;
     ImageView ivRsvpInfo;
     TextView tvRsvpInfo;
+    ImageView ivAdd2Calendar;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -201,6 +205,7 @@ public class EventInfoActivity extends FragmentActivity implements
         btnRsvp = (Button) findViewById(R.id.btnRsvp);
         tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
         ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
+        ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();
@@ -264,7 +269,13 @@ public class EventInfoActivity extends FragmentActivity implements
                 startActivity(eventLocationMap);
             }
         });
-
+        /*
+        Setting up onClick listener for RSVP button. When this button is clicked
+        the current user is checked if he is already logged in or not.
+        If the user is not logged in he is prompted to login via login activity.
+        If the user is already loged in the async rsvp requet is send and on success the button
+        is changed to un-rsvp
+         */
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,6 +299,27 @@ public class EventInfoActivity extends FragmentActivity implements
                 }
             }
 
+            }
+        });
+        /*
+        This function is called to add the even information to the calendar
+         */
+        ivAdd2Calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar beginTime = Calendar.getInstance();
+                beginTime.setTime(obDtf.getDateFromString(updatedEvent.getEventStartDate()));
+                Calendar endTime = Calendar.getInstance();
+                beginTime.setTime(obDtf.getDateFromString(updatedEvent.getEventEndDate()));
+                Intent intent = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                        .putExtra(CalendarContract.Events.TITLE, updatedEvent.getTitle())
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, updatedEvent.getEventAddress())
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                startActivity(intent);
+                ivAdd2Calendar.setImageResource(R.drawable.ic_in_calendar);
             }
         });
     }
