@@ -43,6 +43,7 @@ public class HomeActivity extends FragmentActivity
         Intent i = getIntent();
         int chapterId = i.getIntExtra("ChapterId", -1);
         String chapterName = i.getStringExtra("ChapterName");
+        getActionBar().setTitle(chapterName);
         Fragment eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, eventListFragment).commit();
