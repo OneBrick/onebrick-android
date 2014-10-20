@@ -1,7 +1,6 @@
 package org.onebrick.android.fragments;
 
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
 
@@ -26,6 +26,7 @@ import org.onebrick.android.models.User;
 public class MyUpcomingEventsFragment extends EventsListFragment {
 
     int myChapterId;
+    User user;
     public MyUpcomingEventsFragment() {
         // Required empty public constructor
     }
@@ -37,6 +38,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
         myChapterId = OneBrickApplication
                 .getApplicationSharedPreference()
                 .getInt("MyChapterId", -1);
+        user = LoginManager.getInstance(getActivity()).getCurrentUser();
     }
 
     @Override
@@ -44,12 +46,19 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = super.onCreateView( inflater, container, savedInstanceState);
-        User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
+        //User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
         if (user != null){
             setupEventsListeners();
             populateUpcomingEvents(user.getUId());
         }
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        Toast.makeText(getActivity(),"Activity Resumed",Toast.LENGTH_LONG).show();
+        super.onResume();
+        populateUpcomingEvents(user.getUId());
     }
 
     private void populateUpcomingEvents(long userId) {

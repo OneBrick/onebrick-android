@@ -89,6 +89,8 @@ public class EventInfoActivity extends FragmentActivity implements
             ivRsvpInfo.setImageDrawable(
                     getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
             tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+            updatedEvent.rsvp = true;
+            Event.updateEvent(updatedEvent);
 
         }
 
@@ -118,6 +120,8 @@ public class EventInfoActivity extends FragmentActivity implements
             ivRsvpInfo.setImageDrawable(
                     getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
             tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+            updatedEvent.rsvp = false;
+            Event.updateEvent(updatedEvent);
 
         }
 
@@ -190,6 +194,27 @@ public class EventInfoActivity extends FragmentActivity implements
         map.addMarker(marker);
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
         map.animateCamera(cu);
+        if(loginMgr.isLoggedIn()) {
+            if (updatedEvent.rsvp == true) {
+                Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                btnRsvp.setText("UnRsvp");
+                ivRsvpInfo.setImageDrawable(
+                        getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+                tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+                ;
+            } else {
+
+                Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                btnRsvp.setText("Rsvp");
+                ivRsvpInfo.setImageDrawable(
+                        getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+                tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+            }
+        }
     }
 
     @Override
@@ -285,14 +310,33 @@ public class EventInfoActivity extends FragmentActivity implements
                  */
                 Intent loingActivity = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(loingActivity);
+                if(updatedEvent.rsvp == true) {
+                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                    btnRsvp.setText("UnRsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
+                } else {
+
+                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                    btnRsvp.setText("Rsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                }
             } else {
                 user = loginMgr.getCurrentUser();
-                Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
                 if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
-
+                    Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
                     obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
 
                 } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
+                    Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
                     obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
 
                 } else {

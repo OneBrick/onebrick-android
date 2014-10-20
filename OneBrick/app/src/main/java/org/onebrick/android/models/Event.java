@@ -75,6 +75,9 @@ public class Event extends Model {
     @Column(name="Chapter")
     public Chapter chapter;
 
+    @Column(name="Rsvp")
+    public boolean rsvp;
+
 
     public String toString() {
        return ""+title;
@@ -115,6 +118,7 @@ public class Event extends Model {
         try{
             event.title = jsonObject.optString("title");
             event.chapter = ch;
+            event.rsvp = false;
             event.eventId = jsonObject.optLong("nid");
             event.locationName = jsonObject.optString("esn_title");
             event.eventStartDate = jsonObject.optString("field_event_date_value");
@@ -205,6 +209,10 @@ public class Event extends Model {
         e.coordinatorEmail = coordEmail;
         e.save();
         return e;
+    }
+
+    public static void updateEvent(Event e) {
+        e.save();
     }
 
 
