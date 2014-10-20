@@ -51,25 +51,16 @@
                     android:layout_alignParentLeft="true"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:src="@drawable/ic_onebrick_calendar_icon"/>
+                    android:src="@drawable/ic_add2calendar"/>
                 <TextView
                     android:id="@+id/tvEventTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
                     android:layout_toRightOf="@+id/ivCalendarIcon"
                     android:layout_centerVertical="true"
                     android:textColor="@color/charcoal"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
-                <ImageView
-                    android:id="@+id/ivAdd2Calendar"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:scaleType="fitCenter"
-                    android:layout_toRightOf="@+id/tvEventTime"
-                    android:adjustViewBounds="true"
-                    android:paddingTop="1dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_add_calendar"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlRsvpInfo"
@@ -90,6 +81,7 @@
                     android:gravity="center_vertical"
                     android:scaleType="fitCenter"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/tvRsvpInfo"
                     android:src="@drawable/ic_rsvp_info_75dip"/>
                 <TextView
@@ -97,6 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="3dp"
+                    android:paddingLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_centerHorizontal="true"

@@ -34,6 +34,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
+import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
@@ -152,6 +153,7 @@ public class EventInfoActivity extends FragmentActivity implements
     double lng;
     OneBrickClient obclient;
     Geocoder obGeoCoder;
+    DateTimeFormatter obDtf;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -161,9 +163,9 @@ public class EventInfoActivity extends FragmentActivity implements
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
                 tvEventName.setText(updatedEvent.getTitle());
-        tvEventDateTime.setText(updatedEvent.getEventStartDate()
-                +" to "
-                +updatedEvent.getEventEndDate());
+        tvEventDateTime.setText(obDtf.formatDateTime(updatedEvent.getEventStartDate())
+                +" - "
+                +obDtf.formatDateTime(updatedEvent.getEventEndDate()));
         tvEventBrief.setText(updatedEvent.getEventDescription());
         tvEventLocation.setText(updatedEvent.getEventAddress());
         Address eventAddress;
@@ -210,6 +212,7 @@ public class EventInfoActivity extends FragmentActivity implements
         getActionBar().setTitle("Event Details");
         // Using GeoCoder so not using he api call
         obClient.getEventInfo(eventId, responseHandler);
+        obDtf = DateTimeFormatter.getInstance();
         geocoder = new Geocoder(this);
         /*
         Loading map
