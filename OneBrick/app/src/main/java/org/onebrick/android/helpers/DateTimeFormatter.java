@@ -34,4 +34,16 @@ public class DateTimeFormatter {
         return formattedDateTime;
     }
 
+    public Date getDateFromString(String dateTime) {
+        String obDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sf = new SimpleDateFormat(obDateTimeFormat, Locale.ENGLISH);
+        Date eDateTime = null;
+        try {
+            eDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return eDateTime;
+    }
+
 }
