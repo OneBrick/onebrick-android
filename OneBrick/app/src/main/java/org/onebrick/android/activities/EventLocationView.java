@@ -50,7 +50,7 @@ public class EventLocationView extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_location_view);
-        //customMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_custom_green_marker48);
+        getActionBar().setTitle("Event Location");
         tvEventAddress = (TextView) findViewById(R.id.tvEventLocation);
         Intent eventMap = getIntent();
         lat = eventMap.getDoubleExtra("Latitude", 0.0);

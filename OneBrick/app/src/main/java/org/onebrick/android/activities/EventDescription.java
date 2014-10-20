@@ -21,6 +21,7 @@ public class EventDescription extends Activity {
         Intent eventInfo = getIntent();
         details = eventInfo.getStringExtra("Details");
         tvEventDetails.setText(Html.fromHtml(details));
+        getActionBar().setTitle("Event Description");
     }
 
 

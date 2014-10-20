@@ -207,7 +207,7 @@ public class EventInfoActivity extends FragmentActivity implements
         eventId = eventInfo.getStringExtra("EventId");
 
         // Setting the action bar title
-        getActionBar().setTitle("Event Info");
+        getActionBar().setTitle("Event Details");
         // Using GeoCoder so not using he api call
         obClient.getEventInfo(eventId, responseHandler);
         geocoder = new Geocoder(this);
