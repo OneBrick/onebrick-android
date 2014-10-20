@@ -25,7 +25,7 @@ import org.onebrick.android.models.User;
  */
 public class MyUpcomingEventsFragment extends EventsListFragment {
 
-
+    int myChapterId;
     public MyUpcomingEventsFragment() {
         // Required empty public constructor
     }
@@ -34,6 +34,9 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = OneBrickApplication.getRestClient();
+        myChapterId = OneBrickApplication
+                .getApplicationSharedPreference()
+                .getInt("MyChapterId", -1);
     }
 
     @Override
@@ -50,6 +53,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
     }
 
     private void populateUpcomingEvents(long userId) {
+        final int chapterId = myChapterId;
         client.getMyEvents(userId, false, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -69,7 +73,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 adapter.clear();
                 arrayOfEvents.clear();
                 if (response != null){
-                    arrayOfEvents = Event.fromJSONArray(response);
+                    arrayOfEvents = Event.fromJSONArray(response, chapterId);
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
                 }

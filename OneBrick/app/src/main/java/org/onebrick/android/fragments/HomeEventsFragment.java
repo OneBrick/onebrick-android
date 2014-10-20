@@ -67,7 +67,7 @@ public class HomeEventsFragment extends EventsListFragment {
     }
 
     private void populateHomeEventsList(int chapterId) {
-
+        final int cid = chapterId;
         client.getEventsList(chapterId, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -88,7 +88,7 @@ public class HomeEventsFragment extends EventsListFragment {
                 adapter.clear();
                 arrayOfEvents.clear();
                 if (response != null){
-                    arrayOfEvents = Event.fromJSONArray(response);
+                    arrayOfEvents = Event.fromJSONArray(response, cid);
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
                 }

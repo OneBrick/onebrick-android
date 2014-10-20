@@ -25,7 +25,7 @@ import org.onebrick.android.models.User;
  */
 public class MyPastEventsFragment extends EventsListFragment {
 
-
+    int myChapterId;
     public MyPastEventsFragment() {
         // Required empty public constructor
     }
@@ -34,6 +34,9 @@ public class MyPastEventsFragment extends EventsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = OneBrickApplication.getRestClient();
+        myChapterId = OneBrickApplication
+                .getApplicationSharedPreference()
+                .getInt("MyChapterId", -1);
     }
 
     @Override
@@ -50,6 +53,7 @@ public class MyPastEventsFragment extends EventsListFragment {
     }
 
     private void populatePastEvents(long userId) {
+        final int chapterId = myChapterId;
         client.getMyEvents(userId, true, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -69,7 +73,7 @@ public class MyPastEventsFragment extends EventsListFragment {
                 adapter.clear();
                 arrayOfEvents.clear();
                 if (response != null) {
-                    arrayOfEvents = Event.fromJSONArray(response);
+                    arrayOfEvents = Event.fromJSONArray(response,chapterId);
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
                 }

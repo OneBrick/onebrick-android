@@ -72,6 +72,9 @@ public class Event extends Model {
     @Column(name="ManagerEmail")
     public String managerEmail;
 
+    @Column(name="Chapter")
+    public Chapter chapter;
+
 
     public String toString() {
        return ""+title;
@@ -107,10 +110,11 @@ public class Event extends Model {
         return this.description;
     }
 
-    public static Event fromJSON(JSONObject jsonObject){
+    public static Event fromJSON(JSONObject jsonObject, Chapter ch){
         Event event = new Event();
         try{
             event.title = jsonObject.optString("title");
+            event.chapter = ch;
             event.eventId = jsonObject.optLong("nid");
             event.locationName = jsonObject.optString("esn_title");
             event.eventStartDate = jsonObject.optString("field_event_date_value");
@@ -143,7 +147,7 @@ public class Event extends Model {
     }
 
     // Finds existing user based on remoteId or creates new user and returns
-    public static Event findOrCreateFromJson(JSONObject jsonObj) {
+    public static Event findOrCreateFromJson(JSONObject jsonObj, Chapter ch) {
         int eventId = jsonObj.optInt("nid");
         Event existingEvent =
                 new Select().from(Event.class).where("EventId = ?", eventId).executeSingle();
@@ -153,7 +157,7 @@ public class Event extends Model {
             return existingEvent;
         } else {
             // create and return new
-            Event event = fromJSON(jsonObj);
+            Event event = fromJSON(jsonObj,ch);
             return event;
         }
     }
@@ -208,15 +212,18 @@ public class Event extends Model {
 
 
 
-    public static ArrayList<Event> fromJSONArray(JSONArray jsonArray) {
+    public static ArrayList<Event> fromJSONArray(JSONArray jsonArray, int ChapterId) {
         ArrayList<Event> events = new ArrayList<Event>();
-
+        Chapter ch = Chapter.getChapterFromId(ChapterId);
+        if(ch == null) {
+            Log.e(TAG,"ERROR Chapter cannot be null at this point");
+        }
         for (int i=0; i<jsonArray.length() ; i++){
             JSONObject eventJson = null;
             try{
                 // individual event
                 eventJson = jsonArray.getJSONObject(i);
-                Event event = Event.findOrCreateFromJson(eventJson);
+                Event event = Event.findOrCreateFromJson(eventJson, ch);
                 if (event != null){
                     events.add(event);
                 }

@@ -109,4 +109,10 @@ public class Chapter extends Model {
         }
     }
 
+    public static Chapter getChapterFromId(int id) {
+        return new Select().from(Chapter.class)
+                .where("ChapterId = ?", id)
+                .executeSingle();
+    }
+
 }
