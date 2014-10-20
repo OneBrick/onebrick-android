@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import org.onebrick.android.LoginManager;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.fragments.HomeEventsFragment;

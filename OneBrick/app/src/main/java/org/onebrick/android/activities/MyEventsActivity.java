@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 import org.onebrick.android.R;
-import org.onebrick.android.SupportFragmentTabListener;
+import org.onebrick.android.listeners.SupportFragmentTabListener;
 import org.onebrick.android.fragments.MyPastEventsFragment;
 import org.onebrick.android.fragments.MyUpcomingEventsFragment;
 
