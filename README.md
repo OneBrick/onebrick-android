@@ -39,8 +39,8 @@ User Stories
 ### Share:
 * Event, RSVP
 
-User Stories - Implemented
-===========================
+User Stories - Implemented End of Sprint 2
+============================================
 ### Login
 * [x] User can login to the app using username and password.
 
