@@ -28,7 +28,7 @@ public class SplashScreenActivity extends Activity {
                     Intent i = new Intent(SplashScreenActivity.this, SelectChapterActivity.class);
                     startActivity(i);
                 }
-            }, 2500);
+            }, 9500);
         } else {
             //Toast.makeText(this,"My Chapter is "+myChapterName,Toast.LENGTH_LONG).show();
             new Handler().postDelayed(new Runnable() {
