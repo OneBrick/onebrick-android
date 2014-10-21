@@ -36,15 +36,15 @@
             <RelativeLayout
                 android:id="@+id/rlDateInfo"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="55dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/item_seperation_border">
                 <ImageView
                     android:id="@+id/ivCalendarIcon"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:layout_centerVertical="true"
@@ -62,6 +62,43 @@
                     android:textColor="@color/charcoal"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal"
+                android:background="@drawable/item_seperation_border">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_fb_share"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_twitter_share"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_gen_share"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_reminder"/>
+                </LinearLayout>
             <RelativeLayout
                 android:id="@+id/rlRsvpInfo"
                 android:layout_width="match_parent"
