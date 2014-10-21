@@ -15,6 +15,7 @@ import org.onebrick.android.R;
  * Created by AshwinGV on 10/21/14.
  */
 public class DisplayNotificationReceiver extends BroadcastReceiver {
+    final static String GROUP_RSVP_REMAINDERS = "group_key_emails";
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle args = intent.getExtras();
@@ -32,8 +33,9 @@ public class DisplayNotificationReceiver extends BroadcastReceiver {
                 .setContentTitle(""+eventName)
                 .setContentText(""+message)
                 .setContentIntent(pIntent)
+                .setGroup(GROUP_RSVP_REMAINDERS)
                 .setAutoCancel(true)
                 .build();
-        notificationManager.notify(0, mBuilder);
+        notificationManager.notify((int)(System.currentTimeMillis() % Integer.MAX_VALUE), mBuilder);
     }
 }

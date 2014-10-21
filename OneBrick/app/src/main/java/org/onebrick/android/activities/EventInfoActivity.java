@@ -412,8 +412,15 @@ public class EventInfoActivity extends FragmentActivity implements
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         // Set the alarm for a particular time.
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+        PendingIntent addRemainder = PendingIntent.getBroadcast(this
+                , this.getUniqueRandomRequestCode()
+                , intentAlarm,PendingIntent.FLAG_ONE_SHOT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
         Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
+    }
+
+    public int getUniqueRandomRequestCode() {
+        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
     }
 
 
