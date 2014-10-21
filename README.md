@@ -38,3 +38,11 @@ User Stories
 
 ### Share:
 * Event, RSVP
+
+
+##App Demo : End of Sprint 2
+### App Walkthrough Demo
+![Video Walkthrough - App Demo](OneBrickSprint2.gif)
+
+### App Walkthrough -  Share Event 
+![Video Walkthrough - Social Share](OneBrickSprint2_ShareIntents.gif)
