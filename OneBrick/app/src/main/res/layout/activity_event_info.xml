@@ -71,6 +71,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/item_seperation_border">
                 <ImageView
+                    android:id="@+id/ivEventInfoFbShare"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -78,6 +79,7 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_fb_share"/>
                 <ImageView
+                    android:id="@+id/ivEventInfoTwitterShare"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -85,6 +87,7 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_twitter_share"/>
                 <ImageView
+                    android:id="@+id/ivEventInfoGenShare"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -92,6 +95,7 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_gen_share"/>
                 <ImageView
+                    android:id="@+id/ivEventInfoAddReminder"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"

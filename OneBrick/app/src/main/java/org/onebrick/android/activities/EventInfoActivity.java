@@ -1,7 +1,10 @@
 package org.onebrick.android.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.drawable.Drawable;
@@ -45,6 +48,7 @@ import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -54,6 +58,10 @@ public class EventInfoActivity extends FragmentActivity implements
     String eventId;
     private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient = OneBrickApplication.getRestClient();
+
+    /*
+    This is the reponse handler to handle the callbacks from Event info rest call
+     */
     JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler(){
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -77,7 +85,9 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
-
+    /*
+    This is the response handler to handle the callback from RSVP rest request
+     */
     JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler(){
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -108,6 +118,9 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
+    /*
+    This is the response handle to handle the callbacks from unRSVP rest request
+     */
     JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler(){
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -148,6 +161,7 @@ public class EventInfoActivity extends FragmentActivity implements
     ImageView ivRsvpInfo;
     TextView tvRsvpInfo;
     ImageView ivAdd2Calendar;
+    ImageView ivAddReminder;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -231,6 +245,7 @@ public class EventInfoActivity extends FragmentActivity implements
         tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
         ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
         ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
+        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();
@@ -304,44 +319,45 @@ public class EventInfoActivity extends FragmentActivity implements
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if(!loginMgr.isLoggedIn()) {
-                /*
-                If the user is not logged in the prompting the use to login
-                 */
-                Intent loingActivity = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(loingActivity);
-                if(updatedEvent.rsvp == true) {
-                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
-                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                    btnRsvp.setText("UnRsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
+
+                if(!loginMgr.isLoggedIn()) {
+                    /*
+                    If the user is not logged in the prompting the use to login
+                     */
+                    Intent loingActivity = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(loingActivity);
+                    if(updatedEvent.rsvp == true) {
+                        Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                        //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                        btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                        btnRsvp.setText("UnRsvp");
+                        ivRsvpInfo.setImageDrawable(
+                                getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+                        tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
+                    } else {
+
+                        Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                        //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
+                        btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                        btnRsvp.setText("Rsvp");
+                        ivRsvpInfo.setImageDrawable(
+                                getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+                        tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                    }
                 } else {
+                    user = loginMgr.getCurrentUser();
+                    //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
+                    if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
+                        Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
+                        obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
 
-                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
-                    //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                    btnRsvp.setText("Rsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
-                }
-            } else {
-                user = loginMgr.getCurrentUser();
-                //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
-                if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
-                    Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
-                    obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
+                    } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
+                        Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
+                        obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
 
-                } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
-                    Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
-                    obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
-
-                } else {
-                }
-            }
+                    } else {
+                    }
+                 }
 
             }
         });
@@ -366,6 +382,38 @@ public class EventInfoActivity extends FragmentActivity implements
                 ivAdd2Calendar.setImageResource(R.drawable.ic_in_calendar);
             }
         });
+
+        /*
+        This method is called when user decides to add reminders about event.
+         */
+        ivAddReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(),"Adding notification",Toast.LENGTH_LONG).show();
+                addNotification();
+
+            }
+        });
+    }
+
+    private void addNotification() {
+        Long time = new GregorianCalendar().getTimeInMillis()+30000;
+
+        // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
+        // specified AlarmReceiver in the Intent. The onReceive() method of this class will execute when the broadcast from your alarm is received.
+        Intent intentAlarm = new Intent(this, DisplayNotificationReceiver.class);
+        Bundle b = new Bundle();
+        b.putString("EventName",updatedEvent.getTitle());
+        b.putString("DisplayMessage","Have you RSVP-ed yet ?");
+        intentAlarm.putExtra("EventName",updatedEvent.getTitle());
+        intentAlarm.putExtra("DisplayMessage","Have you RSVP-ed yet! ?");
+
+        // Get the Alarm Service.
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Set the alarm for a particular time.
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+        Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
     }
 
 
