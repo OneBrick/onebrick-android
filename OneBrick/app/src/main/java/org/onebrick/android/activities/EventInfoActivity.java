@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
+import org.onebrick.android.fragments.ReminderAddDialog;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
@@ -417,6 +419,9 @@ public class EventInfoActivity extends FragmentActivity implements
                 , intentAlarm,PendingIntent.FLAG_ONE_SHOT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
         Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
+        FragmentManager fm = getSupportFragmentManager();
+        ReminderAddDialog rad = ReminderAddDialog.newInstance("Add Reminder ?");
+        rad.show(fm, "Add Reminder ?");
     }
 
     public int getUniqueRandomRequestCode() {
