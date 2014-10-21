@@ -37,4 +37,16 @@
     <string name="title_activity_launch_acticty">LaunchActicty</string>
     <string name="title_activity_select_chapter">SelectChapterActivity</string>
 
+    <!-- Spinner items for remainder -->
+
+    <string-array name="timeSpan">
+        <item>Tomorrow</item>
+        <item>2 Days from now</item>
+        <item>A week from now</item>
+        <item>Day before the event</item>
+        <item>2 Days before the event</item>
+        <item>A week before the event</item>
+    </string-array>
+
+
 </resources>
