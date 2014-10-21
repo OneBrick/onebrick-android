@@ -92,6 +92,7 @@
             android:label="@string/title_activity_select_chapter"
             android:noHistory="true">
         </activity>
+        <receiver android:name=".activities.DisplayNotificationReceiver"/>
     </application>
 
 </manifest>
