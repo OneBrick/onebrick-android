@@ -52,9 +52,9 @@ public class EventsListFragment extends Fragment {
         lvEventList = (ListView) view.findViewById(R.id.lvEvents);
         lvEventList.setAdapter(adapter);
 
-        shareIv = (ImageView) view.findViewById(R.id.shareIv);
-        share_fb = (ImageView) view.findViewById(R.id.share_fb);
-        share_tw = (ImageView) view.findViewById(R.id.share_tw);
+        shareIv = (ImageView) view.findViewById(R.id.ibShare);
+        share_fb = (ImageView) view.findViewById(R.id.ibShareFacebook);
+        share_tw = (ImageView) view.findViewById(R.id.ibShareTwitter);
 
         return view;
     }

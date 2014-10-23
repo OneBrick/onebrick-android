@@ -7,4 +7,12 @@
     <color name="charcoal">#36454F</color>
     <color name="light_grey">#d8d8d8</color>
 
+    <color name="dark_tranparent_black">#80000000</color> <!-- 50% -->
+    <color name="deep_tranparent_black">#40000000</color> <!-- 25% -->
+    <color name="faint_tranparent_black">#20000000</color> <!-- 12% -->
+
+    <color name="dark_tranparent_white">#80FFFFFF</color> <!-- 50% -->
+    <color name="deep_tranparent_white">#40FFFFFF</color> <!-- 25% -->
+    <color name="faint_tranparent_white">#20FFFFFF</color> <!-- 12% -->
+
 </resources>

@@ -48,8 +48,8 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
             viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
             viewHolder.tvDateDisplay = (TextView) convertView.findViewById(R.id.tvDateDisplay);
             viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvEventAddress);
-            viewHolder.fbShare = (ImageView) convertView.findViewById(R.id.share_fb);
-            viewHolder.twitterShare = (ImageView) convertView.findViewById(R.id.share_tw);
+            viewHolder.fbShare = (ImageView) convertView.findViewById(R.id.ibShareFacebook);
+            viewHolder.twitterShare = (ImageView) convertView.findViewById(R.id.ibShareTwitter);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();

@@ -17,7 +17,6 @@
         android:layout_marginRight="6dp"
         android:src="@drawable/ic_date_background" />
         -->
-
     <TextView
         android:id="@+id/tvDateDisplay"
         android:layout_width="50dp"
@@ -70,32 +69,47 @@
         android:layout_alignRight="@+id/tvEventTitle"
         android:layout_alignEnd="@+id/tvEventTitle" />
 
-    <ImageView
-        android:id="@+id/share_fb"
-        android:layout_width="@dimen/share_images_size"
-        android:layout_height="@dimen/share_images_size"
+    <Button
+        android:id="@+id/btnRsvp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/tvDateDisplay"
-        android:layout_marginRight="2dp"
-        android:onClick="onShareThis"
-        android:src="@drawable/ic_facebook" />
+        android:text="@string/rsvp"
+        android:background="@drawable/white_button_selector"/>
 
     <ImageView
-        android:id="@+id/share_tw"
+        android:id="@+id/ibShareFacebook"
+        android:scaleType="center"
         android:layout_width="@dimen/share_images_size"
         android:layout_height="@dimen/share_images_size"
         android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/share_fb"
+        android:layout_toRightOf="@id/btnRsvp"
         android:layout_marginRight="2dp"
         android:onClick="onShareThis"
-        android:src="@drawable/ic_twitter" />
+        android:src="@drawable/ic_facebook"
+        android:background="@drawable/social_button_selector"/>
 
     <ImageView
-        android:id="@+id/shareIv"
+        android:id="@+id/ibShareTwitter"
+        android:scaleType="center"
         android:layout_width="@dimen/share_images_size"
         android:layout_height="@dimen/share_images_size"
         android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/share_tw"
+        android:layout_toRightOf="@id/ibShareFacebook"
+        android:layout_marginRight="2dp"
         android:onClick="onShareThis"
-        android:src="@drawable/ic_action_share" />
+        android:src="@drawable/ic_twitter"
+        android:background="@drawable/social_button_selector"/>
+
+    <ImageView
+        android:id="@+id/ibShare"
+        android:scaleType="center"
+        android:layout_width="@dimen/share_images_size"
+        android:layout_height="@dimen/share_images_size"
+        android:layout_below="@+id/tvEventAddress"
+        android:layout_toRightOf="@id/ibShareTwitter"
+        android:onClick="onShareThis"
+        android:src="@drawable/ic_share"
+        android:background="@drawable/social_button_selector"/>
 </RelativeLayout>
