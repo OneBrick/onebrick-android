@@ -4,18 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.FontsHelper;
 
 public class SplashScreenActivity extends Activity {
     ImageView ivFooter;
     ImageLoader imgLoader =  ImageLoader.getInstance();
+    TextView tvQuote;
+    TextView tvWelcomeNote;
     String imageUri = "assets://volunteer_hands.png";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +26,21 @@ public class SplashScreenActivity extends Activity {
         Since this being splash screen requesting window with no title
          */
         // Remove title bar
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
-        this.getWindow().setFlags(
+        /*this.getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_splash_screen);
 
 
         ivFooter = (ImageView) findViewById(R.id.ivSplashScreenFooter);
+        tvQuote = (TextView) findViewById(R.id.tvQuote);
+        tvWelcomeNote = (TextView) findViewById(R.id.tvWelcomeNote);
+
+
+        tvQuote.setTypeface(FontsHelper.getRobotoThinItalic());
+        tvWelcomeNote.setTypeface(FontsHelper.getRobotoRegular());
         imgLoader.displayImage(imageUri,ivFooter);
         final String  myChapterName = OneBrickApplication
                 .getApplicationSharedPreference()
@@ -46,8 +54,9 @@ public class SplashScreenActivity extends Activity {
                 public void run() {
                     Intent i = new Intent(SplashScreenActivity.this, SelectChapterActivity.class);
                     startActivity(i);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
-            }, 9500);
+            }, 3000);
         } else {
            new Handler().postDelayed(new Runnable() {
                 @Override
@@ -56,6 +65,7 @@ public class SplashScreenActivity extends Activity {
                     i.putExtra("ChapterId",myChapterId);
                     i.putExtra("ChapterName", myChapterName);
                     startActivity(i);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             }, 3000);
         }

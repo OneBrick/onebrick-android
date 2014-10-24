@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -19,6 +21,7 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
+import org.onebrick.android.helpers.FontsHelper;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
@@ -31,19 +34,22 @@ public class SelectChapterActivity extends Activity {
     NavigationChapterListAdapter chapterListAdapter;
     ArrayList<Chapter> chapterList;
     OneBrickClient obClient;
+    Button btnCustomLocation;
+    TextView tvChapteOptions;
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            chapterList.clear();
-            chapterList.addAll(Chapter.getChapterListFromJsonObject(response));
-            chapterListAdapter.addAll(chapterList);
+
+            chapterListAdapter.clear();
+            chapterListAdapter.addAll(Chapter.getChapterListFromJsonObject(response));
             chapterListAdapter.notifyDataSetChanged();
-            Log.i(TAG, "" + chapterList);
+
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        public void onFailure(int statusCode, Header[] headers,
+                              Throwable throwable, JSONObject errorResponse) {
             Log.i(TAG,"Api called failed!");
         }
     };
@@ -54,6 +60,10 @@ public class SelectChapterActivity extends Activity {
         setContentView(R.layout.activity_select_chapter);
         getActionBar().setTitle("Select your chapter");
         lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
+        btnCustomLocation = (Button) findViewById(R.id.btnUseCurrentLocation);
+        tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
+        btnCustomLocation.setTypeface(FontsHelper.getRobotoRegular());
+        tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());
         chapterList = new ArrayList<Chapter>();
         obClient = OneBrickApplication.getRestClient();
         chapterListAdapter = new NavigationChapterListAdapter(this,R.layout.drawer_nav_item,chapterList);
@@ -96,5 +106,10 @@ public class SelectChapterActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 }
