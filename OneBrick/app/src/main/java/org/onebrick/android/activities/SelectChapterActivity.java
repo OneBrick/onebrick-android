@@ -76,14 +76,14 @@ public class SelectChapterActivity extends Activity {
                 Intent i = new Intent(getApplicationContext(), HomeActivity.class);
                 i.putExtra("ChapterId",ch.getChapterId());
                 i.putExtra("ChapterName", ch.getChapterName());
-                startActivity(i);
                 SharedPreferences sp = OneBrickApplication.getApplicationSharedPreference();
                 SharedPreferences.Editor editor;
                 editor = sp.edit();
                 editor.putInt("MyChapterId", ch.getChapterId());
                 editor.putString("MyChapterName", ch.getChapterName());
                 editor.commit();
-
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }
@@ -107,9 +107,5 @@ public class SelectChapterActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    public void onBackPressed() {
-        finish();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
+
 }

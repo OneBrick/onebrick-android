@@ -29,6 +29,8 @@
     <string name="email_label">email@id.com</string>
     <string name="upcoming">Upcoming</string>
     <string name="past_events">Past Events</string>
+    <string name="please_login">Please login with your email and password to continue</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Drawer items -->
     <string name="login">Login</string>
