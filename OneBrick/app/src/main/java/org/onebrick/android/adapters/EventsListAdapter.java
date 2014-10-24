@@ -1,13 +1,20 @@
 package org.onebrick.android.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.onebrick.android.R;
+import org.onebrick.android.fragments.FacebookShareFragment;
+import org.onebrick.android.fragments.TwitterShareFragment;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
@@ -22,6 +29,10 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         TextView tvEventEndDate;
         TextView tvDateDisplay;
         TextView tvEventAddress;
+        ImageView fbShare;
+        ImageView twitterShare;
+        ImageView otherShare;
+
     }
 
     public EventsListAdapter(Context context, ArrayList<Event> events) {
@@ -43,6 +54,10 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
             viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
             viewHolder.tvDateDisplay = (TextView) convertView.findViewById(R.id.tvDateDisplay);
             viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvEventAddress);
+            viewHolder.fbShare = (ImageView) convertView.findViewById(R.id.share_fb);
+            viewHolder.twitterShare = (ImageView) convertView.findViewById(R.id.share_tw);
+            viewHolder.otherShare = (ImageView) convertView.findViewById(R.id.shareIv);
+
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -54,8 +69,86 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         viewHolder.tvEventEndDate.setText(" - " + Utils.getFormattedTimeEndOnly(event.getEventStartDate(), event.getEventEndDate()));
         viewHolder.tvDateDisplay.setText(Utils.getFormattedTimeDateOnly(event.getEventStartDate()));
         viewHolder.tvEventAddress.setText(event.getEventAddress());
+        viewHolder.fbShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareInFacebook(v);
+            }
+        });
+        viewHolder.twitterShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareInTwitter(v);
+            }
+        });
+        viewHolder.otherShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareInOthers(v);
+            }
+        });
+
         // Return the completed view to render on screen
         return convertView;
     }
+
+    public void shareInFacebook(View v) {
+//        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
+//        try {
+//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//            sharingIntent.setClassName("com.facebook.katana",
+//                    "com.facebook.katana.ShareLinkActivity");
+//            sharingIntent.putExtra(Intent.EXTRA_TEXT, "your title text");
+//            v.getContext().startActivity(sharingIntent);
+//
+//        } catch (Exception e) {
+//            Intent i = new Intent(Intent.ACTION_VIEW);
+//            i.setData(Uri.parse(fullUrl));
+//            v.getContext().startActivity(i);
+//
+//        }
+        Fragment facebookShareFragment = FacebookShareFragment.newInstance();
+        FragmentManager fm = ((FragmentActivity) getContext()).getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(android.R.id.content, facebookShareFragment)
+                .commit();
+    }
+
+
+    public void shareInTwitter(View v) {
+//        String message = "Your message to post";
+//        try {
+//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//            sharingIntent.setClassName("com.twitter.android","com.twitter.android.PostActivity");
+//            sharingIntent.putExtra(Intent.EXTRA_TEXT, message);
+//            v.getContext().startActivity(sharingIntent);
+//        } catch (Exception e) {
+//            Intent i = new Intent();
+//            i.putExtra(Intent.EXTRA_TEXT, message);
+//            i.setAction(Intent.ACTION_VIEW);
+//            i.setData(Uri.parse("https://mobile.twitter.com/compose/tweet"));
+//            v.getContext().startActivity(i);
+//        }
+        Fragment twitterShareFragment = TwitterShareFragment.newInstance();
+        FragmentManager fm = ((FragmentActivity) getContext()).getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(android.R.id.content, twitterShareFragment)
+                .commit();
+    }
+
+    /**
+     * social share this
+     * @param view
+     */
+    public void shareInOthers(View view){
+        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        // Add data to the intent, the receiving app will decide what to do with it.
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
+        intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
+        view.getContext().startActivity(Intent.createChooser(intent, "share"));
+    }
+
 
 }

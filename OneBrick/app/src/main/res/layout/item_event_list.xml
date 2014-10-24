@@ -77,7 +77,6 @@
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/tvDateDisplay"
         android:layout_marginRight="2dp"
-        android:onClick="onShareThis"
         android:src="@drawable/ic_facebook" />
 
     <ImageView
@@ -87,7 +86,6 @@
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/share_fb"
         android:layout_marginRight="2dp"
-        android:onClick="onShareThis"
         android:src="@drawable/ic_twitter" />
 
     <ImageView
@@ -96,6 +94,5 @@
         android:layout_height="@dimen/share_images_size"
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/share_tw"
-        android:onClick="onShareThis"
         android:src="@drawable/ic_action_share" />
 </RelativeLayout>

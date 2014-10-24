@@ -37,4 +37,6 @@
     <string name="title_activity_launch_acticty">LaunchActicty</string>
     <string name="title_activity_select_chapter">SelectChapterActivity</string>
 
+    <string name="facebook_app_id">500416926727994</string>
+
 </resources>

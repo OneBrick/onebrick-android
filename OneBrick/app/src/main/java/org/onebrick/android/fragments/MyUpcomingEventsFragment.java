@@ -1,7 +1,7 @@
 package org.onebrick.android.fragments;
 
 
-
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +24,25 @@ import org.onebrick.android.models.User;
  *
  */
 public class MyUpcomingEventsFragment extends EventsListFragment {
-
+    //TransferNumberOfUpcomingEvents mCallback;
 
     public MyUpcomingEventsFragment() {
         // Required empty public constructor
+    }
+
+//    public interface TransferNumberOfUpcomingEvents{
+//        public void transferNumber(int numberOfUpcomingEvents);
+//    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+//        try {
+//            mCallback = (TransferNumberOfUpcomingEvents) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement TransferNumberOfUpcomingEvents");
+//        }
     }
 
     @Override
@@ -41,10 +56,13 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = super.onCreateView( inflater, container, savedInstanceState);
-        User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
-        if (user != null){
-            setupEventsListeners();
-            populateUpcomingEvents(user.getUId());
+        LoginManager manager = LoginManager.getInstance(container.getContext());
+        if (manager != null ){
+            User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
+            if (user != null){
+                setupEventsListeners();
+                populateUpcomingEvents(user.getUId());
+            }
         }
         return v;
     }
@@ -65,11 +83,14 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 pbEventsList.setVisibility(ProgressBar.GONE);
-                Log.i("INFO", "callback success"); // logcat log
                 adapter.clear();
                 arrayOfEvents.clear();
                 if (response != null){
                     arrayOfEvents = Event.fromJSONArray(response);
+//                    if (arrayOfEvents != null && !arrayOfEvents.isEmpty()) {
+//                        mCallback.transferNumber(arrayOfEvents.size());
+//                    }
+                    //populateSetOfUpcomingEvents(arrayOfEvents);
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
                 }
@@ -92,5 +113,15 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
 
         });
     }
+
+//    protected void populateSetOfUpcomingEvents(ArrayList<Event> arrayOfEvents) {
+//        setOfUpcomingEvents = new HashSet<Long>();
+//        if (!arrayOfEvents.isEmpty()){
+//            for (Event event : arrayOfEvents){
+//                setOfUpcomingEvents.add(event.getEventId());
+//                Log.i("adding events: ", event.getEventId() + "");
+//            }
+//        }
+//    }
 
 }

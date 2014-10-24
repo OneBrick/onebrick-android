@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,9 +28,7 @@ public class EventsListFragment extends Fragment {
     protected EventsListAdapter adapter;
     protected ArrayList<Event> arrayOfEvents;
     protected OneBrickClient client;
-    protected ImageView shareIv;
-    protected ImageView share_fb;
-    protected ImageView share_tw;
+    //protected Set<Long> setOfUpcomingEvents;
 
     public EventsListFragment() {
         // Required empty public constructor
@@ -41,6 +38,7 @@ public class EventsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         arrayOfEvents = new ArrayList<Event>();
         adapter = new EventsListAdapter(getActivity(), arrayOfEvents);
+        //setOfUpcomingEvents = new HashSet<Long>();
     }
 
     @Override
@@ -51,11 +49,6 @@ public class EventsListFragment extends Fragment {
         pbEventsList = (ProgressBar) view.findViewById(R.id.pbEventsList);
         lvEventList = (ListView) view.findViewById(R.id.lvEvents);
         lvEventList.setAdapter(adapter);
-
-        shareIv = (ImageView) view.findViewById(R.id.shareIv);
-        share_fb = (ImageView) view.findViewById(R.id.share_fb);
-        share_tw = (ImageView) view.findViewById(R.id.share_tw);
-
         return view;
     }
 

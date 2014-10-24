@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="main" >
+        <source path="/Users/rush/Documents/dev/AndroidStudioProjects/onebrick-android/OneBrick/facebook/src/main/assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/Users/rush/Documents/dev/AndroidStudioProjects/onebrick-android/OneBrick/facebook/src/debug/assets" />
+    </dataSet>
+
+</merger>

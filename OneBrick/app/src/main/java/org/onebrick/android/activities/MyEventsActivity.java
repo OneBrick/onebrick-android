@@ -10,7 +10,12 @@ import org.onebrick.android.SupportFragmentTabListener;
 import org.onebrick.android.fragments.MyPastEventsFragment;
 import org.onebrick.android.fragments.MyUpcomingEventsFragment;
 
-public class MyEventsActivity extends ActionBarActivity {
+public class MyEventsActivity extends ActionBarActivity
+    //implements MyUpcomingEventsFragment.TransferNumberOfUpcomingEvents
+    {
+
+    public static final String UPCOMING_EVENTS_TAG = "upcoming";
+    public static final String PAST_EVENTS_TAG = "past_events";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +32,8 @@ public class MyEventsActivity extends ActionBarActivity {
         ActionBar.Tab tab1 = actionBar
                 .newTab()
                 .setText(R.string.upcoming)
-                .setTabListener(new SupportFragmentTabListener<MyUpcomingEventsFragment>(R.id.flContainer, this,
-                        "upcoming", MyUpcomingEventsFragment.class));
+                .setTabListener(new SupportFragmentTabListener<MyUpcomingEventsFragment>(R.id.flMyEventsContainer, this,
+                        UPCOMING_EVENTS_TAG, MyUpcomingEventsFragment.class));
 
         actionBar.addTab(tab1);
         actionBar.selectTab(tab1);
@@ -36,8 +41,8 @@ public class MyEventsActivity extends ActionBarActivity {
         ActionBar.Tab tab2 = actionBar
                 .newTab()
                 .setText(R.string.past_events)
-                .setTabListener(new SupportFragmentTabListener<MyPastEventsFragment>(R.id.flContainer, this,
-                        "past_events", MyPastEventsFragment.class));
+                .setTabListener(new SupportFragmentTabListener<MyPastEventsFragment>(R.id.flMyEventsContainer, this,
+                        PAST_EVENTS_TAG, MyPastEventsFragment.class));
         actionBar.addTab(tab2);
     }
 
@@ -50,4 +55,23 @@ public class MyEventsActivity extends ActionBarActivity {
         intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
         startActivity(Intent.createChooser(intent, "share"));
     }
+
+//    @Override
+//    public void transferNumber(int numberOfUpcomingEvents) {
+//        MyPastEventsFragment pastEventsFragment = (MyPastEventsFragment) getSupportFragmentManager().findFragmentByTag(PAST_EVENTS_TAG);
+//
+//        if (pastEventsFragment == null) {
+//            pastEventsFragment = new MyPastEventsFragment();
+//            Bundle args = new Bundle();
+//            args.putInt("number_of_upcoming_events", numberOfUpcomingEvents);
+//            pastEventsFragment.setArguments(args);
+//
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.flMyEventsContainer, pastEventsFragment);
+//            //transaction.addToBackStack(null);
+//
+//            // Commit the transaction
+//            transaction.commit();
+//        }
+//    }
 }

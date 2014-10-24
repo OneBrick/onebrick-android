@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by rush on 10/11/14.
@@ -203,11 +205,6 @@ public class Event extends Model {
         return e;
     }
 
-
-
-
-
-
     public static ArrayList<Event> fromJSONArray(JSONArray jsonArray) {
         ArrayList<Event> events = new ArrayList<Event>();
 
@@ -228,6 +225,28 @@ public class Event extends Model {
 
         }
         return events;
+    }
+
+    public static Set<Long> getUniqueEventIds(JSONArray jsonArray) {
+        Set<Long> uniqueIds = new HashSet<Long>();
+
+        for (int i=0; i<jsonArray.length() ; i++){
+            JSONObject eventJson = null;
+            try{
+                // individual event
+                eventJson = jsonArray.getJSONObject(i);
+                Event event = Event.findOrCreateFromJson(eventJson);
+                if (event != null){
+                    uniqueIds.add(event.getEventId());
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                continue;
+            }
+            // convert json to Event model
+
+        }
+        return uniqueIds;
     }
 
 }
