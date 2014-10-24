@@ -1,0 +1,48 @@
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_screen_bg"
+        tools:context="org.onebrick.android.activities.SplashScreenActivity">
+        <ImageView
+            android:id="@+id/ivLauncherLogo"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/one_brick_logo"/>
+        <TextView
+            android:id="@+id/tvWelcomeNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivLauncherLogo"
+            android:textColor="@color/onebrick_blue"
+            android:textSize="30dp"
+            android:gravity="center_horizontal"
+            android:text="Welcome! Happy Volunteering."/>
+
+    <TextView
+        android:layout_margin="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWelcomeNote"
+        android:textColor="@color/onebrick_blue"
+        android:textSize="15dp"
+        android:alpha="0.6"
+        android:textStyle="italic"
+        android:gravity="center_horizontal"
+        android:text="Volunteers, don't necessarily have the time; They just have the heart"/>
+
+        <ImageView
+            android:id="@+id/ivSplashScreenFooter"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+</RelativeLayout>
+
+

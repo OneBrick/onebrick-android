@@ -4,17 +4,36 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 
 public class SplashScreenActivity extends Activity {
-
+    ImageView ivFooter;
+    ImageLoader imgLoader =  ImageLoader.getInstance();
+    String imageUri = "assets://volunteer_hands.png";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch_acticty);
+        /*
+        Since this being splash screen requesting window with no title
+         */
+        // Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Remove notification bar
+        this.getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash_screen);
 
+
+        ivFooter = (ImageView) findViewById(R.id.ivSplashScreenFooter);
+        imgLoader.displayImage(imageUri,ivFooter);
         final String  myChapterName = OneBrickApplication
                 .getApplicationSharedPreference()
                 .getString("MyChapterName", null);
@@ -30,8 +49,7 @@ public class SplashScreenActivity extends Activity {
                 }
             }, 9500);
         } else {
-            //Toast.makeText(this,"My Chapter is "+myChapterName,Toast.LENGTH_LONG).show();
-            new Handler().postDelayed(new Runnable() {
+           new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Intent i = new Intent(getApplicationContext(), HomeActivity.class);
@@ -39,7 +57,7 @@ public class SplashScreenActivity extends Activity {
                     i.putExtra("ChapterName", myChapterName);
                     startActivity(i);
                 }
-            }, 2500);
+            }, 3000);
         }
     }
 }
