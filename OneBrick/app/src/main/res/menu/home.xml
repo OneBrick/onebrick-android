@@ -1,4 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.onebrick.android.activities.HomeActivity" >
+        <item
+            android:id="@+id/miSearch"
+            android:showAsAction="always"
+            android:icon="@drawable/ic_action_ob_search"
+            android:onClick="startSearchEventsActivity"
+            android:title="Search" >
+        </item>
 </menu>

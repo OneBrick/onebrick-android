@@ -2,6 +2,7 @@ package org.onebrick.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -12,6 +13,8 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
     private static Context context;
     private static SharedPreferences sharedPref;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,4 +47,7 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
     public static Context getContext() {
         return OneBrickApplication.context;
     }
+
+
+
 }

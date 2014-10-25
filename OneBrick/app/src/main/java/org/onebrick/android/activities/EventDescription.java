@@ -31,6 +31,11 @@ public class EventDescription extends Activity {
         getMenuInflater().inflate(R.menu.event_description, menu);
         return true;
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

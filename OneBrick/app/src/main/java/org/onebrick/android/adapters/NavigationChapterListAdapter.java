@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.FontsHelper;
 import org.onebrick.android.models.Chapter;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class NavigationChapterListAdapter extends ArrayAdapter<Chapter> {
         // Lookup view for data population
         tvNavChapterName = (TextView) convertView.findViewById(R.id.tvNavChapter);
         tvNavChapterName.setText(chp.getChapterName());
+        tvNavChapterName.setTypeface(FontsHelper.getRobotoRegular());
         // Return the completed view to render on screen
         return convertView;
     }
