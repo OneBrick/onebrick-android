@@ -1,9 +1,9 @@
 package org.onebrick.android.fragments;
 
 
-
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +16,11 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
-import org.onebrick.android.models.User;
+
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +28,9 @@ import org.onebrick.android.models.User;
  */
 public class MyPastEventsFragment extends EventsListFragment {
 
-    int myChapterId;
+
+    private int myChapterId;
+
     public MyPastEventsFragment() {
         // Required empty public constructor
     }
@@ -40,52 +45,59 @@ public class MyPastEventsFragment extends EventsListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = super.onCreateView( inflater, container, savedInstanceState);
-        User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
-        if (user != null){
-            populatePastEvents(user.getUId());
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LoginManager loginManager = LoginManager.getInstance(getActivity());
+
+        if (loginManager.getCurrentUser() != null){
+            populatePastEvents(loginManager.getCurrentUser().getUId());
         }
-        return v;
     }
 
-    private void populatePastEvents(long userId) {
-        final int chapterId = myChapterId;
+    private void populatePastEvents(long userId){
+        // get all events: both past and upcoming events
         client.getMyEvents(userId, true, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
                 progressBar.setVisibility(ProgressBar.GONE);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                progressBar.setVisibility(ProgressBar.GONE);
-                Log.i("INFO", "callback success"); // logcat log
-                adapter.clear();
                 arrayOfEvents.clear();
                 if (response != null) {
-                    arrayOfEvents = Event.fromJSONArray(response,chapterId);
+                    arrayOfEvents.clear();
+                    arrayOfEvents = Event.fromJSONArray(response, myChapterId);
+
+                    // remove upcoming event
+                    final Iterator<Event> itr = arrayOfEvents.iterator();
+                    final long currentTime = System.currentTimeMillis();
+                    while (itr.hasNext()) {
+                        final Date date = Utils.getDate(itr.next().eventStartDate);
+                        if (date != null && date.getTime() > currentTime) {
+                            itr.remove();
+                        }
+                    }
+
+                    adapter.clear();
                     adapter.addAll(arrayOfEvents);
                     adapter.notifyDataSetChanged();
+
+                    // remove upcoming events because current response includes both past and upcoming ones
+                    //removeUpcomingEvents();
+                    Log.i("size of past events:", arrayOfEvents.size() + "");
                 }
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 Log.e("ERROR", responseString);
-                Log.e("ERROR", throwable.toString());
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONArray errorResponse) {
@@ -93,8 +105,6 @@ public class MyPastEventsFragment extends EventsListFragment {
                 Log.e("ERROR", errorResponse.toString());
                 Log.e("ERROR", throwable.toString());
             }
-
         });
     }
-
 }

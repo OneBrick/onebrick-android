@@ -1,6 +1,8 @@
 package org.onebrick.android.fragments;
 
 
+
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +18,6 @@ import org.json.JSONArray;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
-import org.onebrick.android.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,10 +25,16 @@ import org.onebrick.android.models.User;
  */
 public class MyUpcomingEventsFragment extends EventsListFragment {
 
-    int myChapterId;
-    User user;
+    private int myChapterId;
+    private LoginManager loginManager;
+
     public MyUpcomingEventsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
@@ -37,32 +44,26 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
         myChapterId = OneBrickApplication
                 .getApplicationSharedPreference()
                 .getInt("MyChapterId", -1);
-        user = LoginManager.getInstance(getActivity()).getCurrentUser();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (user != null){
-            populateUpcomingEvents(user.getUId());
+        loginManager = LoginManager.getInstance(getActivity());
+
+        if (loginManager.getCurrentUser() != null){
+            populateUpcomingEvents(loginManager.getCurrentUser().getUId());
         }
     }
 
-    @Override
-    public void onResume() {
-        Toast.makeText(getActivity(),"Activity Resumed",Toast.LENGTH_LONG).show();
-        super.onResume();
-        populateUpcomingEvents(user.getUId());
-    }
-
-    private void populateUpcomingEvents(long userId) {
-        final int chapterId = myChapterId;
-        client.getMyEvents(userId, false, new JsonHttpResponseHandler() {
+    private void populateUpcomingEvents(long userId){
+        // get only upcoming events
+        final long id = userId;
+        client.getMyEvents(id, false, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -71,15 +72,12 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                progressBar.setVisibility(ProgressBar.GONE);
-                Log.i("INFO", "callback success"); // logcat log
-                adapter.clear();
                 arrayOfEvents.clear();
-                if (response != null){
-                    arrayOfEvents = Event.fromJSONArray(response, chapterId);
-                    adapter.addAll(arrayOfEvents);
-                    adapter.notifyDataSetChanged();
-                }
+                arrayOfEvents = Event.fromJSONArray(response, myChapterId);
+                adapter.clear();
+                adapter.addAll(arrayOfEvents);
+                adapter.notifyDataSetChanged();
+
             }
             @Override
             public void onFailure(int statusCode, Header[] headers,
@@ -88,7 +86,6 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 Log.e("ERROR", responseString);
                 Log.e("ERROR", throwable.toString());
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONArray errorResponse) {
@@ -96,7 +93,6 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 Log.e("ERROR", errorResponse.toString());
                 Log.e("ERROR", throwable.toString());
             }
-
         });
     }
 

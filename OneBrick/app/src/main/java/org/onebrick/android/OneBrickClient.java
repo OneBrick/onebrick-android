@@ -58,7 +58,7 @@ public class OneBrickClient extends OAuthBaseClient {
 //        RequestParams params = new RequestParams();
 //        params.put("username", username);
 //        params.put("password", password);
-        Log.i(TAG,"get request for user login URL: "+apiUri);
+//        Log.i(TAG,"get request for user login URL: "+apiUri);
         client.post(apiUri, null, handler);
     }
 

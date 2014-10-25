@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,9 +28,6 @@ public class EventsListFragment extends Fragment {
     protected EventsListAdapter adapter;
     protected ArrayList<Event> arrayOfEvents;
     protected OneBrickClient client;
-    protected ImageView shareIv;
-    protected ImageView share_fb;
-    protected ImageView share_tw;
 
     public EventsListFragment() {
         // Required empty public constructor
@@ -52,10 +48,6 @@ public class EventsListFragment extends Fragment {
         lvEventList = (ListView) view.findViewById(R.id.lvEvents);
         lvEventList.setAdapter(adapter);
 
-        shareIv = (ImageView) view.findViewById(R.id.ibShare);
-        share_fb = (ImageView) view.findViewById(R.id.ibShareFacebook);
-        share_tw = (ImageView) view.findViewById(R.id.ibShareTwitter);
-
         setupEventsListeners();
         return view;
     }
@@ -66,44 +58,11 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
-                Event event = (Event) adapter.getItem(position);
+                Event event = adapter.getItem(position);
                 Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
                 eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
             }
         });
     }
-
-//    protected void setupShareListeners(){
-//        shareIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//        share_fb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//        share_tw.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//    }
-
-//    protected void shareThis(View view){
-//        Toast.makeText(getActivity(), "Social share!", Toast.LENGTH_SHORT).show();
-//        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
-//        intent.setType("text/plain");
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//        // Add data to the intent, the receiving app will decide what to do with it.
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
-//        intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
-//        startActivity(Intent.createChooser(intent, "share"));
-//    }
-
 }

@@ -25,7 +25,7 @@
     <!--</LinearLayout>-->
 
     <FrameLayout
-        android:id="@+id/flContainer"
+        android:id="@+id/flMyEventsContainer"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"/>
 

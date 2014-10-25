@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by rush on 10/11/14.
@@ -142,10 +144,9 @@ public class Event extends Model {
                 event.usrRSVP = jsonObject.optInt("usrRSVP");
             }
         }catch(JSONException e){
-            e.printStackTrace();
+            Log.e(TAG, "error while saving event: " + event.eventId);
             return null;
         }
-        Log.i(TAG, "Saving event to database");
         event.save();
         return event;
     }
@@ -157,7 +158,7 @@ public class Event extends Model {
                 new Select().from(Event.class).where("EventId = ?", eventId).executeSingle();
         if (existingEvent != null) {
             // found and return existing
-            Log.i(TAG, "Returning existing event. Not saving new events to DB");
+            //Log.i(TAG, "Returning existing event. Not saving new events to DB");
             return existingEvent;
         } else {
             // create and return new
@@ -211,6 +212,11 @@ public class Event extends Model {
         return e;
     }
 
+
+
+
+
+
     public static void updateEvent(Event e) {
         e.save();
     }
@@ -244,5 +250,4 @@ public class Event extends Model {
         }
         return events;
     }
-
 }

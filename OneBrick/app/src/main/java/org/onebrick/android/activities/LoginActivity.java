@@ -134,7 +134,7 @@ public class LoginActivity extends Activity{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //super.onSuccess(statusCode, headers, response);
-                Log.i("login success1", response.toString());
+                //Log.i("login success1", response.toString());
                 try {
                     Log.i("id", response.getJSONObject("user").optString("uid"));
                     User user = User.fromJSON(response);

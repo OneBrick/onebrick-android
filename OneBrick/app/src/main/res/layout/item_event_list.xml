@@ -88,7 +88,6 @@
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/btnRsvp"
         android:layout_marginRight="2dp"
-        android:onClick="onShareThis"
         android:src="@drawable/ic_facebook"
         android:background="@drawable/social_button_selector"/>
 
@@ -100,7 +99,6 @@
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/ibShareFacebook"
         android:layout_marginRight="2dp"
-        android:onClick="onShareThis"
         android:src="@drawable/ic_twitter"
         android:background="@drawable/social_button_selector"/>
 

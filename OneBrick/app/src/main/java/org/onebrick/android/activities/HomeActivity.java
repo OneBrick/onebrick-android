@@ -21,7 +21,6 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.fragments.HomeEventsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
-
 import org.onebrick.android.models.Chapter;
 
 public class HomeActivity extends FragmentActivity
@@ -46,7 +45,8 @@ public class HomeActivity extends FragmentActivity
         getActionBar().setTitle(chapterName);
         Fragment eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container, eventListFragment).commit();
+        fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
+
     }
 
     private void setupUi() {
@@ -179,7 +179,7 @@ public class HomeActivity extends FragmentActivity
                 ch.getChapterId());
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
-                .replace(R.id.fragment_container, eventListFragment)
+                .replace(R.id.flHomeContainer, eventListFragment)
                 .commit();
         closeDrawer();
 
@@ -234,13 +234,4 @@ public class HomeActivity extends FragmentActivity
         };
     }
 
-    public void onShareThis(View view){
-        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        // Add data to the intent, the receiving app will decide what to do with it.
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
-        intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
-        startActivity(Intent.createChooser(intent, "share"));
-    }
 }
