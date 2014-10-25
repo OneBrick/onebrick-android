@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.newrelic.agent.android.NewRelic;
 
 public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
@@ -15,6 +16,10 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
     public void onCreate() {
         super.onCreate();
         OneBrickApplication.context = this;
+
+        NewRelic.withApplicationToken(
+                "AAd5aec03c54ce6bd6d21ae5b4168b5342bf276e97"
+        ).start(this);
 
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
