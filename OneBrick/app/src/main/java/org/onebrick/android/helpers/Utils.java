@@ -1,5 +1,8 @@
 package org.onebrick.android.helpers;
 
+import android.support.annotation.Nullable;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,10 +11,13 @@ import java.util.Date;
  * Created by rush on 10/13/14.
  */
 public class Utils {
+    private static final String TAG = "Utils";
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     public static String getFormattedTime(String input){
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(input);
+            date = dateFormat.parse(input);
             input = new SimpleDateFormat("yyyy-MM-dd H:mm").format(date);
 
         } catch (ParseException e) {
@@ -49,6 +55,16 @@ public class Utils {
             e.printStackTrace();
         }
         return endTime;
+    }
+
+    @Nullable
+    public static Date getDate(String onebrickDate) {
+        try {
+            return dateFormat.parse(onebrickDate);
+        } catch (Exception e) {
+            Log.w(TAG, "Exception while date format: " + onebrickDate);
+            return null;
+        }
     }
 
 }

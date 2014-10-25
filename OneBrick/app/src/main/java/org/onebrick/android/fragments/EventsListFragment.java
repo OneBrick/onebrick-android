@@ -55,7 +55,7 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
-                Event event = (Event) adapter.getItem(position);
+                Event event = adapter.getItem(position);
                 Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
                 eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
