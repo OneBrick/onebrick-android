@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
@@ -145,6 +146,7 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
 
             getContext().startActivity(tweetIntent);
         }
+
     }
 
     /**
