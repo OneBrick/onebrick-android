@@ -15,13 +15,13 @@
             android:src="@drawable/one_brick_logo"/>
         <TextView
             android:id="@+id/tvWelcomeNote"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivLauncherLogo"
             android:textColor="@color/onebrick_blue"
             android:textSize="30dp"
             android:gravity="center_horizontal"
-            android:text="Welcome! Happy Volunteering."/>
+            android:text="@string/welcome_message"/>
 
     <TextView
         android:id="@+id/tvQuote"

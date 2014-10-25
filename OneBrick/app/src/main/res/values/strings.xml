@@ -32,7 +32,7 @@
     <string name="please_login">Please login with your email and password to continue</string>
     <string name="cancel">Cancel</string>
     <string name="search">Search</string>
-
+    <string name="welcome_message">Welcome!\nHappy Volunteering</string>
     <string name="rsvp">RSVP</string>
     <string name="un_rsvp">unRSVP</string>
 
