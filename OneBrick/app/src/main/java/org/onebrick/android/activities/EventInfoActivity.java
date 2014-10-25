@@ -173,8 +173,6 @@ public class EventInfoActivity extends FragmentActivity implements
     Event selectedEvent;
     LoginManager loginMgr;
     User user;
-    double lat;
-    double lng;
     OneBrickClient obclient;
     Geocoder obGeoCoder;
     DateTimeFormatter obDtf;
@@ -198,17 +196,35 @@ public class EventInfoActivity extends FragmentActivity implements
         Log.i(TAG,"Is Geocode present "+obGeoCoder.isPresent());
         eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
         Log.i(TAG,"Geocoded Event address is "+eventAddress);
-        lat = eventAddress.getLatitude();
-        lng = eventAddress.getLongitude();
+        if (eventAddress != null) {
+            final double lat = eventAddress.getLatitude();
+            final double lng = eventAddress.getLongitude();
 
-        // Toast.makeText(this, "LAT/LONG " + latitude + " "+longitude, Toast.LENGTH_LONG).show();
-        // create marker
+            MarkerOptions marker = new MarkerOptions()
+                    .position(new LatLng(lat, lng))
+                    .title("Event Location");
+            map.addMarker(marker);
 
-        MarkerOptions marker = new MarkerOptions()
-                .position(new LatLng(lat, lng))
-                .title("Event Location");
-        map.addMarker(marker);
-        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16F);
+         /*
+            Setting up onClick listener on the map
+            which when clicked the user will be taken to a new
+            activity where he will see the map in a might bigger screen
+         */
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
+                    Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                    eventLocationMap.putExtra("Latitude",lat);
+                    eventLocationMap.putExtra("Longitude",lng);
+                    eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
+                    startActivity(eventLocationMap);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }
+            });
+        }
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
         map.animateCamera(cu);
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
@@ -219,7 +235,6 @@ public class EventInfoActivity extends FragmentActivity implements
                 ivRsvpInfo.setImageDrawable(
                         getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
                 tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
-                ;
             } else {
 
                 Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
@@ -300,23 +315,6 @@ public class EventInfoActivity extends FragmentActivity implements
             }
         });
 
-         /*
-        Setting up onClick listener on the map
-        which when clicked the user will be taken to a new
-        activity where he will see the map in a might bigger screen
-         */
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
-                Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
-                eventLocationMap.putExtra("Latitude",lat);
-                eventLocationMap.putExtra("Longitude",lng);
-                eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
-                startActivity(eventLocationMap);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            }
-        });
         /*
         Setting up onClick listener for RSVP button. When this button is clicked
         the current user is checked if he is already logged in or not.
