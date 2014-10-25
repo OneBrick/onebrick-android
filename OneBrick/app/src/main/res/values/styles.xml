@@ -47,4 +47,14 @@
         <item name="android:background">@drawable/onebrick_background_selector</item>
     </style>
 
+    <!-- event detail: rsvp button -->
+    <style name="eventRsvpButton" parent="@android:style/Widget.Button">
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:background">@drawable/event_rsvp_button</item>
+    </style>
+
 </resources>

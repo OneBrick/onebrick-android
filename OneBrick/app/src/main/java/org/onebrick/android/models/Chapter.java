@@ -15,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 @Table(name="Chapters")
@@ -89,6 +91,14 @@ public class Chapter extends Model {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        if (!chapterList.isEmpty()) {
+            Collections.sort(chapterList, new Comparator<Chapter>(){
+                @Override
+                public int compare(Chapter ch1, Chapter ch2) {
+                    return ch1.getChapterName().compareTo(ch2.getChapterName());
+                }
+            });
         }
         return chapterList;
     }
