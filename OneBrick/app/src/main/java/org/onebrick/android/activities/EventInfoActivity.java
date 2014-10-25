@@ -176,6 +176,8 @@ public class EventInfoActivity extends FragmentActivity implements
     OneBrickClient obclient;
     Geocoder obGeoCoder;
     DateTimeFormatter obDtf;
+    double lat;
+    double lng;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -197,10 +199,10 @@ public class EventInfoActivity extends FragmentActivity implements
         eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
         Log.i(TAG,"Geocoded Event address is "+eventAddress);
         if (eventAddress != null) {
-            final double lat = eventAddress.getLatitude();
-            final double lng = eventAddress.getLongitude();
+             lat = eventAddress.getLatitude();
+             lng = eventAddress.getLongitude();
 
-            MarkerOptions marker = new MarkerOptions()
+            marker = new MarkerOptions()
                     .position(new LatLng(lat, lng))
                     .title("Event Location");
             map.addMarker(marker);
@@ -229,7 +231,6 @@ public class EventInfoActivity extends FragmentActivity implements
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
-                //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
                 btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                 btnRsvp.setText("UnRsvp");
                 ivRsvpInfo.setImageDrawable(
@@ -238,7 +239,6 @@ public class EventInfoActivity extends FragmentActivity implements
             } else {
 
                 Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
-                //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
                 btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                 btnRsvp.setText("Rsvp");
                 ivRsvpInfo.setImageDrawable(
