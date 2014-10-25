@@ -29,6 +29,9 @@
     <string name="email_label">email@id.com</string>
     <string name="upcoming">Upcoming</string>
     <string name="past_events">Past Events</string>
+    <string name="please_login">Please login with your email and password to continue</string>
+    <string name="cancel">Cancel</string>
+    <string name="search">Search</string>
 
     <string name="rsvp">RSVP</string>
     <string name="un_rsvp">unRSVP</string>
@@ -51,5 +54,6 @@
         <item>A week before the event</item>
     </string-array>
 
+    <string name="title_activity_seach">SeachActivity</string>
 
 </resources>

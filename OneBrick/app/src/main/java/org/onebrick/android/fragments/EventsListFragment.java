@@ -70,6 +70,7 @@ public class EventsListFragment extends Fragment {
                 Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
                 eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }

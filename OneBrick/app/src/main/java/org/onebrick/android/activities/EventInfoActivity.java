@@ -232,7 +232,11 @@ public class EventInfoActivity extends FragmentActivity implements
             }
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -292,6 +296,7 @@ public class EventInfoActivity extends FragmentActivity implements
                 Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
                 eventDetails.putExtra("Details",""+selectedEvent.getEventDescription());
                 startActivity(eventDetails);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
@@ -309,6 +314,7 @@ public class EventInfoActivity extends FragmentActivity implements
                 eventLocationMap.putExtra("Longitude",lng);
                 eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
                 startActivity(eventLocationMap);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
         /*
@@ -600,6 +606,11 @@ public class EventInfoActivity extends FragmentActivity implements
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
         }
+
+
+
+
+
     }
 
 }

@@ -33,6 +33,8 @@ public class HomeActivity extends FragmentActivity
     private DrawerLayout dlDrawerLayout;
     private View llDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+    String chapterName;
+    int chapterId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,8 @@ public class HomeActivity extends FragmentActivity
 
         setupUi();
         Intent i = getIntent();
-        int chapterId = i.getIntExtra("ChapterId", -1);
-        String chapterName = i.getStringExtra("ChapterName");
+        chapterId = i.getIntExtra("ChapterId", -1);
+        chapterName = i.getStringExtra("ChapterName");
         getActionBar().setTitle(chapterName);
         Fragment eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         FragmentManager fm = getSupportFragmentManager();
@@ -148,10 +150,10 @@ public class HomeActivity extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_login) {
+        /*if (id == R.id.action_login) {
             // Hye: For now plugin user login here, later I will add to navigation drawer
             return true;
-        }
+        }*/
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -242,5 +244,13 @@ public class HomeActivity extends FragmentActivity
         intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
         intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
         startActivity(Intent.createChooser(intent, "share"));
+    }
+
+    public void startSearchEventsActivity (MenuItem mi) {
+        Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+        i.putExtra("ChapterId",chapterId);
+        i.putExtra("ChapterName", chapterName);
+        startActivity(i);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }
