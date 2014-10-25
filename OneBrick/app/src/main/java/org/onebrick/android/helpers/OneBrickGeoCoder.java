@@ -2,10 +2,11 @@ package org.onebrick.android.helpers;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.onebrick.android.OneBrickApplication;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class OneBrickGeoCoder {
     private static Geocoder geocoder;
+    private static final String TAG = OneBrickGeoCoder.class.getName().toString();
 
     private OneBrickGeoCoder() {};
 
@@ -27,17 +29,25 @@ public class OneBrickGeoCoder {
         return geocoder.isPresent();
     }
 
+   @Nullable
     public static Address getAddressFromLocationName(String location) {
+        Log.i(TAG,"Get lat lng for address"+location);
         List<Address> addressList = null;
         Address geoCodedAddress = null;
         try {
             addressList = geocoder.getFromLocationName(location,1);
             if(addressList == null || addressList.size() == 0) {
-                String closeLocation[] = location.split(",");
-                addressList = geocoder.getFromLocationName(closeLocation[1],1);
+                if(location.contains(",")) {
+                    String closeLocation[] = location.split(",");
+                    addressList = geocoder.getFromLocationName(
+                            closeLocation[(closeLocation.length)-1],1);
+                } else {
+                    return null;
+                } 
+
             }
             geoCodedAddress = addressList.get(0);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return geoCodedAddress;

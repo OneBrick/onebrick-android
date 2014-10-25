@@ -224,28 +224,30 @@ public class EventInfoActivity extends FragmentActivity implements
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
-        }
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
-        map.animateCamera(cu);
-        if(loginMgr.isLoggedIn()) {
-            if (updatedEvent.rsvp == true) {
-                Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
-                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                btnRsvp.setText("UnRsvp");
-                ivRsvpInfo.setImageDrawable(
-                        getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
-            } else {
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
+            map.animateCamera(cu);
+            if(loginMgr.isLoggedIn()) {
+                if (updatedEvent.rsvp == true) {
+                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                    btnRsvp.setText("UnRsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+                } else {
 
-                Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
-                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                btnRsvp.setText("Rsvp");
-                ivRsvpInfo.setImageDrawable(
-                        getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-                tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                    btnRsvp.setText("Rsvp");
+                    ivRsvpInfo.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+                }
             }
         }
+
+
     }
     @Override
     public void onBackPressed() {
@@ -354,11 +356,11 @@ public class EventInfoActivity extends FragmentActivity implements
                     user = loginMgr.getCurrentUser();
                     //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
                     if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
-                        Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
                         obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
-                        Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
                         obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
 
                     } else {
@@ -422,7 +424,7 @@ public class EventInfoActivity extends FragmentActivity implements
                 , this.getUniqueRandomRequestCode()
                 , intentAlarm,PendingIntent.FLAG_ONE_SHOT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
-        Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
         FragmentManager fm = getSupportFragmentManager();
         ReminderAddDialog rad = ReminderAddDialog.newInstance("Add Reminder ?");
         rad.show(fm, "Add Reminder ?");
@@ -509,7 +511,7 @@ public class EventInfoActivity extends FragmentActivity implements
         // Display the connection status
         Location location = mLocationClient.getLastLocation();
         if (location != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
