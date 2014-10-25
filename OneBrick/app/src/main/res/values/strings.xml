@@ -31,6 +31,7 @@
     <string name="past_events">Past Events</string>
     <string name="please_login">Please login with your email and password to continue</string>
     <string name="cancel">Cancel</string>
+    <string name="search">Search</string>
 
     <!-- Drawer items -->
     <string name="login">Login</string>
@@ -50,5 +51,6 @@
         <item>A week before the event</item>
     </string-array>
 
+    <string name="title_activity_seach">SeachActivity</string>
 
 </resources>

@@ -45,12 +45,14 @@
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:launchMode="singleTask">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:launchMode="singleTask" >
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activities.EventInfoActivity"
@@ -81,18 +83,25 @@
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.SelectChapterActivity"
             android:label="@string/title_activity_select_chapter"
-            android:noHistory="true">
+            android:noHistory="true" >
         </activity>
-        <receiver android:name=".activities.DisplayNotificationReceiver"/>
+
+        <receiver android:name=".activities.DisplayNotificationReceiver" />
+
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="@string/title_activity_seach" >
+        </activity>
     </application>
 
 </manifest>
