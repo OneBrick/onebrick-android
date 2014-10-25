@@ -98,9 +98,9 @@ public class EventInfoActivity extends FragmentActivity implements
             Drawable unrsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
             btnRsvp.setCompoundDrawablesWithIntrinsicBounds(unrsvp, null, null, null);
             btnRsvp.setText("UnRsvp");
-            ivRsvpInfo.setImageDrawable(
-                    getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-            tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+//            ivRsvpInfo.setImageDrawable(
+//                    getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+//            tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
             updatedEvent.rsvp = true;
             Event.updateEvent(updatedEvent);
 
@@ -132,9 +132,9 @@ public class EventInfoActivity extends FragmentActivity implements
             //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
             btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
             btnRsvp.setText("Rsvp");
-            ivRsvpInfo.setImageDrawable(
-                    getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-            tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+//            ivRsvpInfo.setImageDrawable(
+//                    getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+//            tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
             updatedEvent.rsvp = false;
             Event.updateEvent(updatedEvent);
 
@@ -224,31 +224,30 @@ public class EventInfoActivity extends FragmentActivity implements
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
-
-            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
-            map.animateCamera(cu);
-            if(loginMgr.isLoggedIn()) {
-                if (updatedEvent.rsvp == true) {
-                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                    btnRsvp.setText("UnRsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                    tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
-                } else {
-
-                    Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
-                    btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
-                    btnRsvp.setText("Rsvp");
-                    ivRsvpInfo.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-                    tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
-                }
-            }
         }
 
+        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
+        map.animateCamera(cu);
+        if(loginMgr.isLoggedIn()) {
+            if (updatedEvent.rsvp == true) {
+                Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
+                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                btnRsvp.setText("UnRsvp");
+//                ivRsvpInfo.setImageDrawable(
+//                        getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+//                tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+            } else {
 
+                Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
+                btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
+                btnRsvp.setText("Rsvp");
+//                ivRsvpInfo.setImageDrawable(
+//                        getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+//                tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+            }
+        }
     }
+
     @Override
     public void onBackPressed() {
         finish();
@@ -265,8 +264,8 @@ public class EventInfoActivity extends FragmentActivity implements
         tvLearnMore = (TextView) findViewById(R.id.tvLearnMore);
 
         btnRsvp = (Button) findViewById(R.id.btnRsvp);
-        tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
-        ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
+//        tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
+//        ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
         ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
         ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
 
@@ -339,18 +338,18 @@ public class EventInfoActivity extends FragmentActivity implements
                         //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
                         btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                         btnRsvp.setText("UnRsvp");
-                        ivRsvpInfo.setImageDrawable(
-                                getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                        tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
+//                        ivRsvpInfo.setImageDrawable(
+//                                getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
+//                        tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
                     } else {
 
                         Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
                         //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
                         btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                         btnRsvp.setText("Rsvp");
-                        ivRsvpInfo.setImageDrawable(
-                                getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
-                        tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
+//                        ivRsvpInfo.setImageDrawable(
+//                                getResources().getDrawable(R.drawable.ic_rsvp_info_75dip));
+//                        tvRsvpInfo.setText("You have not Rsvp-ed to this event yet.");
                     }
                 } else {
                     user = loginMgr.getCurrentUser();

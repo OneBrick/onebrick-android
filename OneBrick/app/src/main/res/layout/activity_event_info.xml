@@ -62,47 +62,27 @@
                     android:textColor="@color/charcoal"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
             </RelativeLayout>
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rlRsvp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:paddingBottom="5dp"
-                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="0dp"
                 android:background="@drawable/item_seperation_border">
-                <ImageView
-                    android:id="@+id/ivEventInfoFbShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_fb_share"/>
-                <ImageView
-                    android:id="@+id/ivEventInfoTwitterShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_twitter_share"/>
-                <ImageView
-                    android:id="@+id/ivEventInfoGenShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_gen_share"/>
-                <ImageView
-                    android:id="@+id/ivEventInfoAddReminder"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_reminder"/>
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btnRsvp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:drawablePadding="10dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/charcoal"
+                    android:drawableStart="@drawable/ic_rsvp_50dip"
+                    android:text="RSVP"
+                    android:gravity="center"/>
+            </RelativeLayout>
+            <!--
             <RelativeLayout
                 android:id="@+id/rlRsvpInfo"
                 android:layout_width="match_parent"
@@ -138,7 +118,8 @@
                     android:textColor="@color/charcoal"
                     android:textSize="16dp"
                     android:text="You have not RSVP-ed to this event yet!"/>
-                </RelativeLayout>
+            </RelativeLayout>
+            -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -253,26 +234,47 @@
                         android:text="Coordinator"/>
                 </RelativeLayout>
             </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rlRsvp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal"
                 android:background="@drawable/item_seperation_border">
-                <Button
-                    android:id="@+id/btnRsvp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:drawablePadding="10dp"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/charcoal"
-                    android:drawableStart="@drawable/ic_rsvp_50dip"
-                    android:text="RSVP"
-                    android:gravity="center"/>
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/ivEventInfoFbShare"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_fb_share"/>
+                <ImageView
+                    android:id="@+id/ivEventInfoTwitterShare"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_twitter_share"/>
+                <ImageView
+                    android:id="@+id/ivEventInfoGenShare"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_gen_share"/>
+                <ImageView
+                    android:id="@+id/ivEventInfoAddReminder"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_reminder"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
