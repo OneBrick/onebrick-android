@@ -12,8 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by rush on 10/11/14.
@@ -80,6 +78,10 @@ public class Event extends Model {
     @Column(name="Rsvp")
     public boolean rsvp;
 
+    @Column(name="profilePhotoUri")
+    public String profilePhotoUri;
+
+
 
     public String toString() {
        return ""+title;
@@ -115,6 +117,10 @@ public class Event extends Model {
         return this.description;
     }
 
+    public String getProfilePhotoUri() {
+        return profilePhotoUri;
+    }
+
     public static Event fromJSON(JSONObject jsonObject, Chapter ch){
         Event event = new Event();
         try{
@@ -143,12 +149,20 @@ public class Event extends Model {
             if (!jsonObject.isNull("usrRSVP")){
                 event.usrRSVP = jsonObject.optInt("usrRSVP");
             }
+
+            event.profilePhotoUri = getProfilePhotoUri(event.eventId);
+
         }catch(JSONException e){
             Log.e(TAG, "error while saving event: " + event.eventId);
             return null;
         }
         event.save();
         return event;
+    }
+
+    private static String getProfilePhotoUri(long eventId){
+        String imageUri = "assets://volunteer_hands.png";
+        return "assets://volunteer_hands.png";
     }
 
     // Finds existing user based on remoteId or creates new user and returns
@@ -212,19 +226,9 @@ public class Event extends Model {
         return e;
     }
 
-
-
-
-
-
     public static void updateEvent(Event e) {
         e.save();
     }
-
-
-
-
-
 
     public static ArrayList<Event> fromJSONArray(JSONArray jsonArray, int ChapterId) {
         ArrayList<Event> events = new ArrayList<Event>();

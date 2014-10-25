@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class EventsListAdapter extends ArrayAdapter<Event>{
     // View lookup cache
     private static class ViewHolder {
+        ImageView ivProfilePhoto;
         TextView tvEventTitle;
         TextView tvEventStartDate;
         TextView tvEventEndDate;
@@ -45,6 +48,8 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_event_list, parent, false);
+
+            viewHolder.ivProfilePhoto = (ImageView) convertView.findViewById(R.id.ivProfilePhoto);
             viewHolder.tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
             viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventStartDate);
             viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
@@ -60,6 +65,9 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         }
 
         // Populate the data into the template view using the data object
+        ImageLoader imageLoader =  ImageLoader.getInstance();
+        imageLoader.displayImage(event.getProfilePhotoUri(), viewHolder.ivProfilePhoto);
+
         viewHolder.tvEventTitle.setText(event.getTitle());
         viewHolder.tvEventStartDate.setText(Utils.getFormattedTime(event.getEventStartDate()));
         viewHolder.tvEventEndDate.setText(" - " + Utils.getFormattedTimeEndOnly(event.getEventStartDate(), event.getEventEndDate()));
