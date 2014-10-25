@@ -64,24 +64,24 @@ public class EventInfoActivity extends FragmentActivity implements
     /*
     This is the reponse handler to handle the callbacks from Event info rest call
      */
-    JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler(){
+    JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            Log.i("TAG","Success"+response.toString());
+            Log.i("TAG", "Success" + response.toString());
             updatedEvent = Event.getUpdatedEvent(response);
             updateViews(updatedEvent);
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.i("TAG","Json Request to fetch event info failed");
+            Log.i("TAG", "Json Request to fetch event info failed");
             super.onFailure(statusCode, headers, throwable, errorResponse);
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.i("TAG","FAIL "+responseString);
+            Log.i("TAG", "FAIL " + responseString);
             super.onFailure(statusCode, headers, responseString, throwable);
         }
 
@@ -90,11 +90,11 @@ public class EventInfoActivity extends FragmentActivity implements
     /*
     This is the response handler to handle the callback from RSVP rest request
      */
-    JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler(){
+    JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            Log.i("TAG","RSVP Success"+response.toString());
+            Log.i("TAG", "RSVP Success" + response.toString());
             Drawable unrsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
             btnRsvp.setCompoundDrawablesWithIntrinsicBounds(unrsvp, null, null, null);
             btnRsvp.setText("UnRsvp");
@@ -108,13 +108,13 @@ public class EventInfoActivity extends FragmentActivity implements
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.i("TAG","Json Request to fetch event info failed");
+            Log.i("TAG", "Json Request to fetch event info failed");
             super.onFailure(statusCode, headers, throwable, errorResponse);
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.i("TAG","FAIL "+responseString);
+            Log.i("TAG", "FAIL " + responseString);
             super.onFailure(statusCode, headers, responseString, throwable);
         }
 
@@ -123,11 +123,11 @@ public class EventInfoActivity extends FragmentActivity implements
     /*
     This is the response handle to handle the callbacks from unRSVP rest request
      */
-    JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler(){
+    JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            Log.i("TAG","RSVP Un-Success"+response.toString());
+            Log.i("TAG", "RSVP Un-Success" + response.toString());
             Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
             //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
             btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
@@ -142,13 +142,13 @@ public class EventInfoActivity extends FragmentActivity implements
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.i("TAG","Json Request to fetch event info failed");
+            Log.i("TAG", "Json Request to fetch event info failed");
             super.onFailure(statusCode, headers, throwable, errorResponse);
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.i("TAG","FAIL "+responseString);
+            Log.i("TAG", "FAIL " + responseString);
             super.onFailure(statusCode, headers, responseString, throwable);
         }
 
@@ -186,21 +186,22 @@ public class EventInfoActivity extends FragmentActivity implements
 
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
-                tvEventName.setText(updatedEvent.getTitle());
+        tvEventName.setText(updatedEvent.getTitle());
         tvEventDateTime.setText(obDtf.formatDateTime(updatedEvent.getEventStartDate())
-                +" - "
-                +obDtf.formatDateTime(updatedEvent.getEventEndDate()));
+                + " - "
+                + obDtf.formatDateTime(updatedEvent.getEventEndDate()));
         tvEventBrief.setText(updatedEvent.getEventDescription());
         tvEventLocation.setText(updatedEvent.getEventAddress());
         Address eventAddress;
 
-        Log.i(TAG,"Event address is "+updatedEvent.getEventAddress());
-        Log.i(TAG,"Is Geocode present "+obGeoCoder.isPresent());
+        Log.i(TAG, "Event address is " + updatedEvent.getEventAddress());
+        Log.i(TAG, "Is Geocode present " + obGeoCoder.isPresent());
         eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
-        Log.i(TAG,"Geocoded Event address is "+eventAddress);
+        Log.i(TAG, "Geocoded Event address is " + eventAddress);
         if (eventAddress != null) {
-             lat = eventAddress.getLatitude();
-             lng = eventAddress.getLongitude();
+
+            lat = eventAddress.getLatitude();
+            lng = eventAddress.getLongitude();
 
             marker = new MarkerOptions()
                     .position(new LatLng(lat, lng))
@@ -217,17 +218,18 @@ public class EventInfoActivity extends FragmentActivity implements
                 public void onMapClick(LatLng latLng) {
                     //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
                     Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
-                    eventLocationMap.putExtra("Latitude",lat);
-                    eventLocationMap.putExtra("Longitude",lng);
+                    eventLocationMap.putExtra("Latitude", lat);
+                    eventLocationMap.putExtra("Longitude", lng);
                     eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
                     startActivity(eventLocationMap);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
 
+
             CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
             map.animateCamera(cu);
-            if(loginMgr.isLoggedIn()) {
+            if (loginMgr.isLoggedIn()) {
                 if (updatedEvent.rsvp == true) {
                     Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
                     btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
@@ -236,7 +238,6 @@ public class EventInfoActivity extends FragmentActivity implements
                             getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
                     tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
                 } else {
-
                     Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
                     btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                     btnRsvp.setText("Rsvp");
@@ -249,11 +250,13 @@ public class EventInfoActivity extends FragmentActivity implements
 
 
     }
+
     @Override
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -293,10 +296,10 @@ public class EventInfoActivity extends FragmentActivity implements
             if (map != null) {
 
             } else {
-               Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
             }
         } else {
-           Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_LONG).show();
         }
         setupListeners();
     }
@@ -311,7 +314,7 @@ public class EventInfoActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
-                eventDetails.putExtra("Details",""+selectedEvent.getEventDescription());
+                eventDetails.putExtra("Details", "" + selectedEvent.getEventDescription());
                 startActivity(eventDetails);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
@@ -328,20 +331,21 @@ public class EventInfoActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
 
-                if(!loginMgr.isLoggedIn()) {
+                if (!loginMgr.isLoggedIn()) {
                     /*
                     If the user is not logged in the prompting the use to login
                      */
-                    Intent loingActivity = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent loingActivity = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loingActivity);
-                    if(updatedEvent.rsvp == true) {
+                    if (updatedEvent.rsvp == true) {
                         Drawable rsvp = getResources().getDrawable(R.drawable.ic_unrsvp_50dip);
                         //btnRsvp.setCompoundDrawables(unrsvp,null,null,null);
                         btnRsvp.setCompoundDrawablesWithIntrinsicBounds(rsvp, null, null, null);
                         btnRsvp.setText("UnRsvp");
                         ivRsvpInfo.setImageDrawable(
                                 getResources().getDrawable(R.drawable.ic_rsvp_yes_info_75dip));
-                        tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");;
+                        tvRsvpInfo.setText("All set, You have Rsvp-ed to this event!");
+                        ;
                     } else {
 
                         Drawable rsvp = getResources().getDrawable(R.drawable.ic_rsvp_50dip);
@@ -355,9 +359,9 @@ public class EventInfoActivity extends FragmentActivity implements
                 } else {
                     user = loginMgr.getCurrentUser();
                     //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
-                    if(btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
+                    if (btnRsvp.getText().toString().equalsIgnoreCase("RSVP")) {
                         //Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
-                        obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(),rsvpResponseHandler);
+                        obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(), rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
                         //Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
@@ -365,7 +369,7 @@ public class EventInfoActivity extends FragmentActivity implements
 
                     } else {
                     }
-                 }
+                }
 
             }
         });
@@ -405,16 +409,16 @@ public class EventInfoActivity extends FragmentActivity implements
     }
 
     private void addNotification() {
-        Long time = new GregorianCalendar().getTimeInMillis()+30000;
+        Long time = new GregorianCalendar().getTimeInMillis() + 30000;
 
         // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
         // specified AlarmReceiver in the Intent. The onReceive() method of this class will execute when the broadcast from your alarm is received.
         Intent intentAlarm = new Intent(this, DisplayNotificationReceiver.class);
         Bundle b = new Bundle();
-        b.putString("EventName",updatedEvent.getTitle());
-        b.putString("DisplayMessage","Have you RSVP-ed yet ?");
-        intentAlarm.putExtra("EventName",updatedEvent.getTitle());
-        intentAlarm.putExtra("DisplayMessage","Have you RSVP-ed yet! ?");
+        b.putString("EventName", updatedEvent.getTitle());
+        b.putString("DisplayMessage", "Have you RSVP-ed yet ?");
+        intentAlarm.putExtra("EventName", updatedEvent.getTitle());
+        intentAlarm.putExtra("DisplayMessage", "Have you RSVP-ed yet! ?");
 
         // Get the Alarm Service.
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -422,7 +426,7 @@ public class EventInfoActivity extends FragmentActivity implements
         // Set the alarm for a particular time.
         PendingIntent addRemainder = PendingIntent.getBroadcast(this
                 , this.getUniqueRandomRequestCode()
-                , intentAlarm,PendingIntent.FLAG_ONE_SHOT);
+                , intentAlarm, PendingIntent.FLAG_ONE_SHOT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
         //Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
         FragmentManager fm = getSupportFragmentManager();
@@ -486,7 +490,7 @@ public class EventInfoActivity extends FragmentActivity implements
         switch (requestCode) {
 
             case CONNECTION_FAILURE_RESOLUTION_REQUEST:
-			/*
+            /*
 			 * If the result code is Activity.RESULT_OK, try to connect again
 			 */
                 switch (resultCode) {
@@ -516,7 +520,7 @@ public class EventInfoActivity extends FragmentActivity implements
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
         } else {
-           // Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -606,9 +610,6 @@ public class EventInfoActivity extends FragmentActivity implements
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
         }
-
-
-
 
 
     }
