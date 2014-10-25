@@ -227,6 +227,11 @@ public class Event extends Model {
         return events;
     }
 
+    /**
+     * get unique upcoming event ids
+     * @param jsonArray
+     * @return Set<Long> unique events ids
+     */
     public static Set<Long> getUniqueEventIds(JSONArray jsonArray) {
         Set<Long> uniqueIds = new HashSet<Long>();
 
@@ -243,8 +248,6 @@ public class Event extends Model {
                 e.printStackTrace();
                 continue;
             }
-            // convert json to Event model
-
         }
         return uniqueIds;
     }

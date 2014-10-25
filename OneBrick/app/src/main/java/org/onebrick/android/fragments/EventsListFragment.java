@@ -28,7 +28,6 @@ public class EventsListFragment extends Fragment {
     protected EventsListAdapter adapter;
     protected ArrayList<Event> arrayOfEvents;
     protected OneBrickClient client;
-    //protected Set<Long> setOfUpcomingEvents;
 
     public EventsListFragment() {
         // Required empty public constructor
@@ -38,7 +37,6 @@ public class EventsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         arrayOfEvents = new ArrayList<Event>();
         adapter = new EventsListAdapter(getActivity(), arrayOfEvents);
-        //setOfUpcomingEvents = new HashSet<Long>();
     }
 
     @Override
@@ -64,37 +62,4 @@ public class EventsListFragment extends Fragment {
             }
         });
     }
-
-//    protected void setupShareListeners(){
-//        shareIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//        share_fb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//        share_tw.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                shareThis(v);
-//            }
-//        });
-//    }
-
-//    protected void shareThis(View view){
-//        Toast.makeText(getActivity(), "Social share!", Toast.LENGTH_SHORT).show();
-//        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
-//        intent.setType("text/plain");
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//        // Add data to the intent, the receiving app will decide what to do with it.
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
-//        intent.putExtra(Intent.EXTRA_TEXT, "Body of the message!");
-//        startActivity(Intent.createChooser(intent, "share"));
-//    }
-
 }

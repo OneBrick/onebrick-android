@@ -11,7 +11,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class TwitterShareFragment extends DialogFragment {
         if(resolved){
             startActivity(tweetIntent);
         }else{
-            Toast.makeText(getActivity(), "no twitter app ", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "no twitter app ", Toast.LENGTH_SHORT).show();
             tweetIntent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://twitter.com/intent/tweet"));
 
