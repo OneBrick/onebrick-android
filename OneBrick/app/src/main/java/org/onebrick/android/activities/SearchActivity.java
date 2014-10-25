@@ -13,14 +13,14 @@ import org.onebrick.android.adapters.EventSearchListAdapter;
 public class SearchActivity extends Activity {
     SwipeListView eventSearchList;
     EventSearchListAdapter aEventSearchList;
-    ArrayList<Events> eventList;
+    //ArrayList<Events> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seach);
         eventSearchList = (SwipeListView) findViewById(R.id.lvEventSearchList);
-        aEventSearchList = new EventSearchListAdapter(this,R.id.);
+        //aEventSearchList = new EventSearchListAdapter(this,R.id.);
     }
 
 
