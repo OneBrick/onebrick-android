@@ -4,14 +4,23 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.fortysevendeg.swipelistview.SwipeListView;
+
 import org.onebrick.android.R;
+import org.onebrick.android.adapters.EventSearchListAdapter;
 
 public class SearchActivity extends Activity {
+    SwipeListView eventSearchList;
+    EventSearchListAdapter aEventSearchList;
+    ArrayList<Events> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seach);
+        eventSearchList = (SwipeListView) findViewById(R.id.lvEventSearchList);
+        aEventSearchList = new EventSearchListAdapter(this,R.id.);
     }
 
 
