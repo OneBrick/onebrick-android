@@ -25,8 +25,6 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         ImageView ivProfilePhoto;
         TextView tvEventTitle;
         TextView tvEventStartDate;
-        TextView tvEventEndDate;
-        TextView tvDateDisplay;
         TextView tvEventAddress;
         ImageView fbShare;
         ImageView twitterShare;
@@ -37,7 +35,6 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
     public EventsListAdapter(Context context, ArrayList<Event> events) {
         super(context, R.layout.item_event_list, events);
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -51,9 +48,7 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
 
             viewHolder.ivProfilePhoto = (ImageView) convertView.findViewById(R.id.ivProfilePhoto);
             viewHolder.tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
-            viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventStartDate);
-            viewHolder.tvEventEndDate = (TextView) convertView.findViewById(R.id.tvEventEndDate);
-            viewHolder.tvDateDisplay = (TextView) convertView.findViewById(R.id.tvDateDisplay);
+            viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventDate);
             viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvEventAddress);
             viewHolder.fbShare = (ImageView) convertView.findViewById(R.id.ibShareFacebook);
             viewHolder.twitterShare = (ImageView) convertView.findViewById(R.id.ibShareTwitter);
@@ -69,9 +64,8 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         imageLoader.displayImage(event.getProfilePhotoUri(), viewHolder.ivProfilePhoto);
 
         viewHolder.tvEventTitle.setText(event.getTitle());
-        viewHolder.tvEventStartDate.setText(Utils.getFormattedTime(event.getEventStartDate()));
-        viewHolder.tvEventEndDate.setText(" - " + Utils.getFormattedTimeEndOnly(event.getEventStartDate(), event.getEventEndDate()));
-        viewHolder.tvDateDisplay.setText(Utils.getFormattedTimeDateOnly(event.getEventStartDate()));
+        viewHolder.tvEventStartDate.setText(Utils.getFormattedEventStartDate(
+                event.getEventStartDate()));
         viewHolder.tvEventAddress.setText(event.getEventAddress());
         viewHolder.fbShare.setOnClickListener(new View.OnClickListener() {
             @Override

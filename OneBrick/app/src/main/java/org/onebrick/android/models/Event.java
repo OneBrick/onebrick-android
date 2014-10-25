@@ -160,9 +160,10 @@ public class Event extends Model {
         return event;
     }
 
+    // TODO: this is hack need to get image uri from server
     private static String getProfilePhotoUri(long eventId){
-        String imageUri = "assets://volunteer_hands.png";
-        return "assets://volunteer_hands.png";
+        long imageId = (eventId % 20) + 1;
+        return "assets://images/image" + imageId + ".jpg";
     }
 
     // Finds existing user based on remoteId or creates new user and returns

@@ -14,102 +14,82 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginRight="6dp"
-        android:src="@drawable/boston_banner" />
-
-    <TextView
-        android:id="@+id/tvDateDisplay"
-        android:layout_alignRight="@id/ivProfilePhoto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/event_date_bg"
-        android:layout_margin="1dp"
-        android:gravity="center"
-        android:text="date"
-        android:textColor="#000000" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/boston_banner"/>
 
     <TextView
         android:id="@+id/tvEventTitle"
+        android:layout_toRightOf="@id/ivProfilePhoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:layout_toRightOf="@id/tvDateDisplay"
+        android:textSize="@dimen/event_title_text_size"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:text="Title"/>
 
     <TextView
-        android:id="@+id/tvEventStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEventTitle"
-        android:layout_toRightOf="@id/tvDateDisplay"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="StartDate"/>
-
-    <TextView
-        android:id="@+id/tvEventEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="EndDate"
-        android:layout_below="@+id/tvEventTitle"
-        android:layout_toRightOf="@+id/tvEventStartDate"
-        android:layout_toEndOf="@+id/tvEventStartDate" />
-
-    <TextView
         android:id="@+id/tvEventAddress"
+        android:layout_below="@+id/tvEventTitle"
+        android:layout_alignLeft="@+id/tvEventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EventAddress"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:layout_below="@+id/tvEventStartDate"
-        android:layout_toRightOf="@id/tvDateDisplay"
-        android:layout_alignRight="@+id/tvEventTitle"
-        android:layout_alignEnd="@+id/tvEventTitle" />
+        android:textSize="@dimen/event_date_text_size"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/text_grey"/>
 
-    <Button
-        android:id="@+id/btnRsvp"
+    <TextView
+        android:id="@+id/tvEventDate"
+        android:layout_below="@+id/tvEventAddress"
+        android:layout_alignLeft="@+id/tvEventAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/tvDateDisplay"
-        android:text="@string/rsvp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:background="@drawable/white_button_selector"/>
+        android:layout_marginTop="8dp"
+        android:textAllCaps="true"
+        android:textColor="@color/text_grey"
+        android:text="Date"/>
 
-    <ImageView
-        android:id="@+id/ibShareFacebook"
-        android:scaleType="center"
-        android:layout_width="@dimen/share_images_size"
-        android:layout_height="@dimen/share_images_size"
-        android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/btnRsvp"
-        android:layout_marginRight="2dp"
-        android:src="@drawable/ic_facebook"
-        android:background="@drawable/social_button_selector"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEventDate"
+        android:layout_alignLeft="@id/tvEventDate"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/ibShareTwitter"
-        android:scaleType="center"
-        android:layout_width="@dimen/share_images_size"
-        android:layout_height="@dimen/share_images_size"
-        android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/ibShareFacebook"
-        android:layout_marginRight="2dp"
-        android:src="@drawable/ic_twitter"
-        android:background="@drawable/social_button_selector"/>
+        <Button
+            android:id="@+id/btnRsvp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rsvp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@drawable/white_button_selector"/>
 
-    <ImageView
-        android:id="@+id/ibShare"
-        android:scaleType="center"
-        android:layout_width="@dimen/share_images_size"
-        android:layout_height="@dimen/share_images_size"
-        android:layout_below="@+id/tvEventAddress"
-        android:layout_toRightOf="@id/ibShareTwitter"
-        android:onClick="onShareThis"
-        android:src="@drawable/ic_share"
-        android:background="@drawable/social_button_selector"/>
+        <ImageView
+            android:id="@+id/ibShareFacebook"
+            android:scaleType="center"
+            android:layout_width="@dimen/share_images_size"
+            android:layout_height="@dimen/share_images_size"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/ic_facebook"
+            android:background="@drawable/social_button_selector"/>
+
+        <ImageView
+            android:id="@+id/ibShareTwitter"
+            android:scaleType="center"
+            android:layout_width="@dimen/share_images_size"
+            android:layout_height="@dimen/share_images_size"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/ic_twitter"
+            android:background="@drawable/social_button_selector"/>
+
+        <ImageView
+            android:id="@+id/ibShare"
+            android:scaleType="center"
+            android:layout_width="@dimen/share_images_size"
+            android:layout_height="@dimen/share_images_size"
+            android:onClick="onShareThis"
+            android:src="@drawable/ic_share"
+            android:background="@drawable/social_button_selector"/>
+    </LinearLayout>
 </RelativeLayout>

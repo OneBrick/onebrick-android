@@ -13,6 +13,20 @@ import java.util.Date;
 public class Utils {
     private static final String TAG = "Utils";
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat eventDate = new SimpleDateFormat("EEE, MMM d");
+    private static SimpleDateFormat eventTime = new SimpleDateFormat("h:mm a");
+
+    public static String getFormattedEventStartDate(String onebrickDate) {
+        try {
+            final Date d = dateFormat.parse(onebrickDate);
+            final String date = eventDate.format(d);
+            final String time = eventTime.format(d);
+            return date + " @" + time;
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + onebrickDate);
+        }
+        return "";
+    }
 
     public static String getFormattedTime(String input){
         Date date = null;
@@ -25,6 +39,7 @@ public class Utils {
         }
         return input;
     }
+
     public static String getFormattedTimeDateOnly(String input){
         Date date = null;
         try {
