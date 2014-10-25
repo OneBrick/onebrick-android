@@ -46,7 +46,6 @@ public class MyPastEventsFragment extends EventsListFragment {
         View v = super.onCreateView( inflater, container, savedInstanceState);
         User user = LoginManager.getInstance(container.getContext()).getCurrentUser();
         if (user != null){
-            setupEventsListeners();
             populatePastEvents(user.getUId());
         }
         return v;
@@ -57,18 +56,18 @@ public class MyPastEventsFragment extends EventsListFragment {
         client.getMyEvents(userId, true, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                pbEventsList.setVisibility(ProgressBar.VISIBLE);
+                progressBar.setVisibility(ProgressBar.VISIBLE);
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
                 Log.i("INFO", "callback success"); // logcat log
                 adapter.clear();
                 arrayOfEvents.clear();

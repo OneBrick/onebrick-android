@@ -76,6 +76,8 @@
         android:layout_below="@+id/tvEventAddress"
         android:layout_toRightOf="@id/tvDateDisplay"
         android:text="@string/rsvp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:background="@drawable/white_button_selector"/>
 
     <ImageView

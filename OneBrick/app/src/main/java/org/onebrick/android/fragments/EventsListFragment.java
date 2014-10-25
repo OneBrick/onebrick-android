@@ -24,7 +24,7 @@ public class EventsListFragment extends Fragment {
 
     private static final String TAG = EventsListFragment.class.getName().toString();
 
-    protected ProgressBar pbEventsList;
+    protected ProgressBar progressBar;
     protected ListView lvEventList;
     protected EventsListAdapter adapter;
     protected ArrayList<Event> arrayOfEvents;
@@ -48,7 +48,7 @@ public class EventsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
-        pbEventsList = (ProgressBar) view.findViewById(R.id.pbEventsList);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         lvEventList = (ListView) view.findViewById(R.id.lvEvents);
         lvEventList.setAdapter(adapter);
 
@@ -56,10 +56,12 @@ public class EventsListFragment extends Fragment {
         share_fb = (ImageView) view.findViewById(R.id.ibShareFacebook);
         share_tw = (ImageView) view.findViewById(R.id.ibShareTwitter);
 
+        setupEventsListeners();
         return view;
     }
 
-    protected void setupEventsListeners() {
+    private void setupEventsListeners() {
+
         lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

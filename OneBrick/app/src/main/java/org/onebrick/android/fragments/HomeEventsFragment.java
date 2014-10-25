@@ -3,10 +3,9 @@ package org.onebrick.android.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -58,12 +57,9 @@ public class HomeEventsFragment extends EventsListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = super.onCreateView( inflater, container, savedInstanceState);
-        setupEventsListeners();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         populateHomeEventsList(chapterId);
-        return v;
     }
 
     private void populateHomeEventsList(int chapterId) {
@@ -72,18 +68,18 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onStart() {
                 super.onStart();
-                pbEventsList.setVisibility(ProgressBar.VISIBLE);
+                progressBar.setVisibility(ProgressBar.VISIBLE);
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                pbEventsList.setVisibility(ProgressBar.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
                 Log.i("INFO", "callback success"); // logcat log
                 adapter.clear();
                 arrayOfEvents.clear();
