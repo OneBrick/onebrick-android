@@ -16,6 +16,7 @@ import android.provider.CalendarContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import org.onebrick.android.fragments.ReminderAddDialog;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
 
@@ -190,7 +192,8 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventDateTime.setText(obDtf.formatDateTime(updatedEvent.getEventStartDate())
                 + " - "
                 + obDtf.formatDateTime(updatedEvent.getEventEndDate()));
-        tvEventBrief.setText(updatedEvent.getEventDescription());
+        String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
+        tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
         Address eventAddress;
 
@@ -269,7 +272,7 @@ public class EventInfoActivity extends FragmentActivity implements
 //        tvRsvpInfo = (TextView) findViewById(R.id.tvRsvpInfo);
 //        ivRsvpInfo = (ImageView) findViewById(R.id.ivRsvpPeople);
         ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
-        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
+//        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();
@@ -308,6 +311,16 @@ public class EventInfoActivity extends FragmentActivity implements
         which when clicked the user will be taken to a new
         activity where he will get more detail description on the event.
          */
+         tvEventBrief.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
+                eventDetails.putExtra("Details", "" + selectedEvent.getEventDescription());
+                startActivity(eventDetails);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
         tvLearnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -395,14 +408,14 @@ public class EventInfoActivity extends FragmentActivity implements
         /*
         This method is called when user decides to add reminders about event.
          */
-        ivAddReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(),"Adding notification",Toast.LENGTH_LONG).show();
-                addNotification();
-
-            }
-        });
+//        ivAddReminder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Toast.makeText(getApplicationContext(),"Adding notification",Toast.LENGTH_LONG).show();
+//                addNotification();
+//
+//           }
+//        });
     }
 
     private void addNotification() {

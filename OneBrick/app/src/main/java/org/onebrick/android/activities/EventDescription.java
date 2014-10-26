@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.Utils;
 
 public class EventDescription extends Activity {
     TextView tvEventDetails;
@@ -20,7 +21,7 @@ public class EventDescription extends Activity {
         tvEventDetails = (TextView) findViewById(R.id.tvEventDescription);
         Intent eventInfo = getIntent();
         details = eventInfo.getStringExtra("Details");
-        tvEventDetails.setText(Html.fromHtml(details));
+        tvEventDetails.setText(Html.fromHtml(Utils.removeImgTagsFromHTML(details)));
         getActionBar().setTitle("Event Description");
     }
 

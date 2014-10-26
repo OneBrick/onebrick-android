@@ -82,4 +82,18 @@ public class Utils {
         }
     }
 
+    /**
+     * remove img tags from html inside event description
+     * Please, don't expect this regular expression always works.
+     *
+     * @param input
+     * @return
+     */
+    public static String removeImgTagsFromHTML(String input){
+        if (input != null && !input.isEmpty()){
+            input = input.replaceAll("(<img\\b[^>]*\\bsrc\\s*=\\s*)([\"\'])((?:(?!\\2)[^>])*)\\2(\\s*[^>]*>)", "");
+        }
+        return input;
+    }
+
 }
