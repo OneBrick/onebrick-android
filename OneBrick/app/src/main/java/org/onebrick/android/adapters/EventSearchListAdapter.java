@@ -12,10 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fortysevendeg.swipelistview.SwipeListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
@@ -89,11 +91,11 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
             viewHolder.tvEventName.setText("" + event.getTitle());
             viewHolder.tvEventAddress.setText("" + event.getEventAddress());
-            viewHolder.tvEventDate.setText("" + dtf.formatDateTime(event.getEventStartDate()));
+            viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(event.getEventStartDate()));
         } else {
             Toast.makeText(getContext(),"Event is null",Toast.LENGTH_LONG).show();
         }
-        //((SwipeListView)parent).recycle(convertView, position);
+        ((SwipeListView)parent).recycle(convertView, position);
         Animation animation = AnimationUtils.loadAnimation(getContext(),
                 (position > lastPosition)
                         ? R.anim.list_item_up_from_bottom

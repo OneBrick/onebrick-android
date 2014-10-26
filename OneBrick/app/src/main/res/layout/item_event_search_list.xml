@@ -8,12 +8,14 @@
         android:id="@+id/back"
         android:tag="back"
         android:background="@drawable/event_card_back_border"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="22dp"
         android:layout_width="match_parent"
-        android:layout_height="180dp">
+        android:layout_height="140dp">
         <ImageView
             android:id="@+id/ivListItemFbShare"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="75dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
@@ -22,7 +24,7 @@
             android:src="@drawable/ic_fb_share"/>
         <ImageView
             android:id="@+id/ivListItemTwitterShare"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="75dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
@@ -31,7 +33,7 @@
             android:src="@drawable/ic_twitter_share"/>
         <ImageView
             android:id="@+id/ivListItemShare"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="75dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
@@ -46,12 +48,13 @@
         android:background="@drawable/event_card_front_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:paddingTop="5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:paddingBottom="5dp"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,7 +67,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_width="75dp"
-                android:background="@drawable/event_image_border"
                 android:src="@drawable/ic_launcher"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
@@ -74,63 +76,64 @@
                 android:layout_toRightOf="@+id/ivListItemEventImage"
                 android:layout_width="fill_parent"
                 android:text="Some long event name amy be 2 lines"
-                android:textSize="@dimen/medium"
-                android:textStyle="bold"
-                android:layout_marginLeft="5dp"
+                android:textSize="@dimen/big"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:layout_height="match_parent" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="1dp"
             android:padding="5dp">
             <ImageView
                 android:id="@+id/ivListItemEventLocation"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_width="30dp"
-                android:layout_height="75dp"
-                android:src="@drawable/img_location"
+                android:layout_centerVertical="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/img_marker_grey"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 />
             <TextView
                 android:id="@+id/tvListItemEventAddress"
+                android:layout_centerVertical="true"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_grey"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@+id/ivListItemEventLocation"
-                android:gravity="center_vertical"
                 android:text="Some long event address > 1 line"
                 android:textSize="@dimen/medium"/>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="1dp"
             android:padding="5dp">
             <ImageView
                 android:id="@+id/ivListViewEventDate"
-                android:layout_width="30dp"
-                android:layout_height="75dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/img_date"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/img_clock_grey"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 />
             <TextView
                 android:id="@+id/tvListItemEventDate"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_grey"
+                android:textAllCaps="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@+id/ivListViewEventDate"
-                android:gravity="center_vertical"
                 android:text="event date 1 line"
                 android:textSize="@dimen/medium"/>
         </RelativeLayout>
