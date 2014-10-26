@@ -16,7 +16,7 @@ import org.onebrick.android.helpers.FontsHelper;
 public class SplashScreenActivity extends Activity {
     ImageView ivFooter;
     ImageLoader imgLoader =  ImageLoader.getInstance();
-    TextView tvQuote;
+    //TextView tvQuote;
     TextView tvWelcomeNote;
     ImageView ivObLogo;
     String imageUri = "assets://volunteer_hands.png";
@@ -36,14 +36,14 @@ public class SplashScreenActivity extends Activity {
 
 
         ivFooter = (ImageView) findViewById(R.id.ivSplashScreenFooter);
-        tvQuote = (TextView) findViewById(R.id.tvQuote);
+        //tvQuote = (TextView) findViewById(R.id.tvQuote);
         tvWelcomeNote = (TextView) findViewById(R.id.tvWelcomeNote);
         ivObLogo = (ImageView) findViewById(R.id.ivLauncherLogo);
-        ivObLogo.setAlpha(0.0f);
-        ivObLogo.animate().alpha(1.0f).setDuration(3000);
+       // ivObLogo.setAlpha(0.0f);
+       // ivObLogo.animate().alpha(1.0f).setDuration(3000);
 
 
-        tvQuote.setTypeface(FontsHelper.getRobotoThinItalic());
+        //tvQuote.setTypeface(FontsHelper.getRobotoThinItalic());
         tvWelcomeNote.setTypeface(FontsHelper.getRobotoRegular());
         imgLoader.displayImage(imageUri,ivFooter);
         final String  myChapterName = OneBrickApplication
