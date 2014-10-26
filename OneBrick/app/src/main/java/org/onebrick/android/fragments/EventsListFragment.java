@@ -58,7 +58,6 @@ public class EventsListFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
                 Event event = aEventList.getItem(position);
-                Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
                 eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);

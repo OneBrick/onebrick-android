@@ -64,7 +64,7 @@
                     android:layout_toRightOf="@+id/ivCalendarIcon"
                     android:layout_centerVertical="true"
                     android:textColor="@color/charcoal"
-                    android:textSize="@dimen/event_detail_text_small_size"
+                    android:textSize="@dimen/event_detail_text_size"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
             </RelativeLayout>
 
@@ -290,7 +290,12 @@
             android:id="@+id/btnRsvp"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:text="@string/rsvp"
-            style="@style/eventRsvpButton"/>
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="@string/rsvp_button"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_rsvp"
+            />
     </LinearLayout>
 </RelativeLayout>

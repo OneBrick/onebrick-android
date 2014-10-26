@@ -53,7 +53,7 @@ public class OneBrickClient extends OAuthBaseClient {
 
     public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/user/login.json");
-        apiUri = apiUri + "?username=" + username + "&password=" + password;
+        apiUri = apiUri + "?username=" + username.trim() + "&password=" + password.trim();
 //        String apiUri = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
 //        RequestParams params = new RequestParams();
 //        params.put("username", username);
@@ -79,6 +79,7 @@ public class OneBrickClient extends OAuthBaseClient {
     This function is called to post rsvp request to an event
      */
     public void postRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
+        Log.i("rsvp", eventId + " -- " + userId);
         String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);
@@ -86,6 +87,7 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void postUnRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
+        Log.i("unrsvp", eventId + " -- " + userId);
         String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);
