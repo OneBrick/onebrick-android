@@ -28,7 +28,7 @@
         android:id="@+id/ivSplashScreenFooter"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true" />
