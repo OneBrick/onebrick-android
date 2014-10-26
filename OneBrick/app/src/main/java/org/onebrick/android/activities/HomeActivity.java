@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.onebrick.android.helpers.LoginManager;
@@ -32,8 +33,9 @@ public class HomeActivity extends FragmentActivity
     private DrawerLayout dlDrawerLayout;
     private View llDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    String chapterName;
-    int chapterId;
+    private String chapterName;
+    private int chapterId;
+    private ProgressBar pbSelectChapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
 
+        pbSelectChapter = (ProgressBar) findViewById(R.id.pbSelectChapter);
     }
 
     private void setupUi() {
@@ -150,10 +153,6 @@ public class HomeActivity extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        /*if (id == R.id.action_login) {
-            // Hye: For now plugin user login here, later I will add to navigation drawer
-            return true;
-        }*/
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -201,6 +200,16 @@ public class HomeActivity extends FragmentActivity
     public void onSelectChapter(@NonNull Chapter chapter) {
         displayEventsInChapter(chapter);
         removeSelectChapterFragment();
+    }
+
+    @Override
+    public void onStartLoading() {
+        pbSelectChapter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onFinishLoading() {
+        pbSelectChapter.setVisibility(View.GONE);
     }
 
     private void removeSelectChapterFragment() {
