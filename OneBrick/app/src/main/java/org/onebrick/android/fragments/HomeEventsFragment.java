@@ -81,12 +81,11 @@ public class HomeEventsFragment extends EventsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.GONE);
                 Log.i("INFO", "callback success"); // logcat log
-                adapter.clear();
-                arrayOfEvents.clear();
+                aEventList.clear();
+                aEventList.clear();
                 if (response != null){
-                    arrayOfEvents = Event.fromJSONArray(response, cid);
-                    adapter.addAll(arrayOfEvents);
-                    adapter.notifyDataSetChanged();
+                    aEventList.addAll(Event.fromJSONArray(response, cid));
+                    aEventList.notifyDataSetChanged();
                 }
             }
             @Override

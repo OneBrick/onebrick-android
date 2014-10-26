@@ -3,45 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_grey">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/back"
         android:tag="back"
         android:background="@drawable/event_card_back_border"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="22dp"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="140dp">
         <ImageView
             android:id="@+id/ivListItemFbShare"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             android:padding="5dp"
-            android:layout_weight="1"
             android:src="@drawable/ic_fb_share"/>
         <ImageView
             android:id="@+id/ivListItemTwitterShare"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:padding="5dp"
-            android:layout_weight="1"
             android:src="@drawable/ic_twitter_share"/>
         <ImageView
             android:id="@+id/ivListItemShare"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
             android:padding="5dp"
             android:src="@drawable/ic_gen_share"/>
-    </LinearLayout>
-
+    </GridLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/front"
         android:tag="front"
@@ -138,4 +136,6 @@
                 android:textSize="@dimen/medium"/>
         </RelativeLayout>
     </LinearLayout>
+
+
 </FrameLayout>

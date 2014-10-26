@@ -5,17 +5,15 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
@@ -68,13 +66,13 @@ public class MyPastEventsFragment extends EventsListFragment {
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                arrayOfEvents.clear();
+                eventList.clear();
                 if (response != null) {
-                    arrayOfEvents.clear();
-                    arrayOfEvents = Event.fromJSONArray(response, myChapterId);
+                    eventList.clear();
+                    eventList = Event.fromJSONArray(response, myChapterId);
 
                     // remove upcoming event
-                    final Iterator<Event> itr = arrayOfEvents.iterator();
+                    final Iterator<Event> itr = eventList.iterator();
                     final long currentTime = System.currentTimeMillis();
                     while (itr.hasNext()) {
                         final Date date = Utils.getDate(itr.next().eventStartDate);
@@ -83,13 +81,13 @@ public class MyPastEventsFragment extends EventsListFragment {
                         }
                     }
 
-                    adapter.clear();
-                    adapter.addAll(arrayOfEvents);
-                    adapter.notifyDataSetChanged();
+                    aEventList.clear();
+                    aEventList.addAll(eventList);
+                    aEventList.notifyDataSetChanged();
 
                     // remove upcoming events because current response includes both past and upcoming ones
                     //removeUpcomingEvents();
-                    Log.i("size of past events:", arrayOfEvents.size() + "");
+                    Log.i("size of past events:", eventList.size() + "");
                 }
             }
             @Override

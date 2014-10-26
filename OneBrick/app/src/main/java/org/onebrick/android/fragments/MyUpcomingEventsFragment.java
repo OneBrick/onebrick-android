@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -72,11 +71,11 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                arrayOfEvents.clear();
-                arrayOfEvents = Event.fromJSONArray(response, myChapterId);
-                adapter.clear();
-                adapter.addAll(arrayOfEvents);
-                adapter.notifyDataSetChanged();
+                eventList.clear();
+                eventList = Event.fromJSONArray(response, myChapterId);
+                aEventList.clear();
+                aEventList.addAll(eventList);
+                aEventList.notifyDataSetChanged();
 
             }
             @Override
