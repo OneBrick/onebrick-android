@@ -34,9 +34,11 @@
 
         <ImageView
             android:id="@+id/ivUserPic"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="8dp"
             android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/profile_pic"/>
 
         <TextView
@@ -45,7 +47,7 @@
             android:text="@string/name_label"
             android:gravity="center"
             android:padding="8dp"
-            android:textStyle="bold"
+            android:textSize="@dimen/big"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
@@ -55,7 +57,9 @@
             android:text="@string/login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/drawerItem"/>
+            style="@style/drawerItem"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_login"/>
 
         <!--<ImageButton-->
             <!--android:id="@+id/ibSetting"-->
@@ -71,15 +75,32 @@
             android:text="@string/my_events"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/drawerItem"/>
+            style="@style/drawerItem"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_my_events"/>
 
-        <TextView
+        <LinearLayout
             android:id="@+id/tvSelectChapter"
             android:layout_below="@id/tvMyEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
             android:text="@string/select_chapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/drawerItem"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_select_chapter"/>
+
+        <ProgressBar
+            android:id="@+id/pbSelectChapter"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/drawerItem"/>
+            android:layout_gravity="center_vertical"
+            style="@style/progressBar.Medium"
+            android:visibility="gone"/>
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/flChaptersContainer"
@@ -87,13 +108,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!--<ListView-->
-            <!--android:id="@+id/lvChapters"-->
-            <!--android:layout_below="@id/tvMyEvents"-->
-            <!--android:layout_width="240dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:choiceMode="singleChoice"-->
-            <!--android:dividerHeight="1dp"-->
-            <!--android:divider="@android:color/transparent"/>-->
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

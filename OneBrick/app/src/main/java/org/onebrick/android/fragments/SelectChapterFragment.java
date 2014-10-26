@@ -25,11 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
- * <p/>
+ * A fragment representing a list to select chapter.
  * Activities containing this fragment MUST implement the {@link OnSelectChapterFragmentListener}
  * interface.
  */
@@ -101,6 +97,22 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
         @Override
+        public void onStart() {
+            super.onStart();
+            if (mListener != null) {
+                mListener.onStartLoading();
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            if (mListener != null) {
+                mListener.onFinishLoading();
+            }
+        }
+
+        @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
             final List<Chapter> chapterList = Chapter.getChapterListFromJsonObject(response);
@@ -123,5 +135,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
      */
     public interface OnSelectChapterFragmentListener {
         public void onSelectChapter(@NonNull Chapter chapter);
+        public void onStartLoading();
+        public void onFinishLoading();
     }
 }

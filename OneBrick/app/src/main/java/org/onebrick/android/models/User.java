@@ -21,6 +21,10 @@ public class User extends Model {
     public String sessionId;
     @Column(name="SessionName")
     public String sessionName;
+
+    @Column(name="profileImageUri")
+    public String profileImageUri;
+
     /*
     This is value that will be used in RVP API. Needs to set to a valid
     needs to be set to a valid UID after successful authentication
@@ -28,8 +32,6 @@ public class User extends Model {
      */
     @Column(name="UID")
     public long UID = -1;
-
-    private String profileImageUrl;
 
     public static User fromJSON(JSONObject jsonObject){
         User user = new User();
@@ -51,28 +53,6 @@ public class User extends Model {
     public void setUId(long uId) {
         this.UID = uId;
     }
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-//    public String getFirstName() {
-//        return name;
-//    }
-//
-//    public void setFirstName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
 
     public String getName() {
         return name;
@@ -96,4 +76,7 @@ public class User extends Model {
         this.chapterId = chapterId;
     }
 
+    public String getProfileImageUri() {
+        return "assets://images/profile1.png";
+    }
 }

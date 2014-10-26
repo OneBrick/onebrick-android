@@ -43,7 +43,9 @@
     <!-- Drawer Items -->
     <style name="drawerItem">
         <item name="android:padding">8dp</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">@dimen/medium</item>
+        <item name="android:textColor">@color/text_grey</item>
+        <!--<item name="android:typeface">monospace</item>-->
         <item name="android:background">@drawable/onebrick_background_selector</item>
     </style>
 
@@ -55,6 +57,18 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/event_rsvp_button</item>
+    </style>
+
+    <style name="progressBar.Medium" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:minWidth">28dip</item>
+        <item name="android:maxWidth">28dip</item>
+        <item name="android:minHeight">28dip</item>
+        <item name="android:maxHeight">28dip</item>
+    </style>
+
+    <style name="SelectChapterList" parent="Widget.AppCompat.ListView.Menu">
+        <item name="android:textColor">@color/text_grey</item>
+        <item name="android:textSize">@dimen/small</item>
     </style>
 
 </resources>
