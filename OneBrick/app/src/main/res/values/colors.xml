@@ -9,6 +9,9 @@
     <color name="charcoal">#36454F</color>
     <color name="light_grey">#d8d8d8</color>
 
+    <color name="rsvp_blue">#2698D4</color>
+    <color name="rsvp_background">#DDeaeaea</color>
+
     <color name="dark_tranparent_black">#80000000</color> <!-- 50% -->
     <color name="deep_tranparent_black">#40000000</color> <!-- 25% -->
     <color name="faint_tranparent_black">#20000000</color> <!-- 12% -->

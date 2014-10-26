@@ -12,17 +12,31 @@
     </fragment>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="0dp">
         <TextView
             android:id="@+id/tvEventLocation"
-            android:textColor="@color/charcoal"
-            android:textSize="20dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="Address of the Event Location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/event_detail_padding"
+            android:paddingTop="@dimen/event_detail_padding"
+            android:paddingLeft="@dimen/event_detail_padding_side"
+            android:paddingRight="@dimen/event_detail_padding_side"
+            android:textColor="@color/charcoal"
+            android:textSize="@dimen/event_detail_text_small_size"/>
+        <Button
+            android:id="@+id/btnFindDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_alignRight="@id/tvEventLocation"
+            android:gravity="center_horizontal"
+            android:drawableStart="@drawable/ic_map"/>
     </RelativeLayout>
 
 

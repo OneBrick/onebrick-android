@@ -53,7 +53,7 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/event_rsvp_button</item>
     </style>
 

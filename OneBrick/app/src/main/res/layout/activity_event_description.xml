@@ -13,7 +13,7 @@
         <TextView
             android:id="@+id/tvEventDescription"
             android:textColor="@color/charcoal"
-            android:textSize="20dp"
+            android:textSize="@dimen/event_detail_text_size"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ScrollView>

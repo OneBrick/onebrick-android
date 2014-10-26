@@ -10,7 +10,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
             <RelativeLayout
                 android:id="@+id/rlBannerImg"
@@ -27,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:textSize="30dp"
+                    android:textSize="@dimen/event_detail_title_size"
                     android:textColor="@android:color/black"
                     android:text="EventTitle"
                     android:textStyle="bold"
@@ -37,15 +36,19 @@
             <RelativeLayout
                 android:id="@+id/rlDateInfo"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
+                android:paddingBottom="@dimen/event_detail_padding"
+                android:paddingTop="@dimen/event_detail_padding"
+                android:paddingLeft="@dimen/event_detail_padding_side"
+                android:paddingRight="@dimen/event_detail_padding_side"
                 android:background="@drawable/item_seperation_border">
                 <ImageView
                     android:id="@+id/ivCalendarIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:layout_centerVertical="true"
@@ -61,53 +64,20 @@
                     android:layout_toRightOf="@+id/ivCalendarIcon"
                     android:layout_centerVertical="true"
                     android:textColor="@color/charcoal"
+                    android:textSize="@dimen/event_detail_text_small_size"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
             </RelativeLayout>
 
-            <!--
-            <RelativeLayout
-                android:id="@+id/rlRsvpInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:paddingBottom="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/item_seperation_border">
-                <ImageView
-                    android:id="@+id/ivRsvpPeople"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:adjustViewBounds="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:scaleType="fitCenter"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/tvRsvpInfo"
-                    android:src="@drawable/ic_rsvp_info_75dip"/>
-                <TextView
-                    android:id="@+id/tvRsvpInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="3dp"
-                    android:paddingLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/charcoal"
-                    android:textSize="16dp"
-                    android:text="You have not RSVP-ed to this event yet!"/>
-            </RelativeLayout>
-            -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
+                android:paddingBottom="@dimen/event_detail_padding"
+                android:paddingTop="@dimen/event_detail_padding"
+                android:paddingLeft="@dimen/event_detail_padding_side"
+                android:paddingRight="@dimen/event_detail_padding_side"
                 android:background="@drawable/item_seperation_border">
                 <TextView
                     android:id="@+id/tvEventBrief"
@@ -116,7 +86,7 @@
                     android:textColor="@color/charcoal"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:textSize="15dp"
+                    android:textSize="@dimen/event_detail_text_small_size"
                     android:maxLines="4"
                     android:lineSpacingExtra="5dp"
                     android:ellipsize="end"
@@ -128,8 +98,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvEventBrief"
                     android:layout_alignLeft="@+id/tvEventBrief"
+                    android:paddingTop="7dp"
                     android:text="Learn More >"
-                    android:textSize="20dp"
+                    android:textSize="@dimen/event_detail_text_size"
                     android:textColor="@color/onebrick_orange"
                     android:gravity="center"/>
             </RelativeLayout>
@@ -139,13 +110,18 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
+                android:paddingBottom="@dimen/event_detail_padding"
+                android:paddingTop="@dimen/event_detail_padding"
+                android:paddingLeft="@dimen/event_detail_padding_side"
+                android:paddingRight="@dimen/event_detail_padding_side"
                 android:background="@drawable/item_seperation_border">
                 <TextView
                     android:id="@+id/tvEventLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/charcoal"
-                    android:textSize="20dp"
+                    android:textSize="@dimen/event_detail_text_small_size"
+                    android:paddingBottom="5dp"
                     android:maxLines="4"
                     android:layout_alignLeft="@+id/mapFrame"
                     android:text="Some Address to the event location"/>
@@ -182,40 +158,46 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
+                android:paddingBottom="@dimen/event_detail_padding"
+                android:paddingTop="@dimen/event_detail_padding"
+                android:paddingLeft="@dimen/event_detail_padding_side"
+                android:paddingRight="@dimen/event_detail_padding_side"
                 android:background="@drawable/item_seperation_border">
                 <TextView
                     android:id="@+id/tvContactsLbl"
-                    android:background="@drawable/item_seperation_border"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Contacts"
+                    android:text="@string/contacts"
                     android:textColor="@color/charcoal"
-                    android:textSize="20dp"
+                    android:textSize="@dimen/event_detail_text_small_size"
                     android:gravity="center"/>
                 <RelativeLayout
                     android:layout_below="@+id/tvContactsLbl"
                     android:layout_width="match_parent"
-                    android:background="@drawable/item_seperation_border"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
                     <Button
                         android:id="@+id/btnEmailManager"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
                         android:background="@android:color/transparent"
+                        android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
                         android:drawableStart="@drawable/ic_email_2"
-                        android:text="Manager"/>
+                        android:text="@string/manager_label"/>
                     <Button
                         android:id="@+id/btnEmailCoordinator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
                         android:layout_toRightOf="@+id/btnEmailManager"
                         android:drawableStart="@drawable/ic_email_2"
-                        android:text="Coordinator"/>
+                        android:text="@string/coordinator_label"/>
                 </RelativeLayout>
             </RelativeLayout>
             <LinearLayout
@@ -223,9 +205,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:paddingBottom="5dp"
                 android:orientation="horizontal"
+                android:paddingLeft="@dimen/event_detail_padding_side"
+                android:paddingRight="@dimen/event_detail_padding_side"
+                android:gravity="center_horizontal"
                 android:background="@drawable/item_seperation_border">
+                <ImageView
+                    android:id="@+id/ivEventInfoFbShare"
+                    android:scaleType="center"
+                    android:layout_width="@dimen/share_images_size"
+                    android:layout_height="@dimen/share_images_size"
+                    android:layout_marginRight="2dp"
+                    android:src="@drawable/ic_facebook"
+                    android:background="@drawable/social_button_selector"/>
+
+                <ImageView
+                    android:id="@+id/ivEventInfoTwitterShare"
+                    android:scaleType="center"
+                    android:layout_width="@dimen/share_images_size"
+                    android:layout_height="@dimen/share_images_size"
+                    android:layout_marginRight="2dp"
+                    android:src="@drawable/ic_twitter"
+                    android:background="@drawable/social_button_selector"/>
+
+                <ImageView
+                    android:id="@+id/ivEventInfoGenShare"
+                    android:scaleType="center"
+                    android:layout_width="@dimen/share_images_size"
+                    android:layout_height="@dimen/share_images_size"
+                    android:src="@drawable/ic_share"
+                    android:background="@drawable/social_button_selector"/>
+                <!--
                 <ImageView
                     android:id="@+id/ivEventInfoFbShare"
                     android:layout_width="40dp"
@@ -258,10 +268,11 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_reminder"/>
+                    -->
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"></LinearLayout>
+                android:layout_height="55dp"></LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout
@@ -274,7 +285,7 @@
         android:layout_marginBottom="0dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
-        android:background="@color/charcoal">
+        android:background="@color/rsvp_background">
         <Button
             android:id="@+id/btnRsvp"
             android:layout_width="130dp"
