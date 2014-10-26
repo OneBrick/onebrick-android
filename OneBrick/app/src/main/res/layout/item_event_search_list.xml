@@ -90,12 +90,11 @@
                 android:id="@+id/ivListItemEventLocation"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/img_marker_grey"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                />
+                android:scaleType="fitCenter" />
             <TextView
                 android:id="@+id/tvListItemEventAddress"
                 android:layout_centerVertical="true"
@@ -116,13 +115,12 @@
             android:padding="5dp">
             <ImageView
                 android:id="@+id/ivListViewEventDate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/img_clock_grey"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                />
+                android:scaleType="fitCenter"/>
             <TextView
                 android:id="@+id/tvListItemEventDate"
                 android:layout_width="fill_parent"
@@ -133,7 +131,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@+id/ivListViewEventDate"
                 android:text="event date 1 line"
-                android:textSize="@dimen/medium"/>
+                android:textSize="@dimen/small"/>
         </RelativeLayout>
     </LinearLayout>
 
