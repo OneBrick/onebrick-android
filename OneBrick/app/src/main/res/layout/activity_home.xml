@@ -34,9 +34,10 @@
 
         <ImageView
             android:id="@+id/ivUserPic"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/profile_pic"/>
 
         <TextView
@@ -45,7 +46,7 @@
             android:text="@string/name_label"
             android:gravity="center"
             android:padding="8dp"
-            android:textStyle="bold"
+            android:textSize="@dimen/big"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 

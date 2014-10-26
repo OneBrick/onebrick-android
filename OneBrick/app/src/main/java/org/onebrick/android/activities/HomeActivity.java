@@ -14,8 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
@@ -88,7 +91,11 @@ public class HomeActivity extends FragmentActivity
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(loginManager.getCurrentUser().getName());
 
-            findViewById(R.id.ivUserPic).setVisibility(View.VISIBLE);
+            ImageView ivProfile = (ImageView) findViewById(R.id.ivUserPic);
+            ivProfile.setVisibility(View.VISIBLE);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(loginManager.getCurrentUser().getProfileImageUri(), ivProfile);
+
             findViewById(R.id.tvMyEvents).setVisibility(View.VISIBLE);
             findViewById(R.id.tvLogin).setVisibility(View.GONE);
 
