@@ -239,8 +239,8 @@ public class HomeActivity extends FragmentActivity
 
     public void startSearchEventsActivity (MenuItem mi) {
         Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-        i.putExtra("ChapterId",chapterId);
-        i.putExtra("ChapterName", chapterName);
+        i.putExtra("chapterId",chapterId);
+        i.putExtra("chapterName", chapterName);
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }

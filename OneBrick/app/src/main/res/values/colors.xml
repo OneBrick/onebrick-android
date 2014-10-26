@@ -3,6 +3,7 @@
     <!-- OneBrick brand resources -->
     <color name="onebrick_blue">#2698D4</color>
     <color name="onebrick_orange">#DD7129</color>
+    <color name="bg_grey">#cfd8dc</color>
 
     <color name="text_grey">#757575</color>
 
