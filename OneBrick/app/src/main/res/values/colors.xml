@@ -9,7 +9,8 @@
     <color name="charcoal">#36454F</color>
     <color name="light_grey">#d8d8d8</color>
 
-    <color name="rsvp_blue">#2698D4</color>
+    <color name="rsvp_button">#009933</color>
+    <color name="unrsvp_button">#C80000</color>
     <color name="rsvp_background">#DDeaeaea</color>
 
     <color name="dark_tranparent_black">#80000000</color> <!-- 50% -->

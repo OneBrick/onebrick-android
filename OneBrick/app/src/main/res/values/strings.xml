@@ -35,9 +35,11 @@
     <string name="welcome_message">Welcome!\nHappy Volunteering</string>
     <string name="rsvp">RSVP</string>
     <string name="un_rsvp">unRSVP</string>
+    <string name="rsvp_button">RSVP NOW!</string>
+    <string name="un_rsvp_button">unRSVP</string>
     <string name="manager_label">Manager</string>
     <string name="coordinator_label">Coordinator</string>
-    <string name="contacts">Would like to contact management team?</string>
+    <string name="contacts">Would like to contact organizers?</string>
 
     <!-- Drawer items -->
     <string name="login">Login</string>

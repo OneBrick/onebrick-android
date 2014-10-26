@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
@@ -59,7 +58,7 @@ public class EventsListFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
                 Event event = adapter.getItem(position);
-                Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
                 eventInfo.putExtra("EventId",""+event.getEventId());
                 startActivity(eventInfo);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
