@@ -30,9 +30,7 @@ public class Utils {
     }
 
     public static Date getLocalTime(Date utc) {
-        Date local = new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
-        Log.w(TAG, "gmt: " + utc.toString() + " local: " + local.toString());
-        return local;
+        return new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
     }
 
     public static String getFormattedTime(String input){
