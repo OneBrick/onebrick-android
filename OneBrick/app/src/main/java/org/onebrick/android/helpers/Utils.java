@@ -6,6 +6,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by rush on 10/13/14.
@@ -18,14 +19,20 @@ public class Utils {
 
     public static String getFormattedEventStartDate(String onebrickDate) {
         try {
-            final Date d = dateFormat.parse(onebrickDate);
+            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
             final String date = eventDate.format(d);
             final String time = eventTime.format(d);
-            return date + " @" + time;
+            return date + " @ " + time;
         } catch (ParseException e) {
             Log.e(TAG, "cannot parse date: " + onebrickDate);
         }
         return "";
+    }
+
+    public static Date getLocalTime(Date utc) {
+        Date local = new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
+        Log.w(TAG, "gmt: " + utc.toString() + " local: " + local.toString());
+        return local;
     }
 
     public static String getFormattedTime(String input){
