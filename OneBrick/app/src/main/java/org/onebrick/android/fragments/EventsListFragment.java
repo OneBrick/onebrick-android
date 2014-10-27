@@ -28,6 +28,9 @@ public class EventsListFragment extends Fragment {
     EventSearchListAdapter aEventList;
     ArrayList<Event> eventList;
     protected OneBrickClient client;
+    String chapterName;
+    int chapterId;
+
 
     public EventsListFragment() {
         // Required empty public constructor
@@ -43,7 +46,7 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_seach, container, false);
+        View view = inflater.inflate(R.layout.activity_search, container, false);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         lvEvents = (SwipeListView) view.findViewById(R.id.lvEventSearchList);
         lvEvents.setAdapter(aEventList);

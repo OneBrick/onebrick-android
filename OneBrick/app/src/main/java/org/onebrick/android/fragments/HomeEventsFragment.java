@@ -25,8 +25,7 @@ public class HomeEventsFragment extends EventsListFragment {
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
 
-    private String chapterName;
-    private int chapterId;
+
 
     public static HomeEventsFragment newInstance(String chapterName, int chapterId) {
         HomeEventsFragment fragment = new HomeEventsFragment();
@@ -35,6 +34,13 @@ public class HomeEventsFragment extends EventsListFragment {
         args.putInt(ARG_CHAPTER_ID, chapterId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public  int getChapterId() {
+        return chapterId;
+    }
+    public String getChapterName() {
+        return chapterName;
     }
 
     public HomeEventsFragment() {
@@ -49,10 +55,6 @@ public class HomeEventsFragment extends EventsListFragment {
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
-        }
-        // TODO: Prakash this is hack need to remove
-        if (chapterId == 0) {
-            chapterId = 101;
         }
         Log.i("chapter id: ", String.valueOf(chapterId));
     }

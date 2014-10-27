@@ -101,6 +101,9 @@
         <activity
             android:name=".activities.SearchActivity"
             android:label="@string/title_activity_seach" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
     </application>
 

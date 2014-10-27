@@ -39,6 +39,8 @@ public class HomeActivity extends FragmentActivity
     private String chapterName;
     private int chapterId;
     private ProgressBar pbSelectChapter;
+    Fragment eventListFragment;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,8 @@ public class HomeActivity extends FragmentActivity
         chapterId = i.getIntExtra("ChapterId", -1);
         chapterName = i.getStringExtra("ChapterName");
         getActionBar().setTitle(chapterName);
-        Fragment eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
-        FragmentManager fm = getSupportFragmentManager();
+        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
+        fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
 
         pbSelectChapter = (ProgressBar) findViewById(R.id.pbSelectChapter);
@@ -183,9 +185,9 @@ public class HomeActivity extends FragmentActivity
     }
 
     private void displayEventsInChapter(Chapter ch) {
-        Fragment eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(),
+        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(),
                 ch.getChapterId());
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.flHomeContainer, eventListFragment)
                 .commit();
@@ -220,7 +222,7 @@ public class HomeActivity extends FragmentActivity
     }
 
     private void removeSelectChapterFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentByTag(SELECT_CHAPTER_FRAGMENT_TAG);
         if (fragment != null) {
             FragmentTransaction ft = fm.beginTransaction();
@@ -255,8 +257,8 @@ public class HomeActivity extends FragmentActivity
 
     public void startSearchEventsActivity (MenuItem mi) {
         Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-        i.putExtra("chapterId",chapterId);
-        i.putExtra("chapterName", chapterName);
+        i.putExtra("chapterId", ((HomeEventsFragment)eventListFragment).getChapterId());
+        i.putExtra("chapterName", ((HomeEventsFragment)eventListFragment).getChapterName());
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
