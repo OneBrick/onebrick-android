@@ -123,7 +123,7 @@
                 android:scaleType="fitCenter"/>
             <TextView
                 android:id="@+id/tvListItemEventDate"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_grey"
                 android:textAllCaps="true"
@@ -132,6 +132,17 @@
                 android:layout_toRightOf="@+id/ivListViewEventDate"
                 android:text="event date 1 line"
                 android:textSize="@dimen/small"/>
+            <Button
+                android:id="@+id/btnListItemRsvp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btn_rsvp_small"
+                android:text="RSVP"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                />
         </RelativeLayout>
     </LinearLayout>
 

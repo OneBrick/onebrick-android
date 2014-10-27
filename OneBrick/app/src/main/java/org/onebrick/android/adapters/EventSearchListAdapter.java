@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,6 +52,7 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
         ImageView ivFbShare;
         ImageView ivTwitterShare;
         ImageView ivShare;
+        Button btnRsvp;
     }
 
     public EventSearchListAdapter(Context context, ArrayList<Event> events) {
@@ -79,11 +81,14 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             viewHolder.ivEventDate = (ImageView) convertView.findViewById(R.id.ivListViewEventDate);
             viewHolder.tvEventDate = (TextView) convertView.findViewById(R.id.tvListItemEventDate);
 
+            viewHolder.btnRsvp = (Button) convertView.findViewById(R.id.btnListItemRsvp);
+
             viewHolder.ivFbShare = (ImageView) convertView.findViewById(R.id.ivListItemFbShare);
             viewHolder.ivTwitterShare = (ImageView) convertView.findViewById(R.id.ivListItemTwitterShare);
             viewHolder.ivShare = (ImageView) convertView.findViewById(R.id.ivListItemShare);
             viewHolder.front = (LinearLayout) convertView.findViewById(R.id.front);
             viewHolder.back = (GridLayout) convertView.findViewById(R.id.back);
+
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
