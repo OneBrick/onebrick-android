@@ -63,6 +63,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
         if(chapterList.isEmpty()) {
             OneBrickApplication.getRestClient().getChapters(chapterListResponseHandler);
         } else {
+            chapterListAdapter.clear();
             chapterListAdapter.addAll(chapterList);
             chapterListAdapter.notifyDataSetChanged();
             Log.d(TAG, "received chapters from db: " + chapterList.size());
