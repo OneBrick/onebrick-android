@@ -34,27 +34,6 @@ public class DateTimeFormatter {
         return formattedDateTime;
     }
 
-    public String formatDateTimeEndDateOnly(String start, String end){
-        Date startDate = null;
-        Date endDate = null;
-        String endTime = null;
-        try {
-            startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start);
-            endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end);
-
-            String sStart = new SimpleDateFormat("MM-dd").format(startDate);
-            String eStart = new SimpleDateFormat("MM-dd").format(endDate);
-            if (sStart.equals(eStart)){
-                endTime = new SimpleDateFormat("HH:mm").format(endDate);
-            }else{
-                endTime = formatDateTime(end);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return endTime;
-    }
-
     public Date getDateFromString(String dateTime) {
         String obDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sf = new SimpleDateFormat(obDateTimeFormat, Locale.ENGLISH);

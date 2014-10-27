@@ -58,11 +58,11 @@
                     android:src="@drawable/ic_add2calendar"/>
                 <TextView
                     android:id="@+id/tvEventTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:layout_toRightOf="@+id/ivCalendarIcon"
-                    android:layout_centerVertical="true"
+                    android:gravity="center"
                     android:textColor="@color/charcoal"
                     android:textSize="@dimen/event_detail_text_size"
                     android:text="Monday, OCT 13 @ 10:00AM - 12:00PM "/>
@@ -120,9 +120,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/charcoal"
-                    android:textSize="@dimen/event_detail_text_small_size"
+                    android:textSize="@dimen/event_detail_text_size"
                     android:paddingBottom="5dp"
                     android:maxLines="4"
+                    android:gravity="center"
                     android:layout_alignLeft="@+id/mapFrame"
                     android:text="Some Address to the event location"/>
                 <fragment
@@ -187,6 +188,7 @@
                         android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
                         android:drawableStart="@drawable/ic_email_2"
+                        android:drawablePadding="3dp"
                         android:text="@string/manager_label"/>
                     <Button
                         android:id="@+id/btnEmailCoordinator"
@@ -197,6 +199,7 @@
                         android:textColor="@color/charcoal"
                         android:layout_toRightOf="@+id/btnEmailManager"
                         android:drawableStart="@drawable/ic_email_2"
+                        android:drawablePadding="3dp"
                         android:text="@string/coordinator_label"/>
                 </RelativeLayout>
             </RelativeLayout>

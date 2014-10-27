@@ -1,31 +1,25 @@
 package org.onebrick.android.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.SocialShare;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class EventsListAdapter extends ArrayAdapter<Event>{
 
-    private static final String ONEBRICK_URL_PREFIX = "http://onebrick.org/event/?eventid=";
     // View lookup cache
     private static class ViewHolder {
         ImageView ivProfilePhoto;
@@ -96,56 +90,59 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
     }
 
     public void shareInFacebook(View v, String title, long message) {
-        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
-        try {
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setClassName("com.facebook.katana",
-                    "com.facebook.katana.ShareLinkActivity");
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-            v.getContext().startActivity(sharingIntent);
 
-        } catch (Exception e) {
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.putExtra(Intent.EXTRA_SUBJECT, title);
-            i.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-            i.setData(Uri.parse(fullUrl));
-            v.getContext().startActivity(i);
+        SocialShare.shareFacebook(v, title, message);
 
-        }
+//        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
+//        try {
+//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//            sharingIntent.setClassName("com.facebook.katana",
+//                    "com.facebook.katana.ShareLinkActivity");
+//            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+//            sharingIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
+//            v.getContext().startActivity(sharingIntent);
+//
+//        } catch (Exception e) {
+//            Intent i = new Intent(Intent.ACTION_VIEW);
+//            i.putExtra(Intent.EXTRA_SUBJECT, title);
+//            i.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
+//            i.setData(Uri.parse(fullUrl));
+//            v.getContext().startActivity(i);
+//        }
     }
 
     public void shareInTwitter(View v, String title, long message) {
 
-        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
-        tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-        tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-        tweetIntent.setType("text/plain");
-
-        PackageManager packManager = getContext().getPackageManager();
-        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent,  PackageManager.MATCH_DEFAULT_ONLY);
-
-        boolean resolved = false;
-        for(ResolveInfo resolveInfo: resolvedInfoList){
-            if(resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")){
-                tweetIntent.setClassName(
-                        resolveInfo.activityInfo.packageName,
-                        resolveInfo.activityInfo.name );
-                resolved = true;
-                break;
-            }
-        }
-        if(resolved){
-            getContext().startActivity(tweetIntent);
-        }else{
-            Toast.makeText(getContext(), "no twitter app ", Toast.LENGTH_SHORT).show();
-            tweetIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/intent/tweet"));
-            tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-            tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-
-            getContext().startActivity(tweetIntent);
-        }
+        SocialShare.shareTwitter(v, title, message);
+//        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
+//        tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+//        tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
+//        tweetIntent.setType("text/plain");
+//
+//        PackageManager packManager = getContext().getPackageManager();
+//        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent,  PackageManager.MATCH_DEFAULT_ONLY);
+//
+//        boolean resolved = false;
+//        for(ResolveInfo resolveInfo: resolvedInfoList){
+//            if(resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")){
+//                tweetIntent.setClassName(
+//                        resolveInfo.activityInfo.packageName,
+//                        resolveInfo.activityInfo.name );
+//                resolved = true;
+//                break;
+//            }
+//        }
+//        if(resolved){
+//            getContext().startActivity(tweetIntent);
+//        }else{
+//            Toast.makeText(getContext(), "no twitter app ", Toast.LENGTH_SHORT).show();
+//            tweetIntent = new Intent(Intent.ACTION_VIEW,
+//                    Uri.parse("https://twitter.com/intent/tweet"));
+//            tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+//            tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
+//
+//            getContext().startActivity(tweetIntent);
+//        }
 
     }
 
@@ -154,12 +151,6 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
      * @param view
      */
     public void shareInOthers(View view, String title, long message){
-        Intent intent=new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        // Add data to the intent, the receiving app will decide what to do with it.
-        intent.putExtra(Intent.EXTRA_SUBJECT, title);
-        intent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-        view.getContext().startActivity(Intent.createChooser(intent, "share"));
+        SocialShare.shareOthers(view, title, message);
     }
 }

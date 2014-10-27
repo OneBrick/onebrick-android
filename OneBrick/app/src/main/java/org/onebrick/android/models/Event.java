@@ -112,7 +112,12 @@ public class Event extends Model {
     public long getEventId() {
         return this.eventId;
     }
-
+    public String getManagerEmail(){
+        return this.managerEmail;
+    }
+    public String getCoordinatorEmail(){
+        return this.coordinatorEmail;
+    }
     public String getEventDescription() {
         return this.description;
     }

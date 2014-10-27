@@ -64,14 +64,14 @@ public class OneBrickClient extends OAuthBaseClient {
 
     public void getEventInfo(String eventId, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/event/"+eventId+".json");
-        Log.i(TAG,"get request for URL"+apiUri);
+        //Log.i(TAG,"get request for URL"+apiUri);
         client.get(apiUri, null, handler);
     }
 
     public void getLatLongFromAddress(String address, AsyncHttpResponseHandler handler){
         //String apiUri = getApiUrl("/event/"+eventId+".json");
         String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA";
-        Log.i(TAG,"get request for URL"+apiUrl);
+        //Log.i(TAG,"get request for URL"+apiUrl);
         client.get(apiUrl, null, handler);
     }
 
@@ -79,7 +79,6 @@ public class OneBrickClient extends OAuthBaseClient {
     This function is called to post rsvp request to an event
      */
     public void postRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
-        Log.i("rsvp", eventId + " -- " + userId);
         String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);
@@ -87,7 +86,6 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void postUnRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
-        Log.i("unrsvp", eventId + " -- " + userId);
         String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
         RequestParams params = new RequestParams();
         params.put("uid", userId);

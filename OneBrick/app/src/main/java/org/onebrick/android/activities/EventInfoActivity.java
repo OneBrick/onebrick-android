@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.DialogFragment;
@@ -47,6 +48,7 @@ import org.onebrick.android.fragments.ReminderAddDialog;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
+import org.onebrick.android.helpers.SocialShare;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
@@ -153,10 +155,15 @@ public class EventInfoActivity extends FragmentActivity implements
     TextView tvEventLocation;
     TextView tvLearnMore;
     Button btnRsvp;
+    Button btnEmailManager;
+    Button btnEmailCoordinator;
     ImageView ivRsvpInfo;
     TextView tvRsvpInfo;
     ImageView ivAdd2Calendar;
     ImageView ivAddReminder;
+    ImageView ivEventInfoFbShare;
+    ImageView ivEventInfoTwitterShare;
+    ImageView ivEventInfoGenShare;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -182,9 +189,9 @@ public class EventInfoActivity extends FragmentActivity implements
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
         tvEventName.setText(updatedEvent.getTitle());
-        tvEventDateTime.setText(obDtf.formatDateTime(updatedEvent.getEventStartDate())
+        tvEventDateTime.setText(Utils.getFormattedEventDate(updatedEvent.getEventStartDate())
                 + " - "
-                + obDtf.formatDateTimeEndDateOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
+                + Utils.getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
         String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
         tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
@@ -253,8 +260,13 @@ public class EventInfoActivity extends FragmentActivity implements
         tvLearnMore = (TextView) findViewById(R.id.tvLearnMore);
 
         btnRsvp = (Button) findViewById(R.id.btnRsvp);
+        btnEmailManager = (Button) findViewById(R.id.btnEmailManager);
+        btnEmailCoordinator = (Button) findViewById(R.id.btnEmailCoordinator);
         ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
 //        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
+        ivEventInfoFbShare = (ImageView) findViewById(R.id.ivEventInfoFbShare);
+        ivEventInfoTwitterShare = (ImageView) findViewById(R.id.ivEventInfoTwitterShare);
+        ivEventInfoGenShare = (ImageView) findViewById(R.id.ivEventInfoGenShare);
 
         unrsvpDrawable = getResources().getDrawable(R.drawable.btn_unrsvp);
         rsvpDrawable = getResources().getDrawable(R.drawable.btn_rsvp);
@@ -356,6 +368,31 @@ public class EventInfoActivity extends FragmentActivity implements
             }
         });
 
+        btnEmailManager.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String managerEmail = updatedEvent.getManagerEmail();
+                if (managerEmail != null && !managerEmail.isEmpty()){
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                            "mailto", managerEmail, null));
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Manager");
+                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }
+            }
+        });
+
+        btnEmailCoordinator.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String coordinatorEmail = updatedEvent.getCoordinatorEmail();
+                if (coordinatorEmail != null && !coordinatorEmail.isEmpty()){
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                            "mailto", coordinatorEmail, null));
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Coordinator");
+                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }
+            }
+        });
         /*
         This function is called to add the even information to the calendar
          */
@@ -378,6 +415,26 @@ public class EventInfoActivity extends FragmentActivity implements
             }
         });
 
+        ivEventInfoFbShare.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SocialShare.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
+            }
+        });
+
+        ivEventInfoTwitterShare.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SocialShare.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+            }
+        });
+
+        ivEventInfoGenShare.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SocialShare.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+            }
+        });
         /*
         This method is called when user decides to add reminders about event.
          */
