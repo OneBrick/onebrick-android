@@ -11,14 +11,15 @@
     tools:context="org.onebrick.android.activities.LoginActivity">
     <ImageView
         android:id="@+id/onLogo"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="220dp"
+        android:layout_height="125dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/one_brick_logo"/>
     <LinearLayout
+        android:id="@+id/llInputs"
         android:layout_width="300dp"
         android:layout_below="@+id/onLogo"
         android:layout_height="wrap_content"
@@ -31,6 +32,8 @@
             android:text="@string/please_login"
             android:fontFamily="sans-serif-thin"
             android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/charcoal"/>
 
         <EditText
@@ -38,44 +41,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/prompt_email"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:maxLines="1"
             android:singleLine="true"/>
 
         <EditText
             android:id="@+id/password"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true"/>
-
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/llInputs"
+        android:layout_height="match_parent">
         <Button
             android:id="@+id/email_sign_in_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:text="@string/action_sign_in"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
+            android:textSize="18sp"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:background="@color/onebrick_orange"/>
+            android:background="@drawable/btn_login_cancel"/>
         <Button
             android:id="@+id/btnCancelLogin"
-            style="?android:textAppearanceSmall"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
             android:layout_marginTop="16dp"
+            android:textSize="18sp"
             android:text="@string/cancel"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:background="@color/onebrick_orange"/>
-
-
-    </LinearLayout>
-
+            android:background="@drawable/btn_login_cancel"/>
+    </RelativeLayout>
 </RelativeLayout>

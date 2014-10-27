@@ -30,6 +30,8 @@ public class LoginActivity extends Activity{
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
+    private Button mEmailSignInButton;
+    private Button btnCancel;
     private long userId;
 
     @Override
@@ -40,7 +42,14 @@ public class LoginActivity extends Activity{
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        btnCancel = (Button) findViewById(R.id.btnCancelLogin);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +61,7 @@ public class LoginActivity extends Activity{
                         || password.length()== 0
                         || password.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(),
-                            "Email or Password cannot be null or empty string",
+                            "Email format incorrect or Password cannot be null or empty string",
                             Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -122,7 +131,7 @@ public class LoginActivity extends Activity{
             public void onFinish() {
                 super.onFinish();
                 //mProgressView.setVisibility(ProgressBar.GONE);
-                finish();
+                //finish();
             }
 
             @Override
@@ -140,6 +149,7 @@ public class LoginActivity extends Activity{
                     Calling method to update rsvp info on methods
                      */
                     updateMyEvents();
+                    finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -149,14 +159,29 @@ public class LoginActivity extends Activity{
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("login failure1", responseString);
                 Log.e("login failure1", throwable.toString());
-                //Toast.makeText(getApplicationContext(), "Couldn't login", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),
+                        "Login FailedPassword or Email incorrect",
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.e("login failure2", errorResponse.toString());
                 Log.e("login failure2", throwable.toString());
-                //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "Login FailedPassword or Email incorrect",
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                //super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("login failure3", "Authentication failed");
+                Log.e("login failure3", throwable.toString());
+                Log.e("login failure3", errorResponse.toString());
+                Toast.makeText(getApplicationContext(),
+                        "Login Failed : Password or Email incorrect",
+                        Toast.LENGTH_LONG).show();
             }
 
         });
