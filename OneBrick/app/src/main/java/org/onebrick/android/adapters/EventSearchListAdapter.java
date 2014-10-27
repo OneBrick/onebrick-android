@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
     private static class ViewHolder {
         LinearLayout front;
         GridLayout back;
+        RelativeLayout noEvents;
         ImageView ivEventImage;
         TextView tvEventName;
         ImageView ivEventLocation;
@@ -86,8 +88,11 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             viewHolder.ivFbShare = (ImageView) convertView.findViewById(R.id.ivListItemFbShare);
             viewHolder.ivTwitterShare = (ImageView) convertView.findViewById(R.id.ivListItemTwitterShare);
             viewHolder.ivShare = (ImageView) convertView.findViewById(R.id.ivListItemShare);
+
             viewHolder.front = (LinearLayout) convertView.findViewById(R.id.front);
             viewHolder.back = (GridLayout) convertView.findViewById(R.id.back);
+            viewHolder.noEvents = (RelativeLayout) convertView.findViewById(R.id.rlNoEvents);
+            viewHolder.noEvents.setVisibility(View.INVISIBLE);
 
             convertView.setTag(viewHolder);
         }else{
@@ -97,14 +102,37 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
         // Return the completed view to render on screen
         final Event event = getItem(position);
         //Toast.makeText(getContext(),"Event is "+event.toString(),Toast.LENGTH_LONG).show();
-        if(event!=null) {
+        if(event!=null && !event.getTitle().equalsIgnoreCase("Error")) {
             int eventId = (int) event.getEventId();
             int imgId = (eventId%20)+1;
             String imageUri = "assets://images/image"+imgId+".jpg";
             imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
             viewHolder.tvEventName.setText("" + event.getTitle());
             viewHolder.tvEventAddress.setText("" + event.getEventAddress());
-            viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(event.getEventStartDate()));
+            viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(
+                    event.getEventStartDate()));
+            viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shareInFacebook(v,event.getTitle(),event.getEventId());
+                }
+            });
+            viewHolder.ivTwitterShare.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    shareInTwitter(v, event.getTitle(), event.getEventId());
+                }
+            });
+            viewHolder.ivShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shareInOthers(v, event.getTitle(), event.getEventId());
+                }
+            });
+        } else if (event.getTitle().equalsIgnoreCase("Error")) {
+            viewHolder.front.setVisibility(View.INVISIBLE);
+            viewHolder.back.setVisibility(View.INVISIBLE);
+            viewHolder.noEvents.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(getContext(),"Event is null",Toast.LENGTH_LONG).show();
         }
@@ -115,24 +143,6 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
                         : R.anim.list_item_down_from_top);
         convertView.startAnimation(animation);
         lastPosition = position;
-        viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareInFacebook(v,event.getTitle(),event.getEventId());
-            }
-        });
-        viewHolder.ivTwitterShare.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                shareInTwitter(v, event.getTitle(), event.getEventId());
-            }
-        });
-        viewHolder.ivShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareInOthers(v, event.getTitle(), event.getEventId());
-            }
-        });
         return convertView;
     }
 

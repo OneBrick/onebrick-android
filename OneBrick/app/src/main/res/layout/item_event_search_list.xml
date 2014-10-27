@@ -162,6 +162,7 @@
         android:paddingTop="5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:visibility="invisible"
         android:paddingBottom="5dp">
         <TextView
             android:layout_width="match_parent"
@@ -171,7 +172,6 @@
             android:gravity="center"
             android:background="@drawable/event_card_front_border"
             android:textColor="@color/text_grey"
-            android:visibility="invisible"
             android:text="Sorry! No events in here \n check back later."
             android:textSize="20dp"/>
     </RelativeLayout>

@@ -12,6 +12,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.models.Event;
 
@@ -85,13 +86,34 @@ public class HomeEventsFragment extends EventsListFragment {
                 aEventList.clear();
                 if (response != null){
                     aEventList.addAll(Event.fromJSONArray(response, cid));
+                    if(aEventList.isEmpty()) {
+                        /*
+                        Handle the case where there are no events in chapter
+                         */
+                        aEventList.clear();
+                        Event e = new Event();
+                        e.setTitle("Error");
+                        aEventList.add(e);
+                    }
                     aEventList.notifyDataSetChanged();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
+                //super.onFailure(statusCode, headers, responseString, throwable);
+                //Toast.makeText(getActivity(),"API Called error",Toast.LENGTH_SHORT).show();
+                aEventList.clear();
+                Event e = new Event();
+                e.setTitle("Error");
+                aEventList.add(e);
+                aEventList.notifyDataSetChanged();
                 Log.e("ERROR", responseString);
                 Log.e("ERROR", throwable.toString());
             }
