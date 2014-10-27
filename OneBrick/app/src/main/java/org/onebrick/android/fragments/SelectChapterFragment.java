@@ -52,10 +52,21 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        OneBrickApplication.getRestClient().getChapters(chapterListResponseHandler);
+        //OneBrickApplication.getRestClient().getChapters(chapterListResponseHandler);
 
         chapterListAdapter = new NavigationChapterListAdapter(getActivity(),
                 R.layout.drawer_nav_item, new ArrayList<Chapter>());
+
+
+
+        ArrayList<Chapter> chapterList = (ArrayList <Chapter>)Chapter.getChapterListFromDb();
+        if(chapterList.isEmpty()) {
+            OneBrickApplication.getRestClient().getChapters(chapterListResponseHandler);
+        } else {
+            chapterListAdapter.addAll(chapterList);
+            chapterListAdapter.notifyDataSetChanged();
+            Log.d(TAG, "received chapters from db: " + chapterList.size());
+        }
     }
 
     @Override
