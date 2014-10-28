@@ -46,9 +46,10 @@
         android:background="@drawable/event_card_front_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
         android:paddingTop="5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -66,7 +67,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_width="75dp"
                 android:src="@drawable/ic_launcher"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:layout_height="match_parent" />
             <TextView
@@ -76,6 +77,8 @@
                 android:text="Some long event name amy be 2 lines"
                 android:textSize="@dimen/big"
                 android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
                 android:gravity="center_vertical"
                 android:layout_height="match_parent" />
         </RelativeLayout>
@@ -92,7 +95,7 @@
                 android:layout_centerVertical="true"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/img_marker_grey"
+                android:src="@drawable/img_location_grey"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter" />
             <TextView
@@ -102,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_grey"
                 android:layout_marginLeft="16dp"
+                android:fontFamily="sans-serif"
                 android:layout_toRightOf="@+id/ivListItemEventLocation"
                 android:text="Some long event address > 1 line"
                 android:textSize="@dimen/medium"/>
@@ -118,22 +122,57 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/img_clock_grey"
+                android:src="@drawable/img_event_date_grey"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"/>
             <TextView
                 android:id="@+id/tvListItemEventDate"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_grey"
                 android:textAllCaps="true"
                 android:layout_centerVertical="true"
+                android:fontFamily="sans-serif"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@+id/ivListViewEventDate"
                 android:text="event date 1 line"
                 android:textSize="@dimen/small"/>
+            <Button
+                android:id="@+id/btnListItemRsvp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btn_rsvp_small"
+                android:text="RSVP"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:layout_alignParentRight="true"
+                />
         </RelativeLayout>
     </LinearLayout>
-
-
+    <RelativeLayout
+        android:id="@+id/rlNoEvents"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:visibility="invisible"
+        android:paddingBottom="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="@drawable/event_card_front_border"
+            android:textColor="@color/text_grey"
+            android:text="Sorry! No events in here \n check back later."
+            android:textSize="20dp"/>
+    </RelativeLayout>
 </FrameLayout>

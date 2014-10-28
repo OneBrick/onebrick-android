@@ -1,17 +1,26 @@
 package org.onebrick.android.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
@@ -20,103 +29,149 @@ import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends Activity implements OnQueryTextListener {
     SwipeListView eventSearchList;
     EventSearchListAdapter aEventSearchList;
     ArrayList<Event> eventList;
     int chapterId;
     String chapterName;
     OneBrickClient obClient;
+    String searchQuery;
+    ActionBar actionBar;
+    MenuInflater menuInflater;
+    MenuItem searchItem;
+    SearchView searchView;
+    ProgressBar progressBar;
+
+    JsonHttpResponseHandler searchResultHandler = new JsonHttpResponseHandler() {
+        @Override
+        public void onStart() {
+
+            super.onStart();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            Log.i("INFO", "callback success"); // logcat log
+            aEventSearchList.clear();
+            if (response != null){
+                aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
+                if(aEventSearchList.isEmpty()){
+                    aEventSearchList.clear();
+                    Event e = new Event();
+                    e.setTitle("Error");
+                    aEventSearchList.add(e);
+                }
+                aEventSearchList.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+            aEventSearchList.clear();
+            Event e = new Event();
+            e.setTitle("Error");
+            aEventSearchList.add(e);
+            aEventSearchList.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers,
+                              String responseString, Throwable throwable) {
+            super.onFailure(statusCode, headers, responseString, throwable);
+            Log.e("ERROR", responseString);
+            Log.e("ERROR", throwable.toString());
+            aEventSearchList.clear();
+            Event e = new Event();
+            e.setTitle("Error");
+            aEventSearchList.add(e);
+            aEventSearchList.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers,
+                              Throwable throwable, JSONArray errorResponse) {
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+            Log.e("ERROR", errorResponse.toString());
+            Log.e("ERROR", throwable.toString());
+            aEventSearchList.clear();
+            Event e = new Event();
+            e.setTitle("Error");
+            aEventSearchList.add(e);
+            aEventSearchList.notifyDataSetChanged();
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seach);
+        setContentView(R.layout.activity_search);
         getActionBar().setTitle("Search");
         obClient = OneBrickApplication.getRestClient();
         eventList = new ArrayList<Event>();
         eventSearchList = (SwipeListView) findViewById(R.id.lvEventSearchList);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         aEventSearchList = new EventSearchListAdapter(this,eventList);
         Intent chapterInfo = getIntent();
         chapterId = chapterInfo.getIntExtra("chapterId", -1);
         chapterName = chapterInfo.getStringExtra("chapterName");
         eventSearchList.setAdapter(aEventSearchList);
-        //Toast.makeText(this,"Getting events for chapter "+chapterName+" "+chapterId,Toast.LENGTH_LONG).show();
-        /*
-        Event e = new Event();
-        Event e1 = new Event();
-        Event e2 = new Event();
-        Event e3 = new Event();
-        Event e4 = new Event();
-        Event e5 = new Event();
-        Event e6 = new Event();
-        Event e7 = new Event();
-
-        aEventSearchList.add(e);
-        aEventSearchList.add(e1);
-        aEventSearchList.add(e2);
-        aEventSearchList.add(e3);
-        aEventSearchList.add(e4);
-        aEventSearchList.add(e5);
-        aEventSearchList.add(e6);
-        aEventSearchList.add(e7);*/
-
-        obClient.getEventsList(chapterId, new JsonHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.i("INFO", "callback success"); // logcat log
-                aEventSearchList.clear();
-                if (response != null){
-                    aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
-                    aEventSearchList.notifyDataSetChanged();
-                }
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                Log.e("ERROR", responseString);
-                Log.e("ERROR", throwable.toString());
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("ERROR", errorResponse.toString());
-                Log.e("ERROR", throwable.toString());
-            }
-
-        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.seach, menu);
+        actionBar = getActionBar();
+        menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search, menu);
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(android.R.color.white));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        searchItem = menu.findItem(R.id.miSearch);
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchItem.expandActionView();
         return true;
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        searchQuery = query;
+        Toast.makeText(this, "Searching for "+query, Toast.LENGTH_SHORT).show();
+        //searchTwitter(query);
+        obClient.searchForEvents(chapterId, query, searchResultHandler);
+        searchItem.collapseActionView();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
     }
 }

@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +33,6 @@ public class SelectChapterActivity extends Activity {
     NavigationChapterListAdapter chapterListAdapter;
     ArrayList<Chapter> chapterList;
     OneBrickClient obClient;
-    Button btnCustomLocation;
     TextView tvChapteOptions;
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
@@ -60,9 +58,7 @@ public class SelectChapterActivity extends Activity {
         setContentView(R.layout.activity_select_chapter);
         getActionBar().setTitle("Select your chapter");
         lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
-        btnCustomLocation = (Button) findViewById(R.id.btnUseCurrentLocation);
         tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
-        btnCustomLocation.setTypeface(FontsHelper.getRobotoRegular());
         tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());
         chapterList = new ArrayList<Chapter>();
         obClient = OneBrickApplication.getRestClient();
@@ -101,10 +97,10 @@ public class SelectChapterActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 @Table(name="Chapters")
 public class Chapter extends Model {
@@ -123,6 +125,14 @@ public class Chapter extends Model {
         return new Select().from(Chapter.class)
                 .where("ChapterId = ?", id)
                 .executeSingle();
+    }
+
+    public static List<Chapter> getChapterListFromDb() {
+        Log.i(TAG,"Getting Chapters from DB");
+        From sql = new Select()
+                .from(Chapter.class);
+        Log.i("SQL is", sql.toSql());
+        return sql.execute();
     }
 
 }

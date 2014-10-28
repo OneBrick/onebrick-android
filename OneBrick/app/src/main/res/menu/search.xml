@@ -2,18 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.onebrick.android.activities.HomeActivity" >
     <item
-        android:id="@+id/miCalendar"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_ab_calendar"
-        android:onClick="showCalendarView"
-        android:title="Calendar" >
-    </item>
-    <item
         android:id="@+id/miSearch"
-        android:showAsAction="always"
+        android:showAsAction="always|collapseActionView"
+        android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_action_ob_search"
-        android:onClick="startSearchEventsActivity"
         android:title="Search" >
     </item>
-
 </menu>
