@@ -13,9 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by rush on 10/11/14.
- */
+
 @Table(name="Events")
 public class Event extends Model {
 
@@ -120,6 +118,9 @@ public class Event extends Model {
     }
     public String getEventDescription() {
         return this.description;
+    }
+    public Chapter getChapter(){
+        return this.chapter;
     }
 
     public String getProfilePhotoUri() {

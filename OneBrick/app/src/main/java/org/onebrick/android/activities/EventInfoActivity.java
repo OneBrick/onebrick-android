@@ -1,10 +1,7 @@
 package org.onebrick.android.activities;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.drawable.Drawable;
@@ -14,9 +11,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +42,7 @@ import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
-import org.onebrick.android.fragments.ReminderAddDialog;
+import org.onebrick.android.helpers.ChapterBannerMapper;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
@@ -54,7 +52,6 @@ import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -149,6 +146,7 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
+    RelativeLayout rlBannerImg;
     TextView tvEventName;
     TextView tvEventDateTime;
     TextView tvEventBrief;
@@ -188,6 +186,14 @@ public class EventInfoActivity extends FragmentActivity implements
 
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
+        int chapterId = updatedEvent.getChapter().getChapterId();
+        //// based on chapter id, pupulate background banner of each chapter
+        ChapterBannerMapper bannerMapper = new ChapterBannerMapper();
+        Drawable drawableBanner = getBannerDrawable(bannerMapper.getBanner(chapterId));
+        if (drawableBanner != null){
+            rlBannerImg.setBackground(drawableBanner);
+        }
+
         tvEventName.setText(updatedEvent.getTitle());
         tvEventDateTime.setText(Utils.getFormattedEventDate(updatedEvent.getEventStartDate())
                 + " - "
@@ -253,6 +259,7 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
+        rlBannerImg = (RelativeLayout) findViewById(R.id.rlBannerImg);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
@@ -448,35 +455,35 @@ public class EventInfoActivity extends FragmentActivity implements
 //        });
     }
 
-    private void addNotification() {
-        Long time = new GregorianCalendar().getTimeInMillis() + 30000;
+//    private void addNotification() {
+//        Long time = new GregorianCalendar().getTimeInMillis() + 30000;
+//
+//        // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
+//        // specified AlarmReceiver in the Intent. The onReceive() method of this class will execute when the broadcast from your alarm is received.
+//        Intent intentAlarm = new Intent(this, DisplayNotificationReceiver.class);
+//        Bundle b = new Bundle();
+//        b.putString("EventName", updatedEvent.getTitle());
+//        b.putString("DisplayMessage", "Have you RSVP-ed yet ?");
+//        intentAlarm.putExtra("EventName", updatedEvent.getTitle());
+//        intentAlarm.putExtra("DisplayMessage", "Have you RSVP-ed yet! ?");
+//
+//        // Get the Alarm Service.
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//
+//        // Set the alarm for a particular time.
+//        PendingIntent addRemainder = PendingIntent.getBroadcast(this
+//                , this.getUniqueRandomRequestCode()
+//                , intentAlarm, PendingIntent.FLAG_ONE_SHOT);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
+//        //Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
+//        FragmentManager fm = getSupportFragmentManager();
+//        ReminderAddDialog rad = ReminderAddDialog.newInstance("Add Reminder ?");
+//        rad.show(fm, "Add Reminder ?");
+//    }
 
-        // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
-        // specified AlarmReceiver in the Intent. The onReceive() method of this class will execute when the broadcast from your alarm is received.
-        Intent intentAlarm = new Intent(this, DisplayNotificationReceiver.class);
-        Bundle b = new Bundle();
-        b.putString("EventName", updatedEvent.getTitle());
-        b.putString("DisplayMessage", "Have you RSVP-ed yet ?");
-        intentAlarm.putExtra("EventName", updatedEvent.getTitle());
-        intentAlarm.putExtra("DisplayMessage", "Have you RSVP-ed yet! ?");
-
-        // Get the Alarm Service.
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        // Set the alarm for a particular time.
-        PendingIntent addRemainder = PendingIntent.getBroadcast(this
-                , this.getUniqueRandomRequestCode()
-                , intentAlarm, PendingIntent.FLAG_ONE_SHOT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time, addRemainder);
-        //Toast.makeText(this, "Alarm Scheduled in next 30 sseconds", Toast.LENGTH_LONG).show();
-        FragmentManager fm = getSupportFragmentManager();
-        ReminderAddDialog rad = ReminderAddDialog.newInstance("Add Reminder ?");
-        rad.show(fm, "Add Reminder ?");
-    }
-
-    public int getUniqueRandomRequestCode() {
-        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
-    }
+//    public int getUniqueRandomRequestCode() {
+//        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+//    }
 
 
     @Override
@@ -530,15 +537,12 @@ public class EventInfoActivity extends FragmentActivity implements
         switch (requestCode) {
 
             case CONNECTION_FAILURE_RESOLUTION_REQUEST:
-            /*
-			 * If the result code is Activity.RESULT_OK, try to connect again
-			 */
+                //If the result code is Activity.RESULT_OK, try to connect again
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         mLocationClient.connect();
                         break;
                 }
-
         }
     }
 
@@ -625,6 +629,19 @@ public class EventInfoActivity extends FragmentActivity implements
             }
 
             return false;
+        }
+    }
+
+    private Drawable getBannerDrawable(@NonNull String fileName){
+        // load image
+        try {
+            Drawable drawable = getResources().getDrawable(getResources()
+                    .getIdentifier(fileName, "drawable", getPackageName()));
+            return drawable;
+        }catch(Exception ex) {
+            Log.e(TAG, "error to drawable from file in assets");
+            Log.e(TAG, ex.toString());
+            return null;
         }
     }
 
