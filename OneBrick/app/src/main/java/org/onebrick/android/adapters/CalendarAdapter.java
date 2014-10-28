@@ -1,6 +1,7 @@
 package org.onebrick.android.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
@@ -22,9 +24,10 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
 
     Context ctx;
     LayoutInflater inflater;
-    ArrayList <Date> datesHeader;
+    ArrayList <String> datesHeader;
     ArrayList <Event> eventList;
     int[] sectionIndices;
+    DateTimeFormatter dtf;
     private static class ViewHolder {
         TextView tvEventName;
         TextView tvEventAddress;
@@ -40,19 +43,66 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         ctx = context;
         inflater = LayoutInflater.from(ctx);
         eventList = events;
-        datesHeader = getDatesFromEventList(eventList);
+        dtf = DateTimeFormatter.getInstance();
+    }
+
+    public void setSectionIndicesFromEventList(ArrayList<Event> eventList) {
         sectionIndices = getSectionIndicesFromEventList(eventList);
     }
 
+
+    public void setDatesFromEventList(ArrayList<Event> eventList) {
+        datesHeader = getDatesFromEventList(eventList);
+    }
+
     private int[] getSectionIndicesFromEventList(ArrayList<Event> eventList) {
-        return null;
+        Event e;
+        Date lastDate = null;
+        ArrayList<Integer> indices = new ArrayList<Integer>();
+        ArrayList<Date> dateList = new ArrayList<Date>();
+        for (int i=0;i<eventList.size();i++) {
+            e = eventList.get(i);
+            Date d = dtf.getDateFromString(e.getEventEndDate());
+            if(lastDate == null) {
+                lastDate = d;
+                indices.add(i);
+            } else if(d.compareTo(lastDate) == 0) {
+                continue;
+            } else {
+                lastDate = d;
+                indices.add(i);
+            }
+        }
+        int [] sectionIndices = new int[indices.size()];
+        for (int i=0;i<indices.size();i++) {
+            sectionIndices[i] = indices.get(i);
+        }
+        return  sectionIndices;
     }
 
-    private ArrayList<Date> getDatesFromEventList(ArrayList<Event> eventList) {
-        return null;
+
+    private ArrayList<String> getDatesFromEventList(ArrayList<Event> eventList) {
+        Event e;
+        Date lastDate = null;
+        ArrayList<String> dateList = new ArrayList<String>();
+        for (int i=0;i<eventList.size();i++) {
+            e = eventList.get(i);
+            Date d = dtf.getDateFromString(e.getEventEndDate());
+            if(lastDate == null) {
+                lastDate = d;
+                dateList.add(dtf.getDateOnly(d));
+            } else if(d.compareTo(lastDate) == 0) {
+                continue;
+            } else {
+                lastDate = d;
+                dateList.add(dtf.getDateOnly(d));
+            }
+        }
+        return dateList;
     }
 
-    public void setDatesHeader(ArrayList<Date> dates) {
+
+    public void setDatesHeader(ArrayList<String> dates) {
         datesHeader = dates;
     }
 
@@ -60,17 +110,34 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         eventList = events;
     }
 
-    public ArrayList<Date> getDatesHeader() {
+
+    public ArrayList<String> getDatesHeader() {
         return datesHeader;
     }
+
+
     public ArrayList<Event> getEventList() {
         return eventList;
     }
 
+
+
     @Override
-    public long getHeaderId(int i) {
-        return 0;
+    public long getHeaderId(int position) {
+        long headerId = -1;
+        Event e = eventList.get(position);
+        for(int i=0;i<datesHeader.size();i++) {
+            String d = datesHeader.get(i);
+            if(d.compareTo(dtf.getDateOnly(dtf.getDateFromString(e.getEventEndDate())))==0) {
+                headerId = i;
+                return headerId;
+            }
+        }
+        Log.i("CALENDAR","This should never print");
+        return headerId;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,8 +152,21 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        Event e = eventList.get(position);
+        viewHolder.tvEventName.setText(e.getTitle());
+        viewHolder.tvEventAddress.setText(e.getEventAddress());
+        viewHolder.tvEventTime.setText(
+                dtf.getTimeOnly(
+                        dtf.getDateFromString(
+                                e.getEventEndDate()
+                        )
+                )
+        );
         return convertView;
     }
+
+
+
 
     @Override
     public View getHeaderView(int i, View view, ViewGroup parent) {
@@ -99,6 +179,9 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         } else {
             headerViewHolder = (HeaderViewHolder) view.getTag();
         }
+        // Date d = datesHeader.get((int)getHeaderId(i));
+        Date d = dtf.getDateFromString(eventList.get(i).getEventEndDate());
+        headerViewHolder.tvDate.setText(dtf.getDateOnly(d));
         return view;
     }
 }

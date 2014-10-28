@@ -5,7 +5,7 @@
         android:id="@+id/miSearch"
         android:showAsAction="always|collapseActionView"
         android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/ic_action_ob_search"
+        android:icon="@drawable/ic_ab_search"
         android:title="Search" >
     </item>
 </menu>

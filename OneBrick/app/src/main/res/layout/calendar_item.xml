@@ -3,36 +3,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_margin="16dp"
+    android:background="@drawable/event_card_front_border"
     android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="100dp"
-        android:layout_height="125dp">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tvCalEventTime"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:textSize="20sp"
             android:padding="4dp"
+
             android:text="Time"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="125dp">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tvCalEventName"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:padding="4dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="4dp"
             android:maxLines="3"
-            android:textSize="@dimen/big"
+            android:textSize="18sp"
             android:text="Event Name line 1\nline 2 \nline 3"/>
         <TextView
             android:id="@+id/tvCalEventAddress"
             android:layout_below="@+id/tvCalEventName"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="4dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/text_grey"
+            android:textSize="16sp"
             android:maxLines="2"
             android:text="Event Address line 1\nline 2"/>
     </RelativeLayout>
