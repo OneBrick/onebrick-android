@@ -234,10 +234,10 @@ public class EventInfoActivity extends FragmentActivity implements
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
+            map.animateCamera(cu);
         }
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
-        map.animateCamera(cu);
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText("UnRSVP");
