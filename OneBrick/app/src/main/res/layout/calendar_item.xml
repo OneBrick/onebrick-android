@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_margin="16dp"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="125dp">
+        <TextView
+            android:id="@+id/tvCalEventTime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:padding="4dp"
+            android:text="Time"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="125dp">
+        <TextView
+            android:id="@+id/tvCalEventName"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:padding="4dp"
+            android:maxLines="3"
+            android:textSize="@dimen/big"
+            android:text="Event Name line 1\nline 2 \nline 3"/>
+        <TextView
+            android:id="@+id/tvCalEventAddress"
+            android:layout_below="@+id/tvCalEventName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="4dp"
+            android:maxLines="2"
+            android:text="Event Address line 1\nline 2"/>
+    </RelativeLayout>
+
+</LinearLayout>

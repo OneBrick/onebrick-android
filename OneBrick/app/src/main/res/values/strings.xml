@@ -60,5 +60,6 @@
     </string-array>
 
     <string name="title_activity_seach">SeachActivity</string>
+    <string name="title_activity_calendar_view">CalendarViewActivity</string>
 
 </resources>

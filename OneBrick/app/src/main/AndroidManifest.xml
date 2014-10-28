@@ -105,6 +105,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
+        <activity
+            android:name=".activities.CalendarViewActivity"
+            android:label="@string/title_activity_calendar_view"
+            android:parentActivityName=".activities.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.onebrick.android.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
