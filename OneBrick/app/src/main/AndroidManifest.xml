@@ -72,7 +72,11 @@
         </activity>
         <activity
             android:name=".activities.EventLocationView"
-            android:label="@string/title_activity_event_location_view" >
+            android:label="@string/title_activity_event_location_view"
+            android:parentActivityName=".activities.EventInfoActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.onebrick.android.activities.EventInfoActivity" />
         </activity>
         <activity
             android:name=".activities.MyEventsActivity"

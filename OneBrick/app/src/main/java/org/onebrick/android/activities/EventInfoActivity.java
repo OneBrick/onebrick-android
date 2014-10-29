@@ -46,7 +46,6 @@ import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
-import org.onebrick.android.helpers.ChapterBannerMapper;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
@@ -247,6 +246,17 @@ public class EventInfoActivity extends FragmentActivity implements
         UpdateMapsFragment mapsUpdate = new UpdateMapsFragment();
         mapsUpdate.execute("Maps Update");
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -495,18 +505,6 @@ public class EventInfoActivity extends FragmentActivity implements
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        /*int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }*/
-        return super.onOptionsItemSelected(item);
-    }
-
     /*
     * Called when the Activity becomes visible.
     */
@@ -562,9 +560,9 @@ public class EventInfoActivity extends FragmentActivity implements
         Location location = mLocationClient.getLastLocation();
         if (location != null) {
             //Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            //map.animateCamera(cameraUpdate);
         } else {
             // Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
