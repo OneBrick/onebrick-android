@@ -18,7 +18,7 @@
                 <ImageView
                     android:id="@+id/ivProfilePhoto"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="180dp"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"/>
                 <TextView
@@ -27,11 +27,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:gravity="center_horizontal"
-                    android:textSize="@dimen/big_title"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:maxLines="2"
                     android:padding="8dp"
-                    android:background="@color/dark_tranparent_black"/>
+                    android:background="@color/deep_tranparent_black"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlDateInfo"
@@ -290,7 +291,7 @@
         android:layout_marginBottom="0dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
-        android:background="@color/rsvp_background">
+        android:background="@color/deep_tranparent_black">
         <Button
             android:id="@+id/btnRsvp"
             android:layout_width="130dp"
@@ -300,7 +301,7 @@
             android:gravity="center"
             android:text="@string/rsvp_button"
             android:textColor="@android:color/white"
-            android:background="@drawable/btn_rsvp"
+            android:background="@drawable/btn_rsvp_small"
             />
     </LinearLayout>
     <ProgressBar
