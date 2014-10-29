@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -21,7 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +90,18 @@ public class EventInfoActivity extends FragmentActivity implements
             super.onFailure(statusCode, headers, responseString, throwable);
         }
 
+        @Override
+        public void onStart() {
+            super.onStart();
+            llRsvpSegment.setVisibility(View.INVISIBLE);
+            svMainContent.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+        }
     };
 
     /*
@@ -178,6 +194,9 @@ public class EventInfoActivity extends FragmentActivity implements
     double lng;
     Drawable unrsvpDrawable;
     Drawable rsvpDrawable;
+    ProgressBar progressBar;
+    ScrollView svMainContent;
+    LinearLayout llRsvpSegment;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -187,7 +206,7 @@ public class EventInfoActivity extends FragmentActivity implements
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
         int chapterId = updatedEvent.getChapter().getChapterId();
-        //// based on chapter id, pupulate background banner of each chapter
+        //// based on chapter id, populate background banner of each chapter
         ChapterBannerMapper bannerMapper = new ChapterBannerMapper();
         Drawable drawableBanner = getBannerDrawable(bannerMapper.getBanner(chapterId));
         if (drawableBanner != null){
@@ -201,8 +220,26 @@ public class EventInfoActivity extends FragmentActivity implements
         String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
         tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
-        Address eventAddress;
+        if(loginMgr.isLoggedIn()) {
+            if (updatedEvent.rsvp == true) {
+                btnRsvp.setText("UnRSVP");
+                btnRsvp.setBackground(unrsvpDrawable);
+            } else {
+                btnRsvp.setText("RSVP NOW!");
+                btnRsvp.setBackground(rsvpDrawable);
+            }
+        }
+        progressBar.setVisibility(View.INVISIBLE);
+        svMainContent.setVisibility(View.VISIBLE);
+        llRsvpSegment.setVisibility(View.VISIBLE);
+        //updateMapsFragment(updatedEvent);
+        UpdateMapsFragment mapsUpdate = new UpdateMapsFragment();
+        mapsUpdate.execute("Maps Update");
 
+    }
+
+    private void updateMapsFragment(Event updatedEvent) {
+        Address eventAddress;
         Log.i(TAG, "Event address is " + updatedEvent.getEventAddress());
         Log.i(TAG, "Is Geocode present " + obGeoCoder.isPresent());
         eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
@@ -238,17 +275,7 @@ public class EventInfoActivity extends FragmentActivity implements
             map.animateCamera(cu);
         }
 
-        if(loginMgr.isLoggedIn()) {
-            if (updatedEvent.rsvp == true) {
-                btnRsvp.setText("UnRSVP");
-                btnRsvp.setBackground(unrsvpDrawable);
-            } else {
-                btnRsvp.setText("RSVP NOW!");
-                btnRsvp.setBackground(rsvpDrawable);
-            }
-        }
     }
-
     @Override
     public void onBackPressed() {
         finish();
@@ -274,6 +301,12 @@ public class EventInfoActivity extends FragmentActivity implements
         ivEventInfoFbShare = (ImageView) findViewById(R.id.ivEventInfoFbShare);
         ivEventInfoTwitterShare = (ImageView) findViewById(R.id.ivEventInfoTwitterShare);
         ivEventInfoGenShare = (ImageView) findViewById(R.id.ivEventInfoGenShare);
+
+        progressBar = (ProgressBar) findViewById(R.id.pbEventInfoProgress);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        svMainContent = (ScrollView) findViewById(R.id.svMainContent);
+        llRsvpSegment = (LinearLayout) findViewById(R.id.rlRsvp);
 
         unrsvpDrawable = getResources().getDrawable(R.drawable.btn_unrsvp);
         rsvpDrawable = getResources().getDrawable(R.drawable.btn_rsvp);
@@ -670,5 +703,58 @@ public class EventInfoActivity extends FragmentActivity implements
 
 
     }
+
+
+
+
+    private class UpdateMapsFragment extends AsyncTask<String, Void, String> {
+        Address eventAddress = null;
+        @Override
+        protected String doInBackground(String... params) {
+            Log.i(TAG, "Event address is " + updatedEvent.getEventAddress());
+            Log.i(TAG, "Is Geocode present " + obGeoCoder.isPresent());
+            eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
+            Log.i(TAG, "Geocoded Event address is " + eventAddress);
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (eventAddress != null) {
+                lat = eventAddress.getLatitude();
+                lng = eventAddress.getLongitude();
+
+                marker = new MarkerOptions()
+                        .position(new LatLng(lat, lng))
+                        .title("Event Location");
+                map.addMarker(marker);
+
+         /*
+            Setting up onClick listener on the map
+            which when clicked the user will be taken to a new
+            activity where he will see the map in a might bigger screen
+         */
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
+                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                        eventLocationMap.putExtra("Latitude", lat);
+                        eventLocationMap.putExtra("Longitude", lng);
+                        eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
+                        startActivity(eventLocationMap);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+                });
+                CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
+                map.animateCamera(cu);
+            } else {
+                Log.e(TAG,"ERROR : Event address is  null ");
+            }
+        }
+    }
+
+
 
 }

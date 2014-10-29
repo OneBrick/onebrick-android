@@ -5,6 +5,7 @@
     tools:context="org.onebrick.android.activities.EventInfoActivity"
     android:orientation="vertical">
     <ScrollView
+        android:id="@+id/svMainContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -301,4 +302,10 @@
             android:background="@drawable/btn_rsvp"
             />
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbEventInfoProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
 </RelativeLayout>

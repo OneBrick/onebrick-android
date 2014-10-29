@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -20,7 +19,6 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
-import org.onebrick.android.helpers.FontsHelper;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class SelectChapterActivity extends Activity {
     NavigationChapterListAdapter chapterListAdapter;
     ArrayList<Chapter> chapterList;
     OneBrickClient obClient;
-    TextView tvChapteOptions;
+    //TextView tvChapteOptions;
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
         @Override
@@ -58,8 +56,8 @@ public class SelectChapterActivity extends Activity {
         setContentView(R.layout.activity_select_chapter);
         getActionBar().setTitle("Select your chapter");
         lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
-        tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
-        tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());
+        //tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
+        //tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());
         chapterList = new ArrayList<Chapter>();
         obClient = OneBrickApplication.getRestClient();
         chapterListAdapter = new NavigationChapterListAdapter(this,R.layout.drawer_nav_item,chapterList);

@@ -180,10 +180,10 @@ public class EventLocationView extends FragmentActivity implements
         // Display the connection status
         Location location = mLocationClient.getLastLocation();
         if (location != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            //Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
+            //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            //map.animateCamera(cameraUpdate);
         } else {
             Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
