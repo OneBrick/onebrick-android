@@ -208,63 +208,45 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/event_detail_padding_side"
                 android:paddingRight="@dimen/event_detail_padding_side"
+                android:paddingTop="@dimen/event_detail_padding_side"
+                android:paddingBottom="@dimen/event_detail_padding_side"
                 android:gravity="center_horizontal"
                 android:background="@drawable/item_seperation_border">
                 <ImageView
                     android:id="@+id/ivEventInfoFbShare"
-                    android:scaleType="center"
-                    android:layout_width="@dimen/share_images_size"
-                    android:layout_height="@dimen/share_images_size"
-                    android:layout_marginRight="3dp"
-                    android:src="@drawable/ic_facebook"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:gravity="center_vertical"
+                    android:layout_width="@dimen/share_images_small_size"
+                    android:layout_height="@dimen/share_images_small_size"
+                    android:layout_marginRight="18dp"
+                    android:src="@drawable/ic_fb_share"
                     android:background="@drawable/social_button_selector"/>
 
                 <ImageView
                     android:id="@+id/ivEventInfoTwitterShare"
-                    android:scaleType="center"
-                    android:layout_width="@dimen/share_images_size"
-                    android:layout_height="@dimen/share_images_size"
-                    android:layout_marginRight="3dp"
-                    android:src="@drawable/ic_twitter"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:gravity="center_vertical"
+                    android:layout_width="@dimen/share_images_small_size"
+                    android:layout_height="@dimen/share_images_small_size"
+                    android:layout_marginRight="18dp"
+                    android:src="@drawable/ic_twitter_share"
                     android:background="@drawable/social_button_selector"/>
 
                 <ImageView
                     android:id="@+id/ivEventInfoGenShare"
-                    android:scaleType="center"
-                    android:layout_width="@dimen/share_images_size"
-                    android:layout_height="@dimen/share_images_size"
-                    android:src="@drawable/ic_share"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:gravity="center_vertical"
+                    android:layout_width="@dimen/share_images_small_size"
+                    android:layout_height="@dimen/share_images_small_size"
+                    android:src="@drawable/ic_gen_share"
                     android:background="@drawable/social_button_selector"/>
                 <!--
-                <ImageView
-                    android:id="@+id/ivEventInfoFbShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_fb_share"/>
-                <ImageView
-                    android:id="@+id/ivEventInfoTwitterShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_twitter_share"/>
-                <ImageView
-                    android:id="@+id/ivEventInfoGenShare"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_gen_share"/>
                 <ImageView
                     android:id="@+id/ivEventInfoAddReminder"
                     android:layout_width="40dp"
@@ -277,7 +259,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"></LinearLayout>
+                android:layout_height="60dp"></LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

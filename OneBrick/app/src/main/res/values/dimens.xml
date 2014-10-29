@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
     <dimen name="share_images_size">48dp</dimen>
+    <dimen name="share_images_small_size">35dp</dimen>
     <dimen name="card_padding_top_bottom">8dp</dimen>
     <dimen name="card_padding_left_right">8dp</dimen>
     <dimen name="event_title_text_size">16sp</dimen>
