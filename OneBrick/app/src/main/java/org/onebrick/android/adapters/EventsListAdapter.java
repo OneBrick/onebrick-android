@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
-import org.onebrick.android.helpers.SocialShare;
+import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
@@ -91,7 +91,7 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
 
     public void shareInFacebook(View v, String title, long message) {
 
-        SocialShare.shareFacebook(v, title, message);
+        SocialShareEmail.shareFacebook(v, title, message);
 
 //        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
 //        try {
@@ -113,7 +113,7 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
 
     public void shareInTwitter(View v, String title, long message) {
 
-        SocialShare.shareTwitter(v, title, message);
+        SocialShareEmail.shareTwitter(v, title, message);
 //        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
 //        tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
 //        tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
@@ -151,6 +151,6 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
      * @param view
      */
     public void shareInOthers(View view, String title, long message){
-        SocialShare.shareOthers(view, title, message);
+        SocialShareEmail.shareOthers(view, title, message);
     }
 }

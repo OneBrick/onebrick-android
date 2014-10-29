@@ -87,8 +87,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:textSize="@dimen/event_detail_text_small_size"
-                    android:maxLines="4"
+                    android:maxLines="5"
                     android:lineSpacingExtra="5dp"
+                    android:background="@drawable/learn_more_button_selector"
                     android:ellipsize="end"
                     android:text="Some small description about the event not more than 4 lines of description here"/>
 
@@ -102,6 +103,7 @@
                     android:text="Learn More >"
                     android:textSize="@dimen/event_detail_text_size"
                     android:textColor="@color/onebrick_orange"
+                    android:background="@drawable/learn_more_button_selector"
                     android:gravity="center"/>
             </RelativeLayout>
             <RelativeLayout
@@ -184,21 +186,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/social_button_selector"
                         android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
-                        android:drawableStart="@drawable/ic_email_2"
+                        android:drawableStart="@drawable/ic_email_3"
                         android:drawablePadding="3dp"
                         android:text="@string/manager_label"/>
                     <Button
                         android:id="@+id/btnEmailCoordinator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/social_button_selector"
                         android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
                         android:layout_toRightOf="@+id/btnEmailManager"
-                        android:drawableStart="@drawable/ic_email_2"
+                        android:drawableStart="@drawable/ic_email_3"
                         android:drawablePadding="3dp"
                         android:text="@string/coordinator_label"/>
                 </RelativeLayout>
@@ -218,7 +220,7 @@
                     android:scaleType="center"
                     android:layout_width="@dimen/share_images_size"
                     android:layout_height="@dimen/share_images_size"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginRight="3dp"
                     android:src="@drawable/ic_facebook"
                     android:background="@drawable/social_button_selector"/>
 
@@ -227,7 +229,7 @@
                     android:scaleType="center"
                     android:layout_width="@dimen/share_images_size"
                     android:layout_height="@dimen/share_images_size"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginRight="3dp"
                     android:src="@drawable/ic_twitter"
                     android:background="@drawable/social_button_selector"/>
 

@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -46,7 +45,7 @@ import org.onebrick.android.helpers.ChapterBannerMapper;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
-import org.onebrick.android.helpers.SocialShare;
+import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
@@ -147,6 +146,7 @@ public class EventInfoActivity extends FragmentActivity implements
     };
 
     RelativeLayout rlBannerImg;
+    RelativeLayout rlContact;
     TextView tvEventName;
     TextView tvEventDateTime;
     TextView tvEventBrief;
@@ -199,6 +199,7 @@ public class EventInfoActivity extends FragmentActivity implements
                 + " - "
                 + Utils.getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
         String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
+        eventDesc = Utils.removeHTagsFromHTML(eventDesc);
         tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
         Address eventAddress;
@@ -238,6 +239,8 @@ public class EventInfoActivity extends FragmentActivity implements
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
         map.animateCamera(cu);
+
+        // update rsvp button
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText("UnRSVP");
@@ -245,6 +248,16 @@ public class EventInfoActivity extends FragmentActivity implements
             } else {
                 btnRsvp.setText("RSVP NOW!");
                 btnRsvp.setBackground(rsvpDrawable);
+            }
+        }
+        // set up email contacts visibility
+        if (!Utils.isValidEmail(updatedEvent.getManagerEmail()) && !Utils.isValidEmail(updatedEvent.getCoordinatorEmail())) {
+            rlContact.setVisibility(View.GONE);
+        }else{
+            if (!Utils.isValidEmail(updatedEvent.getManagerEmail())){
+                btnEmailManager.setVisibility(View.GONE);
+            }else if (!Utils.isValidEmail(updatedEvent.getCoordinatorEmail())){
+                btnEmailCoordinator.setVisibility(View.GONE);
             }
         }
     }
@@ -260,6 +273,7 @@ public class EventInfoActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
         rlBannerImg = (RelativeLayout) findViewById(R.id.rlBannerImg);
+        rlContact = (RelativeLayout) findViewById(R.id.rlContact);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
@@ -345,7 +359,6 @@ public class EventInfoActivity extends FragmentActivity implements
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!loginMgr.isLoggedIn()) {
                     /*
                     If the user is not logged in the prompting the use to login
@@ -371,35 +384,33 @@ public class EventInfoActivity extends FragmentActivity implements
                         obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
                     }
                 }
-
             }
         });
 
-        btnEmailManager.setOnClickListener(new View.OnClickListener(){
+        // email to manager
+        btnEmailManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String managerEmail = updatedEvent.getManagerEmail();
-                if (managerEmail != null && !managerEmail.isEmpty()){
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", managerEmail, null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Manager");
-                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                String email = updatedEvent.getManagerEmail();
+                if (Utils.isValidEmail(email)) {
+                    Log.i("manager email--", updatedEvent.getManagerEmail() + "---");
+                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
         });
 
-        btnEmailCoordinator.setOnClickListener(new View.OnClickListener(){
+        // email to coordinator
+        btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String coordinatorEmail = updatedEvent.getCoordinatorEmail();
-                if (coordinatorEmail != null && !coordinatorEmail.isEmpty()){
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", coordinatorEmail, null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Coordinator");
-                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                String email = updatedEvent.getCoordinatorEmail();
+                if (Utils.isValidEmail(email)) {
+                    Log.i("manager email--", updatedEvent.getCoordinatorEmail() + "---");
+                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
         });
+
         /*
         This function is called to add the even information to the calendar
          */
@@ -425,21 +436,21 @@ public class EventInfoActivity extends FragmentActivity implements
         ivEventInfoFbShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
+                SocialShareEmail.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
             }
         });
 
         ivEventInfoTwitterShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
             }
         });
 
         ivEventInfoGenShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
             }
         });
         /*
