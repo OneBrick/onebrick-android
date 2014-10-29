@@ -13,6 +13,7 @@
         android:id="@+id/onLogo"
         android:layout_width="220dp"
         android:layout_height="125dp"
+        android:layout_marginTop="12dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_alignParentTop="true"
@@ -25,23 +26,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/please_login"
-            android:fontFamily="sans-serif-thin"
-            android:textSize="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/charcoal"/>
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/prompt_email"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
             android:maxLines="1"
             android:singleLine="true"/>
@@ -56,17 +47,17 @@
             android:maxLines="1"
             android:singleLine="true"/>
     </LinearLayout>
-    <RelativeLayout
+    <LinearLayout
+        android:layout_below="@id/llInputs"
         android:layout_width="match_parent"
-        android:layout_below="@+id/llInputs"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal">
         <Button
             android:id="@+id/email_sign_in_button"
             android:layout_width="100dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
             android:layout_height="45dp"
-            android:layout_marginTop="16dp"
             android:text="@string/action_sign_in"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -75,16 +66,13 @@
             android:background="@drawable/btn_login_cancel"/>
         <Button
             android:id="@+id/btnCancelLogin"
-            android:layout_marginLeft="20dp"
-            android:layout_alignParentLeft="true"
             android:layout_width="100dp"
             android:layout_height="45dp"
-            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:text="@string/cancel"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:background="@drawable/btn_login_cancel"/>
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

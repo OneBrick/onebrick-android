@@ -87,7 +87,7 @@
             android:orientation="horizontal">
         <TextView
             android:text="@string/select_chapter"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/drawerItem"
             android:gravity="center_vertical"
@@ -95,7 +95,7 @@
 
         <ProgressBar
             android:id="@+id/pbSelectChapter"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             style="@style/progressBar.Medium"

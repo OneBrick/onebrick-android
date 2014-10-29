@@ -39,6 +39,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -161,7 +162,7 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
-    RelativeLayout rlBannerImg;
+    ImageView ivProfilePhoto;
     RelativeLayout rlContact;
     TextView tvEventName;
     TextView tvEventDateTime;
@@ -206,12 +207,9 @@ public class EventInfoActivity extends FragmentActivity implements
     private void updateViews(Event updatedEvent) {
         selectedEvent = updatedEvent;
         int chapterId = updatedEvent.getChapter().getChapterId();
-        //// based on chapter id, populate background banner of each chapter
-        ChapterBannerMapper bannerMapper = new ChapterBannerMapper();
-        Drawable drawableBanner = getBannerDrawable(bannerMapper.getBanner(chapterId));
-        if (drawableBanner != null){
-            rlBannerImg.setBackground(drawableBanner);
-        }
+
+        final ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(updatedEvent.getProfilePhotoUri(), ivProfilePhoto);
 
         tvEventName.setText(updatedEvent.getTitle());
         tvEventDateTime.setText(Utils.getFormattedEventDate(updatedEvent.getEventStartDate())
@@ -261,7 +259,7 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
-        rlBannerImg = (RelativeLayout) findViewById(R.id.rlBannerImg);
+        ivProfilePhoto = (ImageView) findViewById(R.id.ivProfilePhoto);
         rlContact = (RelativeLayout) findViewById(R.id.rlContact);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
@@ -299,16 +297,14 @@ public class EventInfoActivity extends FragmentActivity implements
         obClient.getEventInfo(eventId, responseHandler);
         obDtf = DateTimeFormatter.getInstance();
         geocoder = new Geocoder(this);
-        /*
-        Loading map
-         */
+
+        // Loading map
         mLocationClient = new LocationClient(this, this, this);
         mapFragment =
                 ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrame));
         if (mapFragment != null) {
             map = mapFragment.getMap();
             if (map != null) {
-
             } else {
                 Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_LONG).show();
             }
