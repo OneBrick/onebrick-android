@@ -21,6 +21,8 @@
             android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
+            android:clickable="true"
+            android:background="@drawable/share_bg_selector"
             android:padding="5dp"
             android:src="@drawable/ic_fb_share"/>
         <ImageView
@@ -29,6 +31,8 @@
             android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
+            android:clickable="true"
+            android:background="@drawable/share_bg_selector"
             android:padding="5dp"
             android:src="@drawable/ic_twitter_share"/>
         <ImageView
@@ -36,6 +40,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:adjustViewBounds="true"
+            android:clickable="true"
+            android:background="@drawable/share_bg_selector"
             android:scaleType="fitCenter"
             android:padding="5dp"
             android:src="@drawable/ic_gen_share"/>
