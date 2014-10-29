@@ -111,7 +111,7 @@ public class EventInfoActivity extends FragmentActivity implements
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
-            btnRsvp.setText("UnRSVP");
+            btnRsvp.setText(R.string.un_rsvp_button);
             btnRsvp.setBackground(unrsvpDrawable);
             updatedEvent.rsvp = true;
             Event.updateEvent(updatedEvent);
@@ -140,7 +140,7 @@ public class EventInfoActivity extends FragmentActivity implements
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
-            btnRsvp.setText("RSVP NOW!");
+            btnRsvp.setText(R.string.rsvp_button);
             btnRsvp.setBackground(rsvpDrawable);
             updatedEvent.rsvp = false;
             Event.updateEvent(updatedEvent);
@@ -223,10 +223,10 @@ public class EventInfoActivity extends FragmentActivity implements
         tvEventLocation.setText(updatedEvent.getEventAddress());
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
-                btnRsvp.setText("UnRSVP");
+                btnRsvp.setText(R.string.un_rsvp_button);
                 btnRsvp.setBackground(unrsvpDrawable);
             } else {
-                btnRsvp.setText("RSVP NOW!");
+                btnRsvp.setText(R.string.rsvp_button);
                 btnRsvp.setBackground(rsvpDrawable);
             }
         }
@@ -361,10 +361,10 @@ public class EventInfoActivity extends FragmentActivity implements
                     Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loginActivity);
                     if (updatedEvent.rsvp == true) {
-                        btnRsvp.setText("unRSVP");
+                        btnRsvp.setText(R.string.un_rsvp_button);
                         btnRsvp.setBackground(unrsvpDrawable);
                     } else {
-                        btnRsvp.setText("RSVP NOW!");
+                        btnRsvp.setText(R.string.rsvp_button);
                         btnRsvp.setBackground(rsvpDrawable);
                     }
                 } else {
@@ -388,7 +388,6 @@ public class EventInfoActivity extends FragmentActivity implements
             public void onClick(View v) {
                 String email = updatedEvent.getManagerEmail();
                 if (Utils.isValidEmail(email)) {
-                    Log.i("manager email--", updatedEvent.getManagerEmail() + "---");
                     SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
@@ -400,7 +399,6 @@ public class EventInfoActivity extends FragmentActivity implements
             public void onClick(View v) {
                 String email = updatedEvent.getCoordinatorEmail();
                 if (Utils.isValidEmail(email)) {
-                    Log.i("manager email--", updatedEvent.getCoordinatorEmail() + "---");
                     SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
