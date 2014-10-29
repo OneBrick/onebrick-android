@@ -3,6 +3,7 @@
     <!-- OneBrick brand resources -->
     <color name="onebrick_blue">#2698D4</color>
     <color name="onebrick_orange">#DD7129</color>
+    <color name="onebrick_transparent_orange">#40DD7129</color>
     <color name="bg_grey">#efebe9</color>
 
     <color name="text_grey">#757575</color>
@@ -12,7 +13,7 @@
 
     <color name="rsvp_button">#009933</color>
     <color name="unrsvp_button">#C80000</color>
-    <color name="rsvp_background">#DDeaeaea</color>
+    <color name="rsvp_background">#CCeaeaea</color>
 
     <color name="dark_tranparent_black">#80000000</color> <!-- 50% -->
     <color name="deep_tranparent_black">#40000000</color> <!-- 25% -->

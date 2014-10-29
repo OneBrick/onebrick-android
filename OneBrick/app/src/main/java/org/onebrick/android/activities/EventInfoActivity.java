@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -50,7 +49,7 @@ import org.onebrick.android.helpers.ChapterBannerMapper;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.OneBrickGeoCoder;
-import org.onebrick.android.helpers.SocialShare;
+import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
@@ -163,6 +162,7 @@ public class EventInfoActivity extends FragmentActivity implements
     };
 
     RelativeLayout rlBannerImg;
+    RelativeLayout rlContact;
     TextView tvEventName;
     TextView tvEventDateTime;
     TextView tvEventBrief;
@@ -218,6 +218,7 @@ public class EventInfoActivity extends FragmentActivity implements
                 + " - "
                 + Utils.getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
         String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
+        eventDesc = Utils.removeHTagsFromHTML(eventDesc);
         tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
         if(loginMgr.isLoggedIn()) {
@@ -232,50 +233,24 @@ public class EventInfoActivity extends FragmentActivity implements
         progressBar.setVisibility(View.INVISIBLE);
         svMainContent.setVisibility(View.VISIBLE);
         llRsvpSegment.setVisibility(View.VISIBLE);
+
+        // set up email contacts visibility
+        if (!Utils.isValidEmail(updatedEvent.getManagerEmail()) && !Utils.isValidEmail(updatedEvent.getCoordinatorEmail())) {
+            rlContact.setVisibility(View.GONE);
+        }else{
+            if (!Utils.isValidEmail(updatedEvent.getManagerEmail())){
+                btnEmailManager.setVisibility(View.GONE);
+            }else if (!Utils.isValidEmail(updatedEvent.getCoordinatorEmail())){
+                btnEmailCoordinator.setVisibility(View.GONE);
+            }
+        }
+
         //updateMapsFragment(updatedEvent);
         UpdateMapsFragment mapsUpdate = new UpdateMapsFragment();
         mapsUpdate.execute("Maps Update");
 
     }
 
-    private void updateMapsFragment(Event updatedEvent) {
-        Address eventAddress;
-        Log.i(TAG, "Event address is " + updatedEvent.getEventAddress());
-        Log.i(TAG, "Is Geocode present " + obGeoCoder.isPresent());
-        eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
-        Log.i(TAG, "Geocoded Event address is " + eventAddress);
-        if (eventAddress != null) {
-
-            lat = eventAddress.getLatitude();
-            lng = eventAddress.getLongitude();
-
-            marker = new MarkerOptions()
-                    .position(new LatLng(lat, lng))
-                    .title("Event Location");
-            map.addMarker(marker);
-
-         /*
-            Setting up onClick listener on the map
-            which when clicked the user will be taken to a new
-            activity where he will see the map in a might bigger screen
-         */
-            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
-                    Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
-                    eventLocationMap.putExtra("Latitude", lat);
-                    eventLocationMap.putExtra("Longitude", lng);
-                    eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
-                    startActivity(eventLocationMap);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                }
-            });
-            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
-            map.animateCamera(cu);
-        }
-
-    }
     @Override
     public void onBackPressed() {
         finish();
@@ -287,6 +262,7 @@ public class EventInfoActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
         rlBannerImg = (RelativeLayout) findViewById(R.id.rlBannerImg);
+        rlContact = (RelativeLayout) findViewById(R.id.rlContact);
         tvEventName = (TextView) findViewById(R.id.tvEventName);
         tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
         tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
@@ -378,7 +354,6 @@ public class EventInfoActivity extends FragmentActivity implements
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!loginMgr.isLoggedIn()) {
                     /*
                     If the user is not logged in the prompting the use to login
@@ -404,35 +379,33 @@ public class EventInfoActivity extends FragmentActivity implements
                         obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
                     }
                 }
-
             }
         });
 
-        btnEmailManager.setOnClickListener(new View.OnClickListener(){
+        // email to manager
+        btnEmailManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String managerEmail = updatedEvent.getManagerEmail();
-                if (managerEmail != null && !managerEmail.isEmpty()){
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", managerEmail, null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Manager");
-                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                String email = updatedEvent.getManagerEmail();
+                if (Utils.isValidEmail(email)) {
+                    Log.i("manager email--", updatedEvent.getManagerEmail() + "---");
+                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
         });
 
-        btnEmailCoordinator.setOnClickListener(new View.OnClickListener(){
+        // email to coordinator
+        btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String coordinatorEmail = updatedEvent.getCoordinatorEmail();
-                if (coordinatorEmail != null && !coordinatorEmail.isEmpty()){
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", coordinatorEmail, null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to Coordinator");
-                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                String email = updatedEvent.getCoordinatorEmail();
+                if (Utils.isValidEmail(email)) {
+                    Log.i("manager email--", updatedEvent.getCoordinatorEmail() + "---");
+                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
                 }
             }
         });
+
         /*
         This function is called to add the even information to the calendar
          */
@@ -458,21 +431,21 @@ public class EventInfoActivity extends FragmentActivity implements
         ivEventInfoFbShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
+                SocialShareEmail.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
             }
         });
 
         ivEventInfoTwitterShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
             }
         });
 
         ivEventInfoGenShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShare.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
             }
         });
         /*
@@ -703,9 +676,6 @@ public class EventInfoActivity extends FragmentActivity implements
 
 
     }
-
-
-
 
     private class UpdateMapsFragment extends AsyncTask<String, Void, String> {
         Address eventAddress = null;

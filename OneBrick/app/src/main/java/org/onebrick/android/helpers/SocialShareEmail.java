@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import java.util.List;
 
-/**
- * Created by rush on 10/26/14.
- */
-public class SocialShare {
+public class SocialShareEmail {
 
     private static final String ONEBRICK_URL_PREFIX = "http://onebrick.org/event/?eventid=";
 
@@ -74,5 +72,14 @@ public class SocialShare {
         intent.putExtra(Intent.EXTRA_SUBJECT, title);
         intent.putExtra(Intent.EXTRA_TEXT, title + ":  " + ONEBRICK_URL_PREFIX + message);
         v.getContext().startActivity(Intent.createChooser(intent, "share"));
+    }
+
+    public static void sendEmails(View v, String title, long message, @NonNull String email){
+
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", email, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question to OneBrick: " + title);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, title + ":  " + ONEBRICK_URL_PREFIX + message);
+        v.getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }

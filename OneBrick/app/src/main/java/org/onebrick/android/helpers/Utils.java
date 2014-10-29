@@ -1,5 +1,6 @@
 package org.onebrick.android.helpers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -93,11 +94,24 @@ public class Utils {
      * @param input
      * @return
      */
-    public static String removeImgTagsFromHTML(String input){
-        if (input != null && !input.isEmpty()){
+    public static String removeImgTagsFromHTML(@NonNull String input){
+        if (!input.isEmpty()){
             input = input.replaceAll("(<img\\b[^>]*\\bsrc\\s*=\\s*)([\"\'])((?:(?!\\2)[^>])*)\\2(\\s*[^>]*>)", "");
         }
         return input;
     }
 
+    public static String removeHTagsFromHTML(@NonNull String input){
+        if (!input.isEmpty()){
+            input = input.replaceAll("<h3>|</h3>", "");
+        }
+        return input;
+    }
+
+    public static boolean isValidEmail(@NonNull String email){
+        if (!"null".equals(email.trim().toLowerCase())){
+            return true;
+        }
+        return false;
+    }
 }
