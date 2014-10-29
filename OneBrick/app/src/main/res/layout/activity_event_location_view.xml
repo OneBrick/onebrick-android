@@ -2,41 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_grey"
     tools:context="org.onebrick.android.activities.EventLocationView"
     android:orientation="vertical">
     <fragment
         android:id="@+id/mapViewFragment"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="2dp"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="450dp">
     </fragment>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="0dp">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/item_seperation_border_top"
+        android:layout_height="fill_parent">
         <TextView
             android:id="@+id/tvEventLocation"
-            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/ivGetNavigtion"
             android:layout_alignParentTop="true"
             android:text="Address of the Event Location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:paddingBottom="@dimen/event_detail_padding"
-            android:paddingTop="@dimen/event_detail_padding"
-            android:paddingLeft="@dimen/event_detail_padding_side"
-            android:paddingRight="@dimen/event_detail_padding_side"
+            android:paddingTop="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:gravity="center_vertical"
             android:textColor="@color/charcoal"
-            android:textSize="@dimen/event_detail_text_small_size"/>
-        <Button
-            android:id="@+id/btnFindDirection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:layout_alignRight="@id/tvEventLocation"
-            android:gravity="center_horizontal"
-            android:drawableStart="@drawable/ic_map"/>
+            android:textSize="@dimen/big"/>
+        <ImageView
+            android:id="@+id/ivGetNavigtion"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:clickable="true"
+            android:background="@drawable/learn_more_button_selector"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_nav"/>
     </RelativeLayout>
 
 
