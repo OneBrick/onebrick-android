@@ -116,7 +116,6 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(
                     event.getEventStartDate()));
             viewHolder.btnRsvp.setVisibility(View.GONE);
-            
             viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
