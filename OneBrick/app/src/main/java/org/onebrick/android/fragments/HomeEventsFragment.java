@@ -83,7 +83,7 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.GONE);
-                Log.i("INFO", "callback success"); // logcat log
+                //Log.i("INFO", "callback success"); // logcat log
                 aEventList.clear();
                 aEventList.clear();
                 if (response != null){

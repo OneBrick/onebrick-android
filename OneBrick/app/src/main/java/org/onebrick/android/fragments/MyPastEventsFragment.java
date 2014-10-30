@@ -84,10 +84,6 @@ public class MyPastEventsFragment extends EventsListFragment {
                     aEventList.clear();
                     aEventList.addAll(eventList);
                     aEventList.notifyDataSetChanged();
-
-                    // remove upcoming events because current response includes both past and upcoming ones
-                    //removeUpcomingEvents();
-                    Log.i("size of past events:", eventList.size() + "");
                 }
             }
             @Override

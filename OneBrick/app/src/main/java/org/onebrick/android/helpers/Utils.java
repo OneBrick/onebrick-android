@@ -9,9 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * Created by rush on 10/13/14.
- */
 public class Utils {
     private static final String TAG = "Utils";
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -66,6 +63,20 @@ public class Utils {
         return new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
     }
 
+    public static boolean isPastEvent(String endDate){
+        try {
+            Date eventDate = getLocalTime(dateFormat.parse(endDate));
+            Date currentDate = new Date();
+            if (eventDate.before(currentDate)){
+                return true;
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + endDate);
+        }
+        return false;
+
+    }
+
     public static String getFormattedTimeEndOnly(String start, String end){
         String startDate = getFormattedEventDateOnly(start);
         String endDate = getFormattedEventDateOnly(end);
@@ -114,4 +125,5 @@ public class Utils {
         }
         return false;
     }
+
 }

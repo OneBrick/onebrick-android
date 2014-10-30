@@ -89,61 +89,24 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         return convertView;
     }
 
+    /**
+     * social share in facebook
+     * @param v
+     * @param title
+     * @param message
+     */
     public void shareInFacebook(View v, String title, long message) {
-
         SocialShareEmail.shareFacebook(v, title, message);
-
-//        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
-//        try {
-//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-//            sharingIntent.setClassName("com.facebook.katana",
-//                    "com.facebook.katana.ShareLinkActivity");
-//            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-//            sharingIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-//            v.getContext().startActivity(sharingIntent);
-//
-//        } catch (Exception e) {
-//            Intent i = new Intent(Intent.ACTION_VIEW);
-//            i.putExtra(Intent.EXTRA_SUBJECT, title);
-//            i.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-//            i.setData(Uri.parse(fullUrl));
-//            v.getContext().startActivity(i);
-//        }
     }
 
+    /**
+     * social share in twitter
+     * @param v
+     * @param title
+     * @param message
+     */
     public void shareInTwitter(View v, String title, long message) {
-
         SocialShareEmail.shareTwitter(v, title, message);
-//        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
-//        tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-//        tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-//        tweetIntent.setType("text/plain");
-//
-//        PackageManager packManager = getContext().getPackageManager();
-//        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent,  PackageManager.MATCH_DEFAULT_ONLY);
-//
-//        boolean resolved = false;
-//        for(ResolveInfo resolveInfo: resolvedInfoList){
-//            if(resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")){
-//                tweetIntent.setClassName(
-//                        resolveInfo.activityInfo.packageName,
-//                        resolveInfo.activityInfo.name );
-//                resolved = true;
-//                break;
-//            }
-//        }
-//        if(resolved){
-//            getContext().startActivity(tweetIntent);
-//        }else{
-//            Toast.makeText(getContext(), "no twitter app ", Toast.LENGTH_SHORT).show();
-//            tweetIntent = new Intent(Intent.ACTION_VIEW,
-//                    Uri.parse("https://twitter.com/intent/tweet"));
-//            tweetIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-//            tweetIntent.putExtra(Intent.EXTRA_TEXT, ONEBRICK_URL_PREFIX + message);
-//
-//            getContext().startActivity(tweetIntent);
-//        }
-
     }
 
     /**
