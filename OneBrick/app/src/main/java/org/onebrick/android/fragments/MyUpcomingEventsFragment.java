@@ -66,7 +66,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                progressBar.setVisibility(ProgressBar.GONE);
+                //progressBar.setVisibility(ProgressBar.GONE);
             }
 
             @Override
@@ -76,6 +76,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 aEventList.clear();
                 aEventList.addAll(eventList);
                 aEventList.notifyDataSetChanged();
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
 
             }
             @Override
@@ -84,6 +85,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 Log.e("ERROR", responseString);
                 Log.e("ERROR", throwable.toString());
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers,
@@ -91,6 +93,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("ERROR", errorResponse.toString());
                 Log.e("ERROR", throwable.toString());
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
     }

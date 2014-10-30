@@ -62,11 +62,11 @@ public class MyPastEventsFragment extends EventsListFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                progressBar.setVisibility(ProgressBar.GONE);
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 eventList.clear();
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (response != null) {
                     eventList.clear();
                     eventList = Event.fromJSONArray(response, myChapterId);
@@ -91,6 +91,7 @@ public class MyPastEventsFragment extends EventsListFragment {
                                   String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 Log.e("ERROR", responseString);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers,
@@ -98,6 +99,7 @@ public class MyPastEventsFragment extends EventsListFragment {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("ERROR", errorResponse.toString());
                 Log.e("ERROR", throwable.toString());
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
     }

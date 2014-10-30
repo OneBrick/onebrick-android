@@ -83,12 +83,11 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                progressBar.setVisibility(ProgressBar.GONE);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                progressBar.setVisibility(ProgressBar.GONE);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 Log.i("INFO", "callback success"); // logcat
                 aEventList.clear();
                 if (response != null){
@@ -104,16 +103,19 @@ public class HomeEventsFragment extends EventsListFragment {
                     }
                     aEventList.notifyDataSetChanged();
                 }
+                //progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 //super.onFailure(statusCode, headers, responseString, throwable);
                 //Toast.makeText(getActivity(),"API Called error",Toast.LENGTH_SHORT).show();
                 aEventList.clear();
@@ -128,6 +130,7 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONArray errorResponse) {
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("ERROR", errorResponse.toString());
                 Log.e("ERROR", throwable.toString());

@@ -61,14 +61,20 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
             Log.i("INFO", "callback success"); // logcat log
             aEventSearchList.clear();
+            eventList.clear();
+            aEventSearchList.notifyDataSetChanged();
+            Log.i("Debug","The size of search list is"+eventList.size());
             if (response != null){
                 aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
                 if(aEventSearchList.isEmpty()){
+                    Log.i("Searching result", "Is Empty");
                     aEventSearchList.clear();
+                    eventList.clear();
                     Event e = new Event();
                     e.setTitle("Error");
                     aEventSearchList.add(e);
                 }
+                Log.i("Debug","The size of search list is"+eventList.size());
                 aEventSearchList.notifyDataSetChanged();
             }
         }
@@ -77,6 +83,7 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             super.onFailure(statusCode, headers, throwable, errorResponse);
             aEventSearchList.clear();
+            eventList.clear();
             Event e = new Event();
             e.setTitle("Error");
             aEventSearchList.add(e);
@@ -89,6 +96,7 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
             super.onFailure(statusCode, headers, responseString, throwable);
             Log.e("ERROR", responseString);
             Log.e("ERROR", throwable.toString());
+            eventList.clear();
             aEventSearchList.clear();
             Event e = new Event();
             e.setTitle("Error");
@@ -102,6 +110,7 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
             super.onFailure(statusCode, headers, throwable, errorResponse);
             Log.e("ERROR", errorResponse.toString());
             Log.e("ERROR", throwable.toString());
+            eventList.clear();
             aEventSearchList.clear();
             Event e = new Event();
             e.setTitle("Error");

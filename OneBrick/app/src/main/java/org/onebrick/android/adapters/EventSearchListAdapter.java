@@ -108,6 +108,9 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
         final Event event = getItem(position);
         //Toast.makeText(getContext(),"Event is "+event.toString(),Toast.LENGTH_LONG).show();
         if(event!=null && !event.getTitle().equalsIgnoreCase("Error")) {
+            viewHolder.front.setVisibility(View.VISIBLE);
+            viewHolder.back.setVisibility(View.VISIBLE);
+            viewHolder.noEvents.setVisibility(View.GONE);
             int eventId = (int) event.getEventId();
             int imgId = (eventId%20)+1;
             String imageUri = "assets://images/image"+imgId+".jpg";
