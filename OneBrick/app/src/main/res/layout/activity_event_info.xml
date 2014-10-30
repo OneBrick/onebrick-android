@@ -277,9 +277,12 @@
         android:background="@color/deep_tranparent_black">
         <Button
             android:id="@+id/btnRsvp"
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="@string/rsvp_button"

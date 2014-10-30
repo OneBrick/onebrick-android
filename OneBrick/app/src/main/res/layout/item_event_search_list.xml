@@ -84,7 +84,6 @@
                 android:text="Some long event name amy be 2 lines"
                 android:textSize="@dimen/big"
                 android:layout_marginLeft="10dp"
-                android:textStyle="bold"
                 android:fontFamily="sans-serif"
                 android:gravity="center_vertical"
                 android:layout_height="match_parent" />

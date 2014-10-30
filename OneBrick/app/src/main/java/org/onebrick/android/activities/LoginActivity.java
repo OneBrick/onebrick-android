@@ -31,7 +31,6 @@ public class LoginActivity extends Activity{
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mEmailSignInButton;
-    private Button btnCancel;
     private long userId;
 
     @Override
@@ -43,13 +42,7 @@ public class LoginActivity extends Activity{
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        btnCancel = (Button) findViewById(R.id.btnCancelLogin);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

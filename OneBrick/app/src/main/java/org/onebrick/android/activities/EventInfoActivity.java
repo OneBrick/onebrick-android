@@ -111,7 +111,7 @@ public class EventInfoActivity extends FragmentActivity implements
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp_button);
-            btnRsvp.setBackground(unrsvpDrawable);
+            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
             updatedEvent.rsvp = true;
             Event.updateEvent(updatedEvent);
 
@@ -140,7 +140,7 @@ public class EventInfoActivity extends FragmentActivity implements
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp_button);
-            btnRsvp.setBackground(rsvpDrawable);
+            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
             updatedEvent.rsvp = false;
             Event.updateEvent(updatedEvent);
 
@@ -189,8 +189,6 @@ public class EventInfoActivity extends FragmentActivity implements
     DateTimeFormatter obDtf;
     double lat;
     double lng;
-    Drawable unrsvpDrawable;
-    Drawable rsvpDrawable;
     ProgressBar progressBar;
     ScrollView svMainContent;
     LinearLayout llRsvpSegment;
@@ -221,10 +219,10 @@ public class EventInfoActivity extends FragmentActivity implements
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText(R.string.un_rsvp_button);
-                btnRsvp.setBackground(unrsvpDrawable);
+                btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
             } else {
                 btnRsvp.setText(R.string.rsvp_button);
-                btnRsvp.setBackground(rsvpDrawable);
+                btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
             }
         }
         progressBar.setVisibility(View.INVISIBLE);
@@ -302,8 +300,6 @@ public class EventInfoActivity extends FragmentActivity implements
         svMainContent = (ScrollView) findViewById(R.id.svMainContent);
         llRsvpSegment = (LinearLayout) findViewById(R.id.rlRsvp);
         llDummySpace = (LinearLayout) findViewById(R.id.llDummySpace);
-        unrsvpDrawable = getResources().getDrawable(R.drawable.btn_unrsvp);
-        rsvpDrawable = getResources().getDrawable(R.drawable.btn_rsvp);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();
@@ -381,19 +377,19 @@ public class EventInfoActivity extends FragmentActivity implements
                     startActivity(loginActivity);
                     if (updatedEvent.rsvp == true) {
                         btnRsvp.setText(R.string.un_rsvp_button);
-                        btnRsvp.setBackground(unrsvpDrawable);
+                        btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
                     } else {
                         btnRsvp.setText(R.string.rsvp_button);
-                        btnRsvp.setBackground(rsvpDrawable);
+                        btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
                     }
                 } else {
                     user = loginMgr.getCurrentUser();
                     //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
-                    if (btnRsvp.getText().toString().equalsIgnoreCase("RSVP NOW!")) {
+                    if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp_button))) {
                         //Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
                         obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(), rsvpResponseHandler);
 
-                    } else if (btnRsvp.getText().toString().equalsIgnoreCase("UnRSVP")) {
+                    } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp_button))) {
                         //Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
                         obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
                     }

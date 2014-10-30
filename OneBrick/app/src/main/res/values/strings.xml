@@ -35,7 +35,7 @@
     <string name="welcome_message">Welcome!\nHappy Volunteering</string>
     <string name="rsvp">RSVP</string>
     <string name="un_rsvp">UnRSVP</string>
-    <string name="rsvp_button">RSVP NOW!</string>
+    <string name="rsvp_button">RSVP</string>
     <string name="un_rsvp_button">UnRSVP</string>
     <string name="manager_label"> Manager</string>
     <string name="coordinator_label"> Coordinator</string>
