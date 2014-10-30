@@ -28,6 +28,7 @@ import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -39,6 +40,8 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
     private int lastPosition = -1;
     ImageLoader imgLoader;
     DateTimeFormatter dtf;
+    Context context;
+    Calendar now = Calendar.getInstance();
     private static class ViewHolder {
         LinearLayout front;
         GridLayout back;
@@ -59,6 +62,7 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
 
     public EventSearchListAdapter(Context context, ArrayList<Event> events) {
         super(context, R.layout.item_event_list, events);
+        context = context;
         imgLoader = ImageLoader.getInstance();
         dtf = DateTimeFormatter.getInstance();
     }
@@ -111,6 +115,8 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             viewHolder.tvEventAddress.setText("" + event.getEventAddress());
             viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(
                     event.getEventStartDate()));
+            viewHolder.btnRsvp.setVisibility(View.GONE);
+            
             viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

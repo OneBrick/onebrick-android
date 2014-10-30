@@ -45,7 +45,7 @@ public class CalendarViewActivity extends Activity {
         obClient = OneBrickApplication.getRestClient();
         calendar.setAdapter(aCalendar);
         getActionBar().setTitle(""+chapterName+"'s"+" Calendar");
-        obClient.getEventsList(chapterId, new JsonHttpResponseHandler() {
+        obClient.getEventsList(chapterId, -1, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

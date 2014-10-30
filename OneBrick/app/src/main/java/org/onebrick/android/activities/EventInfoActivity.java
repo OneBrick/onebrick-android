@@ -72,7 +72,7 @@ public class EventInfoActivity extends FragmentActivity implements
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            //Log.i("TAG", "Success" + response.toString());
+            Log.i("TAG", "Success" + response.toString());
             updatedEvent = Event.getUpdatedEvent(response);
             updateViews(updatedEvent);
         }
@@ -204,7 +204,10 @@ public class EventInfoActivity extends FragmentActivity implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     private void updateViews(Event updatedEvent) {
+
+        Log.i(TAG,"Selected Event is "+updatedEvent);
         selectedEvent = updatedEvent;
+
         int chapterId = updatedEvent.getChapter().getChapterId();
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
@@ -304,7 +307,13 @@ public class EventInfoActivity extends FragmentActivity implements
         // Setting the action bar title
         getActionBar().setTitle("Event Details");
         // Using GeoCoder so not using he api call
-        obClient.getEventInfo(eventId, responseHandler);
+        if(loginMgr.isLoggedIn()) {
+            User usr = loginMgr.getCurrentUser();
+            obClient.getEventInfo(eventId, usr.getUId(), responseHandler);
+        } else {
+            obClient.getEventInfo(eventId, -1, responseHandler);
+        }
+
         obDtf = DateTimeFormatter.getInstance();
         geocoder = new Geocoder(this);
 

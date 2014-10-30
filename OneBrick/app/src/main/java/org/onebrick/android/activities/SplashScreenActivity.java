@@ -60,7 +60,7 @@ public class SplashScreenActivity extends Activity {
                     startActivity(i);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
-            }, 4000);
+            }, 3000);
         } else {
            new Handler().postDelayed(new Runnable() {
                 @Override
@@ -71,7 +71,7 @@ public class SplashScreenActivity extends Activity {
                     startActivity(i);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
-            }, 4000);
+            }, 3000);
         }
     }
 }

@@ -73,6 +73,7 @@ public class HomeActivity extends FragmentActivity
                 closeDrawer();
                 final Intent intent = new Intent(HomeActivity.this, MyEventsActivity.class);
                 HomeActivity.this.startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }

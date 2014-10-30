@@ -14,7 +14,9 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
+import org.onebrick.android.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,9 @@ public class HomeEventsFragment extends EventsListFragment {
 
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
+
+
+    LoginManager loginManager;
 
 
 
@@ -51,6 +56,7 @@ public class HomeEventsFragment extends EventsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = OneBrickApplication.getRestClient();
+        loginManager = LoginManager.getInstance(getActivity());
         final Bundle args = getArguments();
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
@@ -67,7 +73,7 @@ public class HomeEventsFragment extends EventsListFragment {
 
     private void populateHomeEventsList(int chapterId) {
         final int cid = chapterId;
-        client.getEventsList(chapterId, new JsonHttpResponseHandler() {
+        JsonHttpResponseHandler eventListResponseHandler = new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -83,8 +89,7 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.GONE);
-                Log.i("INFO", "callback success"); // logcat log
-                aEventList.clear();
+                Log.i("INFO", "callback success"); // logcat
                 aEventList.clear();
                 if (response != null){
                     aEventList.addAll(Event.fromJSONArray(response, cid));
@@ -128,20 +133,15 @@ public class HomeEventsFragment extends EventsListFragment {
                 Log.e("ERROR", throwable.toString());
             }
 
-        });
+        };
+        if(loginManager.isLoggedIn()) {
+            User usr = loginManager.getCurrentUser();
+            client.getEventsList(cid, usr.getUId(),eventListResponseHandler);
+        } else {
+            client.getEventsList(cid, -1, eventListResponseHandler);
+        }
+
     }
 
-//    private void setupListeners() {
-//        lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
-//                Event event = (Event) adapter.getItem(position);
-//                Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
-//                eventInfo.putExtra("EventId",""+event.getEventId());
-//                startActivity(eventInfo);
-//            }
-//        });
-//    }
 
 }

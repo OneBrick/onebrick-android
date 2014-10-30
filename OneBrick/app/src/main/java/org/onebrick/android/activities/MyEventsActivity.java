@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 
 import org.onebrick.android.R;
@@ -50,5 +51,22 @@ public class MyEventsActivity extends ActionBarActivity {
                 .setTabListener(new SupportFragmentTabListener<MyPastEventsFragment>(R.id.flMyEventsContainer, this,
                         PAST_EVENTS_TAG, MyPastEventsFragment.class));
         actionBar.addTab(tab2);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
