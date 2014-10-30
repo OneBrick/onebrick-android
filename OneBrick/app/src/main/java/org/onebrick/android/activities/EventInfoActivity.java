@@ -677,6 +677,32 @@ public class EventInfoActivity extends FragmentActivity implements
                 map.animateCamera(cu);
             } else {
                 Log.e(TAG,"ERROR : Event address is  null ");
+                lat = 37.783;
+                lng = 122.416;
+                marker = new MarkerOptions()
+                        .position(new LatLng(lat, lng))
+                        .title("Event Location");
+                map.addMarker(marker);
+
+                 /*
+                    Setting up onClick listener on the map
+                    which when clicked the user will be taken to a new
+                    activity where he will see the map in a might bigger screen
+                 */
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
+                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                        eventLocationMap.putExtra("Latitude", lat);
+                        eventLocationMap.putExtra("Longitude", lng);
+                        eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
+                        startActivity(eventLocationMap);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+                });
+                CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16F);
+                map.animateCamera(cu);
             }
         }
     }
