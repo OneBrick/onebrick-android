@@ -37,6 +37,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:layout_centerHorizontal="true"
             android:src="@drawable/profile_pic"/>
@@ -61,22 +62,16 @@
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/ic_login"/>
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/ibSetting"-->
-            <!--android:layout_alignRight="@id/tvLogin"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:src="@drawable/ic_settings"-->
-            <!--android:background="@android:color/transparent"/>-->
-
         <TextView
             android:id="@+id/tvMyEvents"
             android:layout_below="@id/tvLogin"
+            android:layout_alignLeft="@+id/tvLogin"
             android:text="@string/my_events"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/drawerItem"
             android:gravity="center_vertical"
+            android:layout_marginLeft="3dp"
             android:drawableLeft="@drawable/ic_my_events"/>
 
         <LinearLayout
@@ -91,6 +86,8 @@
             android:layout_height="wrap_content"
             style="@style/drawerItem"
             android:gravity="center_vertical"
+            android:layout_alignLeft="@+id/tvLogin"
+            android:layout_marginLeft="5dp"
             android:drawableLeft="@drawable/ic_select_chapter"/>
 
         <ProgressBar

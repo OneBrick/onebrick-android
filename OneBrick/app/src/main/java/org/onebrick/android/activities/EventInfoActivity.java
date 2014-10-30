@@ -71,7 +71,7 @@ public class EventInfoActivity extends FragmentActivity implements
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            //Log.i("TAG", "Success" + response.toString());
+            Log.i("TAG", "Success" + response.toString());
             updatedEvent = Event.getUpdatedEvent(response);
             updateViews(updatedEvent);
         }
@@ -202,7 +202,10 @@ public class EventInfoActivity extends FragmentActivity implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     private void updateViews(Event updatedEvent) {
+
+        Log.i(TAG,"Selected Event is "+updatedEvent);
         selectedEvent = updatedEvent;
+
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(updatedEvent.getProfilePhotoUri(), ivProfilePhoto);
@@ -253,6 +256,17 @@ public class EventInfoActivity extends FragmentActivity implements
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -297,7 +311,13 @@ public class EventInfoActivity extends FragmentActivity implements
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
         // Using GeoCoder so not using he api call
-        obClient.getEventInfo(eventId, responseHandler);
+        if(loginMgr.isLoggedIn()) {
+            User usr = loginMgr.getCurrentUser();
+            obClient.getEventInfo(eventId, usr.getUId(), responseHandler);
+        } else {
+            obClient.getEventInfo(eventId, -1, responseHandler);
+        }
+
         obDtf = DateTimeFormatter.getInstance();
         geocoder = new Geocoder(this);
 
@@ -465,18 +485,6 @@ public class EventInfoActivity extends FragmentActivity implements
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        /*int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }*/
-        return super.onOptionsItemSelected(item);
-    }
-
     /*
     * Called when the Activity becomes visible.
     */
@@ -532,9 +540,9 @@ public class EventInfoActivity extends FragmentActivity implements
         Location location = mLocationClient.getLastLocation();
         if (location != null) {
             //Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            //map.animateCamera(cameraUpdate);
         } else {
             // Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }

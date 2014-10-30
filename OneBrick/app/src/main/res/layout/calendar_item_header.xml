@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Some Date 1 line"
-        android:textSize="30dp"
+        android:textSize="28dp"
         android:textColor="@android:color/black"
         android:maxLines="1"/>
 </LinearLayout>

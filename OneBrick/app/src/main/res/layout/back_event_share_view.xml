@@ -10,6 +10,8 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_margin="10dp"
+        android:clickable="true"
+        android:background="@drawable/share_bg_selector"
         android:src="@drawable/ic_fb_share"/>
     <ImageView
         android:layout_width="100dp"
@@ -17,6 +19,8 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_margin="10dp"
+        android:clickable="true"
+        android:background="@drawable/share_bg_selector"
         android:src="@drawable/ic_twitter_share"/>
     <ImageView
         android:layout_width="100dp"
@@ -24,5 +28,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_margin="10dp"
+        android:clickable="true"
+        android:background="@drawable/share_bg_selector"
         android:src="@drawable/ic_gen_share"/>
 </LinearLayout>

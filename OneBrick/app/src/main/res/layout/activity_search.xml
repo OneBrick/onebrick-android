@@ -15,13 +15,12 @@
         android:listSelector="#00000000"
         android:dividerHeight="-2dp"
         android:layout_width="fill_parent"
-        swipe:swipeActionRight="reveal"
         android:layout_height="wrap_content"
         swipe:swipeFrontView="@+id/front"
         swipe:swipeBackView="@+id/back"
         swipe:swipeMode="right"
         swipe:swipeCloseAllItemsWhenMoveList="true"
-        swipe:swipeOffsetLeft="200dp"
+        swipe:swipeOpenOnLongPress="false"
         swipe:swipeOffsetRight="200dp"
     />
     <ProgressBar

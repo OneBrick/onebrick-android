@@ -157,6 +157,14 @@ public class Event extends Model {
             }
 
             event.profilePhotoUri = getProfilePhotoUri(event.eventId);
+            if(jsonObject.has("usrRSVP")) {
+                int usrRsvp = jsonObject.getInt("usrRSVP");
+                if (usrRsvp == 1) {
+                    event.rsvp = true;
+                } else {
+                    event.rsvp = false;
+                }
+            }
 
         }catch(JSONException e){
             Log.e(TAG, "error while saving event: " + event.eventId);
@@ -180,6 +188,15 @@ public class Event extends Model {
         if (existingEvent != null) {
             // found and return existing
             //Log.i(TAG, "Returning existing event. Not saving new events to DB");
+            if(jsonObj.has("usrRSVP")) {
+                int usrRsvp = jsonObj.optInt("usrRSVP");
+                if (usrRsvp == 1) {
+                    existingEvent.rsvp = true;
+                } else {
+                    existingEvent.rsvp = false;
+                }
+            }
+            existingEvent.save();
             return existingEvent;
         } else {
             // create and return new
@@ -213,6 +230,7 @@ public class Event extends Model {
         String mgrEmail;
         String coordEmail;
         String eventDesc;
+        int usrRsvp = -1;
         try{
             eventId = jEventObject.optInt("nid");
             mgrEmail = jEventObject.optString("manager_email");
@@ -225,6 +243,14 @@ public class Event extends Model {
         Event e = findEvent(eventId);
         if(e == null){
             throw new IllegalArgumentException("Event cannot be null for update");
+        }
+        if(jEventObject.has("usrRSVP")) {
+            usrRsvp = jEventObject.optInt("usrRSVP");
+        }
+        if(usrRsvp == 1) {
+            e.rsvp = true;
+        } else {
+            e.rsvp = false;
         }
         e.description = eventDesc;
         e.managerEmail = mgrEmail;
