@@ -108,7 +108,7 @@ public class EventInfoActivity extends FragmentActivity implements
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             //super.onSuccess(statusCode, headers, response);
-            Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp_button);
             btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
             updatedEvent.rsvp = true;
@@ -137,7 +137,7 @@ public class EventInfoActivity extends FragmentActivity implements
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             //super.onSuccess(statusCode, headers, response);
-            Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp_button);
             btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
             updatedEvent.rsvp = false;
