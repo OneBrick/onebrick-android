@@ -8,15 +8,11 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="org.onebrick.android.activities.SelectChapterActivity">
     <ListView
-        android:layout_marginTop="20dp"
         android:id="@+id/lvChapterPrompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true">
+        android:divider="@color/dark_transparent_onebrick_blue"
+        android:dividerHeight="1px">
 
     </ListView>
 

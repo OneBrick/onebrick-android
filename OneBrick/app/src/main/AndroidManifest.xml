@@ -96,7 +96,7 @@
         </activity>
         <activity
             android:name=".activities.SelectChapterActivity"
-            android:label="@string/title_activity_select_chapter"
+            android:label="@string/select_your_chapter"
             android:noHistory="true" >
         </activity>
 

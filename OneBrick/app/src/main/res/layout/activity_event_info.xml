@@ -258,10 +258,10 @@
                     android:src="@drawable/ic_reminder"/>
                     -->
             </LinearLayout>
-            <LinearLayout
+            <View
                 android:id="@+id/llDummySpace"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"></LinearLayout>
+                android:layout_height="60dp"/>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

@@ -192,7 +192,7 @@ public class EventInfoActivity extends FragmentActivity implements
     ProgressBar progressBar;
     ScrollView svMainContent;
     LinearLayout llRsvpSegment;
-    LinearLayout llDummySpace;
+    View llDummySpace;
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -299,7 +299,7 @@ public class EventInfoActivity extends FragmentActivity implements
 
         svMainContent = (ScrollView) findViewById(R.id.svMainContent);
         llRsvpSegment = (LinearLayout) findViewById(R.id.rlRsvp);
-        llDummySpace = (LinearLayout) findViewById(R.id.llDummySpace);
+        llDummySpace = findViewById(R.id.llDummySpace);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
         obclient = OneBrickApplication.getRestClient();

@@ -54,7 +54,6 @@ public class SelectChapterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
-        getActionBar().setTitle("Select your chapter");
         lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
         //tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
         //tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());

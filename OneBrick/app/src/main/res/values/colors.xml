@@ -2,6 +2,8 @@
 <resources>
     <!-- OneBrick brand resources -->
     <color name="onebrick_blue">#2698D4</color>
+    <color name="dark_transparent_onebrick_blue">#802698D4</color>
+
     <color name="onebrick_orange">#DD7129</color>
     <color name="dark_transparent_onebrick_orange">#80DD7129</color>
     <color name="onebrick_transparent_orange">#40DD7129</color>
