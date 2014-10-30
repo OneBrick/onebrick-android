@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -111,7 +110,7 @@ public class EventInfoActivity extends FragmentActivity implements
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp_button);
-            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
+            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
             updatedEvent.rsvp = true;
             Event.updateEvent(updatedEvent);
 
@@ -140,7 +139,7 @@ public class EventInfoActivity extends FragmentActivity implements
             //super.onSuccess(statusCode, headers, response);
             Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp_button);
-            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
+            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
             updatedEvent.rsvp = false;
             Event.updateEvent(updatedEvent);
 
@@ -219,10 +218,10 @@ public class EventInfoActivity extends FragmentActivity implements
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText(R.string.un_rsvp_button);
-                btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
+                btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
             } else {
                 btnRsvp.setText(R.string.rsvp_button);
-                btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
+                btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
             }
         }
         progressBar.setVisibility(View.INVISIBLE);
@@ -377,10 +376,10 @@ public class EventInfoActivity extends FragmentActivity implements
                     startActivity(loginActivity);
                     if (updatedEvent.rsvp == true) {
                         btnRsvp.setText(R.string.un_rsvp_button);
-                        btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp);
+                        btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     } else {
                         btnRsvp.setText(R.string.rsvp_button);
-                        btnRsvp.setBackgroundResource(R.drawable.btn_rsvp);
+                        btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     }
                 } else {
                     user = loginMgr.getCurrentUser();

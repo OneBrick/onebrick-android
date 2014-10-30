@@ -37,9 +37,10 @@
             android:textSize="@dimen/big"/>
         <ImageView
             android:id="@+id/ivGetNavigtion"
-            android:layout_width="50dp"
-            android:layout_height="fill_parent"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
             android:scaleType="fitCenter"
             android:clickable="true"
             android:background="@drawable/learn_more_button_selector"

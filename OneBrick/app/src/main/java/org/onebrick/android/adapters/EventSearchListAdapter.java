@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
+import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
@@ -119,19 +120,22 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    shareInFacebook(v,event.getTitle(),event.getEventId());
+                    SocialShareEmail.shareFacebook(v, event.getTitle(), event.eventId);
+                    //shareInFacebook(v,event.getTitle(),event.getEventId());
                 }
             });
-            viewHolder.ivTwitterShare.setOnClickListener(new View.OnClickListener(){
+            viewHolder.ivTwitterShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    shareInTwitter(v, event.getTitle(), event.getEventId());
+                    SocialShareEmail.shareTwitter(v, event.getTitle(), event.getEventId());
+                    //shareInTwitter(v, event.getTitle(), event.getEventId());
                 }
             });
             viewHolder.ivShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    shareInOthers(v, event.getTitle(), event.getEventId());
+                    //shareInOthers(v, event.getTitle(), event.getEventId());
+                    SocialShareEmail.shareOthers(v, event.getTitle(), event.getEventId());
                 }
             });
         } else if (event.getTitle().equalsIgnoreCase("Error")) {
