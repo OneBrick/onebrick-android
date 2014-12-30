@@ -19,12 +19,15 @@ import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class EventsListFragment extends Fragment {
 
     private static final String TAG = EventsListFragment.class.getName().toString();
 
-    protected ProgressBar progressBar;
-    SwipeListView lvEvents;
+    @InjectView(R.id.progressBar) ProgressBar progressBar;
+    @InjectView(R.id.lvEventSearchList) SwipeListView lvEvents;
     EventSearchListAdapter aEventList;
     ArrayList<Event> eventList;
     protected OneBrickClient client;
@@ -47,8 +50,7 @@ public class EventsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_search, container, false);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        lvEvents = (SwipeListView) view.findViewById(R.id.lvEventSearchList);
+        ButterKnife.inject(this, view);
         lvEvents.setAdapter(aEventList);
         setupEventsListeners();
         return view;

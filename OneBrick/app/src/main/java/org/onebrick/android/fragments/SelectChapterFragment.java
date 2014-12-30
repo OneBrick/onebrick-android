@@ -24,6 +24,9 @@ import org.onebrick.android.models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * A fragment representing a list to select chapter.
  * Activities containing this fragment MUST implement the {@link OnSelectChapterFragmentListener}
@@ -33,7 +36,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
 
     private static final String TAG = SelectChapterFragment.class.getName().toString();
 
-    private ListView lvChapters;
+    @InjectView(R.id.lvChapters) ListView lvChapters;
     private NavigationChapterListAdapter chapterListAdapter;
 
     private OnSelectChapterFragmentListener mListener;
@@ -74,8 +77,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chapter_list, container, false);
-
-        lvChapters = (ListView) view.findViewById(R.id.lvChapters);
+        ButterKnife.inject(this, view);
         lvChapters.setAdapter(chapterListAdapter);
         lvChapters.setOnItemClickListener(this);
 

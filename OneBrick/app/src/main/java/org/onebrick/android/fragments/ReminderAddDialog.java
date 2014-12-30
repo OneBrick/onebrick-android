@@ -12,13 +12,16 @@ import android.widget.Spinner;
 
 import org.onebrick.android.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by AshwinGV on 10/21/14.
  */
 public class ReminderAddDialog extends DialogFragment {
     private Spinner spnrTimePicker;
-    private Button btnAdd;
-    private Button btnCancel;
+    @InjectView(R.id.btnAddRemainder) Button btnAdd;
+    @InjectView(R.id.btnCancelRemainderAdd) Button btnCancel;
 
     public ReminderAddDialog() {
 
@@ -36,8 +39,7 @@ public class ReminderAddDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_rsvp_remainder, container);
-        btnAdd = (Button) v.findViewById(R.id.btnAddRemainder);
-        btnCancel = (Button) v.findViewById(R.id.btnCancelRemainderAdd);
+        ButterKnife.inject(this, v);
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         getDialog().getWindow().setTitle(""+getArguments().get("Title"));

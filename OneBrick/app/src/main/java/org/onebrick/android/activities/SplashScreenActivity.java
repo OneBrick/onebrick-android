@@ -13,13 +13,16 @@ import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.FontsHelper;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class SplashScreenActivity extends Activity {
-    ImageView ivFooter;
-    ImageLoader imgLoader =  ImageLoader.getInstance();
-    //TextView tvQuote;
-    TextView tvWelcomeNote;
-    ImageView ivObLogo;
-    String imageUri = "assets://volunteer_hands.png";
+    @InjectView(R.id.ivSplashScreenFooter) ImageView ivFooter;
+    @InjectView(R.id.tvWelcomeNote) TextView tvWelcomeNote;
+    @InjectView(R.id.ivLauncherLogo) ImageView ivObLogo;
+
+    private static final String imageUri = "assets://volunteer_hands.png";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,18 +36,14 @@ public class SplashScreenActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_splash_screen);
+        // inject annotation
+        ButterKnife.inject(this);
 
-
-        ivFooter = (ImageView) findViewById(R.id.ivSplashScreenFooter);
-        //tvQuote = (TextView) findViewById(R.id.tvQuote);
-        tvWelcomeNote = (TextView) findViewById(R.id.tvWelcomeNote);
-        ivObLogo = (ImageView) findViewById(R.id.ivLauncherLogo);
        // ivObLogo.setAlpha(0.0f);
        // ivObLogo.animate().alpha(1.0f).setDuration(3000);
 
-
-        //tvQuote.setTypeface(FontsHelper.getRobotoThinItalic());
         tvWelcomeNote.setTypeface(FontsHelper.getRobotoRegular());
+        ImageLoader imgLoader =  ImageLoader.getInstance();
         imgLoader.displayImage(imageUri,ivFooter);
         final String  myChapterName = OneBrickApplication
                 .getApplicationSharedPreference()

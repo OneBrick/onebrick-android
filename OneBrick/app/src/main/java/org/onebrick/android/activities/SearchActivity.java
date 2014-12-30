@@ -29,8 +29,11 @@ import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class SearchActivity extends Activity implements OnQueryTextListener {
-    SwipeListView eventSearchList;
+
     EventSearchListAdapter aEventSearchList;
     ArrayList<Event> eventList;
     int chapterId;
@@ -41,7 +44,8 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
     MenuInflater menuInflater;
     MenuItem searchItem;
     SearchView searchView;
-    ProgressBar progressBar;
+    @InjectView(R.id.lvEventSearchList) SwipeListView eventSearchList;
+    @InjectView(R.id.progressBar) ProgressBar progressBar;
 
     JsonHttpResponseHandler searchResultHandler = new JsonHttpResponseHandler() {
         @Override
@@ -124,11 +128,11 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        // annotation injection
+        ButterKnife.inject(this);
         getActionBar().setTitle("Search");
         obClient = OneBrickApplication.getRestClient();
         eventList = new ArrayList<Event>();
-        eventSearchList = (SwipeListView) findViewById(R.id.lvEventSearchList);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         aEventSearchList = new EventSearchListAdapter(this,eventList);
         Intent chapterInfo = getIntent();
         chapterId = chapterInfo.getIntExtra("chapterId", -1);

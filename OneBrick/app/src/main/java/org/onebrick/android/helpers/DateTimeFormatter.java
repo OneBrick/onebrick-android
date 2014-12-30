@@ -23,21 +23,6 @@ public class DateTimeFormatter {
         return dtf;
     }
 
-    public String formatDateTime(String dateTime) {
-        String formattedDateTime = null;
-        String obDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat sf = new SimpleDateFormat(obDateTimeFormat, Locale.ENGLISH);
-        SimpleDateFormat obDateFormat = new SimpleDateFormat("EEE, MMM dd KK:mm a");
-        Date eDateTime;
-        try {
-            eDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
-            formattedDateTime = ""+obDateFormat.format(eDateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedDateTime;
-    }
-
     public Date getDateFromString(String dateTime) {
         String obDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sf = new SimpleDateFormat(obDateTimeFormat, Locale.ENGLISH);

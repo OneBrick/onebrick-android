@@ -21,22 +21,25 @@ import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class CalendarViewActivity extends Activity {
-    StickyListHeadersListView calendar;
+    @InjectView(R.id.calendarList) StickyListHeadersListView calendar;
+    @InjectView(R.id.calProgressBar) ProgressBar progressBar;
     CalendarAdapter aCalendar;
     ArrayList<Event> eventList;
     int chapterId;
     String chapterName;
     OneBrickClient obClient;
-    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view);
-        calendar = (StickyListHeadersListView) findViewById(R.id.calendarList);
-        progressBar = (ProgressBar) findViewById(R.id.calProgressBar);
+        // annotation injection
+        ButterKnife.inject(this);
         Intent chapterInfo = getIntent();
         chapterId = chapterInfo.getIntExtra("chapterId", -1);
         chapterName = chapterInfo.getStringExtra("chapterName");

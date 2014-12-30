@@ -20,12 +20,15 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.fragments.HomeEventsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Chapter;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class HomeActivity extends FragmentActivity
         implements SelectChapterFragment.OnSelectChapterFragmentListener {
@@ -33,12 +36,17 @@ public class HomeActivity extends FragmentActivity
     private static final String TAG = HomeActivity.class.getName().toString();
     public static final String SELECT_CHAPTER_FRAGMENT_TAG = "select_chapter";
 
-    private DrawerLayout dlDrawerLayout;
-    private View llDrawer;
+    @InjectView(R.id.pbSelectChapter) ProgressBar pbSelectChapter;
+    @InjectView(R.id.drawer_layout) DrawerLayout dlDrawerLayout;
+    @InjectView(R.id.tvName) TextView tvName;
+    @InjectView(R.id.ivUserPic) ImageView ivProfile;
+    @InjectView(R.id.tvMyEvents) TextView tvMyEvents;
+    @InjectView(R.id.tvLogin) TextView tvLogin;
+    @InjectView(R.id.tvSelectChapter) TextView tvSelectChapter;
+    @InjectView(R.id.rlDrawer) View llDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String chapterName;
     private int chapterId;
-    private ProgressBar pbSelectChapter;
     Fragment eventListFragment;
     FragmentManager fm;
 
@@ -46,6 +54,8 @@ public class HomeActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // annotation injection
+        ButterKnife.inject(this);
 
         setupUi();
         Intent i = getIntent();
@@ -55,19 +65,15 @@ public class HomeActivity extends FragmentActivity
         eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
-
-        pbSelectChapter = (ProgressBar) findViewById(R.id.pbSelectChapter);
     }
 
     private void setupUi() {
-        dlDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        llDrawer = findViewById(R.id.rlDrawer);
         mDrawerToggle = setupDrawerToggle();
         dlDrawerLayout.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        findViewById(R.id.tvMyEvents).setOnClickListener(new View.OnClickListener() {
+        tvMyEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closeDrawer();
@@ -81,7 +87,6 @@ public class HomeActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         setupLoginUi();
     }
 
@@ -90,25 +95,19 @@ public class HomeActivity extends FragmentActivity
 
         final LoginManager loginManager = LoginManager.getInstance(this);
         if (loginManager.isLoggedIn()) {
-            final TextView tvName = (TextView)findViewById(R.id.tvName);
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(loginManager.getCurrentUser().getName());
-
-            ImageView ivProfile = (ImageView) findViewById(R.id.ivUserPic);
             ivProfile.setVisibility(View.VISIBLE);
             ImageLoader imageLoader = ImageLoader.getInstance();
             imageLoader.displayImage(loginManager.getCurrentUser().getProfileImageUri(), ivProfile);
-
-            findViewById(R.id.tvMyEvents).setVisibility(View.VISIBLE);
-            findViewById(R.id.tvLogin).setVisibility(View.GONE);
+            tvMyEvents.setVisibility(View.VISIBLE);
+            tvLogin.setVisibility(View.GONE);
 
         } else {
-            findViewById(R.id.tvName).setVisibility(View.GONE);
-            findViewById(R.id.ivUserPic).setVisibility(View.GONE);
-            findViewById(R.id.tvMyEvents).setVisibility(View.GONE);
-            findViewById(R.id.tvLogin).setVisibility(View.VISIBLE);
-
-            final TextView tvLogin = (TextView)findViewById(R.id.tvLogin);
+            tvName.setVisibility(View.GONE);
+            ivProfile.setVisibility(View.GONE);
+            tvMyEvents.setVisibility(View.GONE);
+            tvLogin.setVisibility(View.VISIBLE);
             tvLogin.setText(R.string.login);
             tvLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -118,16 +117,9 @@ public class HomeActivity extends FragmentActivity
                     HomeActivity.this.startActivity(intent);
                 }
             });
-
-//            findViewById(R.id.ibSetting).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // open setting activity
-//                }
-//            });
         }
 
-        findViewById(R.id.tvSelectChapter).setOnClickListener(new View.OnClickListener() {
+        tvSelectChapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getSupportFragmentManager();

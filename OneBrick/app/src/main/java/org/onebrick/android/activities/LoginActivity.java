@@ -24,24 +24,24 @@ import org.onebrick.android.models.User;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 //public class LoginActivity extends OAuthLoginActivity<OneBrickClient> {
 public class LoginActivity extends Activity{
 
     // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private Button mEmailSignInButton;
+    @InjectView(R.id.email) EditText mEmailView;
+    @InjectView(R.id.password) EditText mPasswordView;
+    @InjectView(R.id.email_sign_in_button) Button mEmailSignInButton;
     private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        // annotation injection
+        ButterKnife.inject(this);
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override

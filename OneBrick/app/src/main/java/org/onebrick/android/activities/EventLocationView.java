@@ -31,19 +31,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.onebrick.android.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class EventLocationView extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+    @InjectView(R.id.tvEventLocation)TextView tvEventAddress;
+    @InjectView(R.id.ivGetNavigtion) ImageView ivNav;
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private LocationClient mLocationClient;
     double lat;
     double lng;
     String address;
-    TextView tvEventAddress;
     BitmapDescriptor customMarker;
-    ImageView ivNav;
+
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -54,9 +58,9 @@ public class EventLocationView extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_location_view);
+        // annotation injection
+        ButterKnife.inject(this);
         getActionBar().setTitle("Event Location");
-        tvEventAddress = (TextView) findViewById(R.id.tvEventLocation);
-        ivNav = (ImageView) findViewById(R.id.ivGetNavigtion);
         Intent eventMap = getIntent();
         lat = eventMap.getDoubleExtra("Latitude", 0.0);
         lng = eventMap.getDoubleExtra("Longitude", 0.0);

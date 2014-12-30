@@ -17,18 +17,25 @@ import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class EventsListAdapter extends ArrayAdapter<Event>{
 
     // View lookup cache
     private static class ViewHolder {
-        ImageView ivProfilePhoto;
-        TextView tvEventTitle;
-        TextView tvEventStartDate;
-        TextView tvEventAddress;
-        ImageView fbShare;
-        ImageView twitterShare;
-        ImageView otherShare;
+        @InjectView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+        @InjectView(R.id.tvEventTitle) TextView tvEventTitle;
+        @InjectView(R.id.tvEventDate) TextView tvEventStartDate;
+        @InjectView(R.id.tvEventAddress) TextView tvEventAddress;
+        @InjectView(R.id.ibShareFacebook) ImageView fbShare;
+        @InjectView(R.id.ibShareTwitter) ImageView twitterShare;
+        @InjectView(R.id.ibShare) ImageView otherShare;
+
+        ViewHolder(View view){
+            ButterKnife.inject(this, view);
+        }
     }
 
     public EventsListAdapter(Context context, ArrayList<Event> events) {
@@ -41,18 +48,10 @@ public class EventsListAdapter extends ArrayAdapter<Event>{
         final Event event = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
+
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_event_list, parent, false);
-
-            viewHolder.ivProfilePhoto = (ImageView) convertView.findViewById(R.id.ivProfilePhoto);
-            viewHolder.tvEventTitle = (TextView) convertView.findViewById(R.id.tvEventTitle);
-            viewHolder.tvEventStartDate = (TextView) convertView.findViewById(R.id.tvEventDate);
-            viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvEventAddress);
-            viewHolder.fbShare = (ImageView) convertView.findViewById(R.id.ibShareFacebook);
-            viewHolder.twitterShare = (ImageView) convertView.findViewById(R.id.ibShareTwitter);
-            viewHolder.otherShare = (ImageView) convertView.findViewById(R.id.ibShare);
-
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();

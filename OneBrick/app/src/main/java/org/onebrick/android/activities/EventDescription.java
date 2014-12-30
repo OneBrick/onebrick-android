@@ -11,14 +11,18 @@ import android.widget.TextView;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.Utils;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class EventDescription extends Activity {
-    TextView tvEventDetails;
+    @InjectView(R.id.tvEventDescription) TextView tvEventDetails;
     String details;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_description);
-        tvEventDetails = (TextView) findViewById(R.id.tvEventDescription);
+        // annotation injection
+        ButterKnife.inject(this);
         Intent eventInfo = getIntent();
         details = eventInfo.getStringExtra("Details");
         tvEventDetails.setText(Html.fromHtml(Utils.removeImgTagsFromHTML(details)));

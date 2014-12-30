@@ -54,23 +54,63 @@ import org.onebrick.android.models.User;
 
 import java.util.Calendar;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class EventInfoActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+    @InjectView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+    @InjectView(R.id.rlContact) RelativeLayout rlContact;
+    @InjectView(R.id.tvEventName) TextView tvEventName;
+    @InjectView(R.id.tvEventTime) TextView tvEventDateTime;
+    @InjectView(R.id.tvEventBrief) TextView tvEventBrief;
+    @InjectView(R.id.tvEventLocation) TextView tvEventLocation;
+    @InjectView(R.id.tvLearnMore) TextView tvLearnMore;
+    @InjectView(R.id.btnRsvp) Button btnRsvp;
+    @InjectView(R.id.btnEmailManager) Button btnEmailManager;
+    @InjectView(R.id.btnEmailCoordinator) Button btnEmailCoordinator;
+    @InjectView(R.id.ivCalendarIcon) ImageView ivAdd2Calendar;
+    //ImageView ivAddReminder;
+    @InjectView(R.id.ivEventInfoFbShare) ImageView ivEventInfoFbShare;
+    @InjectView(R.id.ivEventInfoTwitterShare) ImageView ivEventInfoTwitterShare;
+    @InjectView(R.id.ivEventInfoGenShare) ImageView ivEventInfoGenShare;
+    @InjectView(R.id.pbEventInfoProgress) ProgressBar progressBar;
+    @InjectView(R.id.svMainContent) ScrollView svMainContent;
+    @InjectView(R.id.rlRsvp) LinearLayout llRsvpSegment;
+    @InjectView(R.id.llDummySpace) View llDummySpace;
+
     Event updatedEvent;
     String eventId;
     private static final String TAG = HomeActivity.class.getName().toString();
-    OneBrickClient obClient = OneBrickApplication.getRestClient();
+    OneBrickClient obClient;
+    private SupportMapFragment mapFragment;
+    private GoogleMap map;
+    private LocationClient mLocationClient;
+    private MarkerOptions marker;
+    Event selectedEvent;
+    LoginManager loginMgr;
+    User user;
+    Geocoder obGeoCoder;
+    DateTimeFormatter obDtf;
+    double lat;
+    double lng;
 
     /*
-    This is the reponse handler to handle the callbacks from Event info rest call
+     * Define a request code to send to Google Play services This code is
+     * returned in Activity.onActivityResult
+     */
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+    /*
+    This is the response handler to handle the callbacks from Event info rest call
      */
     JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            Log.i("TAG", "Success" + response.toString());
+            Log.d("TAG", "Success" + response.toString());
             updatedEvent = Event.getUpdatedEvent(response);
             updateViews(updatedEvent);
         }
@@ -142,7 +182,6 @@ public class EventInfoActivity extends FragmentActivity implements
             btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
             updatedEvent.rsvp = false;
             Event.updateEvent(updatedEvent);
-
         }
 
         @Override
@@ -159,50 +198,10 @@ public class EventInfoActivity extends FragmentActivity implements
 
     };
 
-    ImageView ivProfilePhoto;
-    RelativeLayout rlContact;
-    TextView tvEventName;
-    TextView tvEventDateTime;
-    TextView tvEventBrief;
-    TextView tvEventLocation;
-    TextView tvLearnMore;
-    Button btnRsvp;
-    Button btnEmailManager;
-    Button btnEmailCoordinator;
-    ImageView ivAdd2Calendar;
-    ImageView ivAddReminder;
-    ImageView ivEventInfoFbShare;
-    ImageView ivEventInfoTwitterShare;
-    ImageView ivEventInfoGenShare;
-
-    private SupportMapFragment mapFragment;
-    private GoogleMap map;
-    private Geocoder geocoder;
-    private LocationClient mLocationClient;
-    private MarkerOptions marker;
-    Event selectedEvent;
-    LoginManager loginMgr;
-    User user;
-    OneBrickClient obclient;
-    Geocoder obGeoCoder;
-    DateTimeFormatter obDtf;
-    double lat;
-    double lng;
-    ProgressBar progressBar;
-    ScrollView svMainContent;
-    LinearLayout llRsvpSegment;
-    View llDummySpace;
-    /*
-     * Define a request code to send to Google Play services This code is
-     * returned in Activity.onActivityResult
-     */
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-
     private void updateViews(Event updatedEvent) {
 
-        Log.i(TAG,"Selected Event is "+updatedEvent);
+        Log.d(TAG,"Selected Event is "+updatedEvent);
         selectedEvent = updatedEvent;
-
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(updatedEvent.getProfilePhotoUri(), ivProfilePhoto);
@@ -273,35 +272,15 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
-
+        // annotation injection
+        ButterKnife.inject(this);
         // Setting the action bar title
         getActionBar().setTitle("Event Details");
-
-        ivProfilePhoto = (ImageView) findViewById(R.id.ivProfilePhoto);
-        rlContact = (RelativeLayout) findViewById(R.id.rlContact);
-        tvEventName = (TextView) findViewById(R.id.tvEventName);
-        tvEventDateTime = (TextView) findViewById(R.id.tvEventTime);
-        tvEventBrief = (TextView) findViewById(R.id.tvEventBrief);
-        tvEventLocation = (TextView) findViewById(R.id.tvEventLocation);
-        tvLearnMore = (TextView) findViewById(R.id.tvLearnMore);
-        btnRsvp = (Button) findViewById(R.id.btnRsvp);
-        btnEmailManager = (Button) findViewById(R.id.btnEmailManager);
-        btnEmailCoordinator = (Button) findViewById(R.id.btnEmailCoordinator);
-        ivAdd2Calendar = (ImageView) findViewById(R.id.ivCalendarIcon);
 //        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
-        ivEventInfoFbShare = (ImageView) findViewById(R.id.ivEventInfoFbShare);
-        ivEventInfoTwitterShare = (ImageView) findViewById(R.id.ivEventInfoTwitterShare);
-        ivEventInfoGenShare = (ImageView) findViewById(R.id.ivEventInfoGenShare);
-
-        progressBar = (ProgressBar) findViewById(R.id.pbEventInfoProgress);
         progressBar.setVisibility(View.INVISIBLE);
 
-        svMainContent = (ScrollView) findViewById(R.id.svMainContent);
-        llRsvpSegment = (LinearLayout) findViewById(R.id.rlRsvp);
-        llDummySpace = findViewById(R.id.llDummySpace);
-
         loginMgr = LoginManager.getInstance(getApplicationContext());
-        obclient = OneBrickApplication.getRestClient();
+        obClient = OneBrickApplication.getRestClient();
         obGeoCoder = OneBrickGeoCoder.getInstance();
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
@@ -312,9 +291,7 @@ public class EventInfoActivity extends FragmentActivity implements
         } else {
             obClient.getEventInfo(eventId, -1, responseHandler);
         }
-
         obDtf = DateTimeFormatter.getInstance();
-        geocoder = new Geocoder(this);
 
         // Loading map
         mLocationClient = new LocationClient(this, this, this);
@@ -386,11 +363,11 @@ public class EventInfoActivity extends FragmentActivity implements
                     //Toast.makeText(getApplicationContext(),"The Current User ID is"+user.getUId(),Toast.LENGTH_LONG).show();
                     if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp_button))) {
                         //Toast.makeText(getApplicationContext(),"Calling RSVP",Toast.LENGTH_LONG).show();
-                        obclient.postRsvpToEvent(selectedEvent.eventId, user.getUId(), rsvpResponseHandler);
+                        obClient.postRsvpToEvent(selectedEvent.eventId, user.getUId(), rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp_button))) {
                         //Toast.makeText(getApplicationContext(),"Calling unRSVP",Toast.LENGTH_LONG).show();
-                        obclient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
+                        obClient.postUnRsvpToEvent(selectedEvent.eventId, user.getUId(), unRsvpResponseHandler);
                     }
                 }
             }

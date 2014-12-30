@@ -15,6 +15,8 @@ import org.onebrick.android.models.Event;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 /**
@@ -29,13 +31,21 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
     int[] sectionIndices;
     DateTimeFormatter dtf;
     private static class ViewHolder {
-        TextView tvEventName;
-        TextView tvEventAddress;
-        TextView tvEventTime;
+        @InjectView(R.id.tvEventName) TextView tvEventName;
+        @InjectView(R.id.tvEventAddress) TextView tvEventAddress;
+        @InjectView(R.id.tvEventTime) TextView tvEventTime;
+
+        ViewHolder(View view){
+            ButterKnife.inject(this, view);
+        }
     }
 
     private static class HeaderViewHolder {
-        TextView tvDate;
+        @InjectView(R.id.tvCalDate) TextView tvDate;
+
+        HeaderViewHolder(View view){
+            ButterKnife.inject(this, view);
+        }
     }
 
     public CalendarAdapter(Context context, ArrayList<Event> events) {
@@ -121,7 +131,6 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
     }
 
 
-
     @Override
     public long getHeaderId(int position) {
         long headerId = -1;
@@ -137,17 +146,12 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         return headerId;
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.calendar_item, parent, false);
-            viewHolder.tvEventTime = (TextView) convertView.findViewById(R.id.tvCalEventTime);
-            viewHolder.tvEventName = (TextView) convertView.findViewById(R.id.tvCalEventName);
-            viewHolder.tvEventAddress = (TextView) convertView.findViewById(R.id.tvCalEventAddress);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -165,16 +169,12 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         return convertView;
     }
 
-
-
-
     @Override
     public View getHeaderView(int i, View view, ViewGroup parent) {
         HeaderViewHolder headerViewHolder;
         if (view == null) {
-            headerViewHolder = new HeaderViewHolder();
             view = inflater.inflate(R.layout.calendar_item_header, parent, false);
-            headerViewHolder.tvDate = (TextView) view.findViewById(R.id.tvCalDate);
+            headerViewHolder = new HeaderViewHolder(view);
             view.setTag(headerViewHolder);
         } else {
             headerViewHolder = (HeaderViewHolder) view.getTag();
