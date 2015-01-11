@@ -24,7 +24,7 @@ import butterknife.InjectView;
 public class EventsListAdapter extends ArrayAdapter<Event>{
 
     // View lookup cache
-    private static class ViewHolder {
+    static class ViewHolder {
         @InjectView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
         @InjectView(R.id.tvEventTitle) TextView tvEventTitle;
         @InjectView(R.id.tvEventDate) TextView tvEventStartDate;

@@ -30,7 +30,7 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
     ArrayList <Event> eventList;
     int[] sectionIndices;
     DateTimeFormatter dtf;
-    private static class ViewHolder {
+    static class ViewHolder {
         @InjectView(R.id.tvEventName) TextView tvEventName;
         @InjectView(R.id.tvEventAddress) TextView tvEventAddress;
         @InjectView(R.id.tvEventTime) TextView tvEventTime;
@@ -40,7 +40,7 @@ public class CalendarAdapter extends ArrayAdapter<Event> implements StickyListHe
         }
     }
 
-    private static class HeaderViewHolder {
+    static class HeaderViewHolder {
         @InjectView(R.id.tvCalDate) TextView tvDate;
 
         HeaderViewHolder(View view){

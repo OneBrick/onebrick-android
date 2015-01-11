@@ -41,7 +41,7 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
     DateTimeFormatter dtf;
     Context context;
     Calendar now = Calendar.getInstance();
-    private static class ViewHolder {
+    static class ViewHolder {
         @InjectView(R.id.front) LinearLayout front;
         @InjectView(R.id.back) GridLayout back;
         @InjectView(R.id.rlNoEvents) RelativeLayout noEvents;
