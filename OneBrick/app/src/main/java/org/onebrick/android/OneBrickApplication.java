@@ -2,12 +2,11 @@ package org.onebrick.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 
+import com.newrelic.agent.android.NewRelic;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.newrelic.agent.android.NewRelic;
 
 public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
@@ -32,7 +31,6 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
                 .build();
         ImageLoader.getInstance().init(config);
         sharedPref = this.getSharedPreferences("OneBrickSharedPref", Context.MODE_PRIVATE);
-
     }
 
     public static OneBrickClient getRestClient() {

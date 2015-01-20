@@ -1,8 +1,8 @@
 package org.onebrick.android.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-public class CalendarViewActivity extends Activity {
+public class CalendarViewActivity extends ActionBarActivity {
     @InjectView(R.id.calendarList) StickyListHeadersListView calendar;
     @InjectView(R.id.calProgressBar) ProgressBar progressBar;
     CalendarAdapter aCalendar;
@@ -38,6 +38,7 @@ public class CalendarViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view);
+        getSupportActionBar().setTitle(""+chapterName+"'s"+" Calendar");
         // annotation injection
         ButterKnife.inject(this);
         Intent chapterInfo = getIntent();
@@ -47,7 +48,6 @@ public class CalendarViewActivity extends Activity {
         aCalendar = new CalendarAdapter(this,eventList);
         obClient = OneBrickApplication.getRestClient();
         calendar.setAdapter(aCalendar);
-        getActionBar().setTitle(""+chapterName+"'s"+" Calendar");
         obClient.getEventsList(chapterId, -1, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {

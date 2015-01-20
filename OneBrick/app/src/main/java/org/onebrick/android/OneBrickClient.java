@@ -8,7 +8,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
-import org.scribe.builder.api.TwitterApi;
+import org.scribe.builder.api.SimpleGeoApi;
 
 /*
  * 
@@ -26,10 +26,10 @@ public class OneBrickClient extends OAuthBaseClient {
 
     private static final String TAG = "OneBrickClient";
 
-    public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-    public static final String REST_URL = "http://dev-v3.gotpantheon.com/noauth"; // Change this, base API URL
-    public static final String REST_CONSUMER_KEY = "CrsegfjpmNEX30TFdt6TEGXcS";       // Change this
-    public static final String REST_CONSUMER_SECRET = "m3ZrCoSElkF2QuPQJBG0cF9YDkouIWCYtmCUpfdVAu6EnHbWiP"; // Change this
+    public static final Class<? extends Api> REST_API_CLASS = SimpleGeoApi.class; // Change this
+    public static final String REST_URL = "http://dev-v3.gotpantheon.com/auth"; // Change this, base API URL
+    public static final String REST_CONSUMER_KEY = "";       // Change this
+    public static final String REST_CONSUMER_SECRET = ""; // Change this
     public static final String REST_CALLBACK_URL = "oauth://onebrick-android"; // Change this (here and in manifest)
 
     public OneBrickClient(Context context) {
@@ -47,9 +47,9 @@ public class OneBrickClient extends OAuthBaseClient {
     public void getEventsList(int chapterId, long userId, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/event.json");
         RequestParams params = new RequestParams();
-        params.put("chapter", chapterId);
+        params.put("chapter", Integer.toString(chapterId));
         if(userId > 1) {
-            params.put("uid", userId);
+            params.put("uid", Long.toString(userId));
         }
         client.get(apiUri, params, handler);
     }
@@ -88,25 +88,25 @@ public class OneBrickClient extends OAuthBaseClient {
     public void postRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
         String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
         RequestParams params = new RequestParams();
-        params.put("uid", userId);
+        params.put("uid", Long.toString(userId));
         client.post(apiUri, params, handler);
     }
 
     public void postUnRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
         String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
         RequestParams params = new RequestParams();
-        params.put("uid", userId);
+        params.put("uid", Long.toString(userId));
         client.post(apiUri, params, handler);
     }
 
     public void getMyEvents(long userId, boolean isPastEvent, AsyncHttpResponseHandler handler){
         String apiUri = getApiUrl("/event.json");
         RequestParams params = new RequestParams();
-        params.put("uid", userId);
+        params.put("uid", Long.toString(userId));
         if (isPastEvent){
-            params.put("includePastEvents", 1);
+            params.put("includePastEvents", Long.toString(1));
         }else{
-            params.put("includePastEvents", 0);
+            params.put("includePastEvents", Long.toString(0));
         }
         client.get(apiUri, params, handler);
     }

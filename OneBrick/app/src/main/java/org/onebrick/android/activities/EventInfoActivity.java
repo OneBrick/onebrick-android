@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -57,7 +57,7 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventInfoActivity extends FragmentActivity implements
+public class EventInfoActivity extends ActionBarActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
@@ -272,10 +272,10 @@ public class EventInfoActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
+        getSupportActionBar().setTitle("Event Details");
         // annotation injection
         ButterKnife.inject(this);
         // Setting the action bar title
-        getActionBar().setTitle("Event Details");
 //        ivAddReminder = (ImageView) findViewById(R.id.ivEventInfoAddReminder);
         progressBar.setVisibility(View.INVISIBLE);
 

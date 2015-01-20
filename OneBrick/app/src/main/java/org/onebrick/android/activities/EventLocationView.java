@@ -8,7 +8,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +34,7 @@ import org.onebrick.android.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventLocationView extends FragmentActivity implements
+public class EventLocationView extends ActionBarActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
@@ -58,9 +58,9 @@ public class EventLocationView extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_location_view);
+        getSupportActionBar().setTitle("Event Location");
         // annotation injection
         ButterKnife.inject(this);
-        getActionBar().setTitle("Event Location");
         Intent eventMap = getIntent();
         lat = eventMap.getDoubleExtra("Latitude", 0.0);
         lng = eventMap.getDoubleExtra("Longitude", 0.0);

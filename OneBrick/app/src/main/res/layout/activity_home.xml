@@ -65,7 +65,7 @@
         <TextView
             android:id="@+id/tvMyEvents"
             android:layout_below="@id/tvLogin"
-            android:layout_alignLeft="@+id/tvLogin"
+            android:layout_alignLeft="@id/tvLogin"
             android:text="@string/my_events"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             style="@style/drawerItem"
             android:gravity="center_vertical"
-            android:layout_alignLeft="@+id/tvLogin"
+            android:layout_alignLeft="@id/tvLogin"
             android:layout_marginLeft="5dp"
             android:drawableLeft="@drawable/ic_select_chapter"/>
 

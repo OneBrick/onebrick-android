@@ -1,10 +1,10 @@
 package org.onebrick.android.activities;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SearchActivity extends Activity implements OnQueryTextListener {
+public class SearchActivity extends ActionBarActivity implements OnQueryTextListener {
 
     EventSearchListAdapter aEventSearchList;
     ArrayList<Event> eventList;
@@ -128,9 +128,9 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        getSupportActionBar().setTitle("Search");
         // annotation injection
         ButterKnife.inject(this);
-        getActionBar().setTitle("Search");
         obClient = OneBrickApplication.getRestClient();
         eventList = new ArrayList<Event>();
         aEventSearchList = new EventSearchListAdapter(this,eventList);
@@ -144,7 +144,7 @@ public class SearchActivity extends Activity implements OnQueryTextListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        actionBar = getActionBar();
+        actionBar = getSupportActionBar();
         menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search, menu);
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(android.R.color.white));

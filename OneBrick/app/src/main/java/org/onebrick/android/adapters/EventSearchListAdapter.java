@@ -46,24 +46,24 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
         @InjectView(R.id.back) GridLayout back;
         @InjectView(R.id.rlNoEvents) RelativeLayout noEvents;
         @InjectView(R.id.ivListItemEventImage) ImageView ivEventImage;
-        @InjectView(R.id.tvEventName) TextView tvEventName;
+        @InjectView(R.id.tvListItemEventName) TextView tvEventName;
         @InjectView(R.id.ivListItemEventLocation) ImageView ivEventLocation;
-        @InjectView(R.id.tvEventAddress) TextView tvEventAddress;
+        @InjectView(R.id.tvListItemEventAddress) TextView tvEventAddress;
         @InjectView(R.id.ivListViewEventDate) ImageView ivEventDate;
-        @InjectView(R.id.tvEventDate) TextView tvEventDate;
-        @InjectView(R.id.tvEventTime) TextView tvEventTime;
+        @InjectView(R.id.tvListItemEventDate) TextView tvEventDate;
         @InjectView(R.id.ivListItemFbShare) ImageView ivFbShare;
         @InjectView(R.id.ivListItemTwitterShare) ImageView ivTwitterShare;
         @InjectView(R.id.ivListItemShare) ImageView ivShare;
-        @InjectView(R.id.btnRsvp) Button btnRsvp;
+        @InjectView(R.id.btnListItemRsvp) Button btnRsvp;
 
         ViewHolder(View view){
             ButterKnife.inject(this, view);
         }
     }
 
+
     public EventSearchListAdapter(Context context, ArrayList<Event> events) {
-        super(context, R.layout.item_event_list, events);
+        super(context, R.layout.item_event_search_list, events);
         context = context;
         imgLoader = ImageLoader.getInstance();
         dtf = DateTimeFormatter.getInstance();
@@ -73,7 +73,6 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-
         ViewHolder viewHolder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());

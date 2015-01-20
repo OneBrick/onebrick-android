@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ import org.onebrick.android.models.Chapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class HomeActivity extends FragmentActivity
+public class HomeActivity extends ActionBarActivity
         implements SelectChapterFragment.OnSelectChapterFragmentListener {
 
     private static final String TAG = HomeActivity.class.getName().toString();
@@ -42,7 +43,7 @@ public class HomeActivity extends FragmentActivity
     @InjectView(R.id.ivUserPic) ImageView ivProfile;
     @InjectView(R.id.tvMyEvents) TextView tvMyEvents;
     @InjectView(R.id.tvLogin) TextView tvLogin;
-    @InjectView(R.id.tvSelectChapter) TextView tvSelectChapter;
+    @InjectView(R.id.tvSelectChapter) LinearLayout tvSelectChapter;
     @InjectView(R.id.rlDrawer) View llDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String chapterName;
@@ -54,6 +55,7 @@ public class HomeActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getSupportActionBar().setTitle(chapterName);
         // annotation injection
         ButterKnife.inject(this);
 
@@ -61,7 +63,6 @@ public class HomeActivity extends FragmentActivity
         Intent i = getIntent();
         chapterId = i.getIntExtra("ChapterId", -1);
         chapterName = i.getStringExtra("ChapterName");
-        getActionBar().setTitle(chapterName);
         eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
@@ -70,8 +71,8 @@ public class HomeActivity extends FragmentActivity
     private void setupUi() {
         mDrawerToggle = setupDrawerToggle();
         dlDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         tvMyEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +187,7 @@ public class HomeActivity extends FragmentActivity
                 .commit();
         closeDrawer();
 
-        getActionBar().setTitle(ch.getChapterName());
+        getSupportActionBar().setTitle(ch.getChapterName());
 
         /*
         Saving the new chapter information if the user changes chapter

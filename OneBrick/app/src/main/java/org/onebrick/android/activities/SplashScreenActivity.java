@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.OneBrickClient2;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.FontsHelper;
 
@@ -41,6 +42,8 @@ public class SplashScreenActivity extends Activity {
 
        // ivObLogo.setAlpha(0.0f);
        // ivObLogo.animate().alpha(1.0f).setDuration(3000);
+
+        OneBrickClient2.getChapters();
 
         tvWelcomeNote.setTypeface(FontsHelper.getRobotoRegular());
         ImageLoader imgLoader =  ImageLoader.getInstance();
