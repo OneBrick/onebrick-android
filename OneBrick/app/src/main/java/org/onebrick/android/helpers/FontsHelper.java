@@ -2,7 +2,7 @@ package org.onebrick.android.helpers;
 
 import android.graphics.Typeface;
 
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
 
 /**
  * Created by AshwinGV on 10/24/14.

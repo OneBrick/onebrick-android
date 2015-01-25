@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
-import org.onebrick.android.OneBrickClient;
+import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.activities.EventInfoActivity;
 import org.onebrick.android.adapters.EventSearchListAdapter;

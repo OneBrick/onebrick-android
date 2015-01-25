@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.FontsHelper;
 

@@ -12,9 +12,9 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
-import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.Date;
@@ -75,7 +75,7 @@ public class MyPastEventsFragment extends EventsListFragment {
                     final Iterator<Event> itr = eventList.iterator();
                     final long currentTime = System.currentTimeMillis();
                     while (itr.hasNext()) {
-                        final Date date = Utils.getDate(itr.next().eventStartDate);
+                        final Date date = DateTimeFormatter.getInstance().getDate(itr.next().eventStartDate);
                         if (date != null && date.getTime() > currentTime) {
                             itr.remove();
                         }

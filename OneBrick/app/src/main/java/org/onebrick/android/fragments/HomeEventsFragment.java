@@ -13,7 +13,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;

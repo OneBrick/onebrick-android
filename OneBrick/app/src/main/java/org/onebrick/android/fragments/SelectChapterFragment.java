@@ -16,7 +16,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
 import org.onebrick.android.models.Chapter;

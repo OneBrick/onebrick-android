@@ -41,8 +41,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-import org.onebrick.android.OneBrickApplication;
-import org.onebrick.android.OneBrickClient;
+import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
@@ -60,6 +60,8 @@ import butterknife.InjectView;
 public class EventInfoActivity extends ActionBarActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
+
+    private static final String TAG = EventInfoActivity.class.getName().toString();
 
     @InjectView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
     @InjectView(R.id.rlContact) RelativeLayout rlContact;
@@ -83,7 +85,6 @@ public class EventInfoActivity extends ActionBarActivity implements
 
     Event updatedEvent;
     String eventId;
-    private static final String TAG = HomeActivity.class.getName().toString();
     OneBrickClient obClient;
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -207,9 +208,9 @@ public class EventInfoActivity extends ActionBarActivity implements
         imageLoader.displayImage(updatedEvent.getProfilePhotoUri(), ivProfilePhoto);
 
         tvEventName.setText(updatedEvent.getTitle());
-        tvEventDateTime.setText(Utils.getFormattedEventDate(updatedEvent.getEventStartDate())
+        tvEventDateTime.setText(DateTimeFormatter.getInstance().getFormattedEventDate(updatedEvent.getEventStartDate())
                 + " - "
-                + Utils.getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
+                + DateTimeFormatter.getInstance().getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
         String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
         eventDesc = Utils.removeHTagsFromHTML(eventDesc);
         tvEventBrief.setText(Html.fromHtml(eventDesc));
@@ -227,7 +228,7 @@ public class EventInfoActivity extends ActionBarActivity implements
         svMainContent.setVisibility(View.VISIBLE);
 
         // check current date for past events. if past events, don't show rsvp/unrsvp buttons
-        if (Utils.isPastEvent(updatedEvent.getEventEndDate())){
+        if (DateTimeFormatter.getInstance().isPastEvent(updatedEvent.getEventEndDate())){
             llRsvpSegment.setVisibility(View.GONE);
             llDummySpace.setVisibility(View.GONE);
         }else{

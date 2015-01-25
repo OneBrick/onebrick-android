@@ -21,7 +21,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.SocialShareEmail;
-import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class EventSearchListAdapter extends ArrayAdapter<Event> {
             imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
             viewHolder.tvEventName.setText("" + event.getTitle());
             viewHolder.tvEventAddress.setText("" + event.getEventAddress());
-            viewHolder.tvEventDate.setText("" + Utils.getFormattedEventStartDate(
+            viewHolder.tvEventDate.setText("" + DateTimeFormatter.getInstance().getFormattedEventStartDate(
                     event.getEventStartDate()));
             viewHolder.btnRsvp.setVisibility(View.GONE);
             viewHolder.ivFbShare.setOnClickListener(new View.OnClickListener() {
