@@ -1,4 +1,4 @@
-package org.onebrick.android;
+package org.onebrick.android.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;

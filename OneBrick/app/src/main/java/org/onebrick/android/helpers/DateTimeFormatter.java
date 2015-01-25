@@ -1,26 +1,98 @@
 package org.onebrick.android.helpers;
 
+import android.support.annotation.Nullable;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Created by AshwinGV on 10/19/14.
- */
 public class DateTimeFormatter {
+    private static final String TAG = "DateTimeFormatter";
+
     private static DateTimeFormatter dtf;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat eventDate = new SimpleDateFormat("EEE, MMM d");
+    private static SimpleDateFormat eventTime = new SimpleDateFormat("h:mm a");
+
     private DateTimeFormatter() {};
-    private static Calendar cal = Calendar.getInstance();
-    private static TimeZone tz = cal.getTimeZone();
 
     public static DateTimeFormatter getInstance() {
         if(dtf == null) {
             dtf = new DateTimeFormatter();
         }
         return dtf;
+    }
+
+    public String getFormattedEventStartDate(String onebrickDate) {
+        try {
+            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final String date = eventDate.format(d);
+            final String time = eventTime.format(d);
+            return date + " @ " + time;
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + onebrickDate);
+        }
+        return "";
+    }
+    public String getFormattedEventDate(String onebrickDate) {
+        try {
+            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final String date = eventDate.format(d);
+            final String time = eventTime.format(d);
+            return date + " " + time;
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + onebrickDate);
+        }
+        return "";
+    }
+
+    public String getFormattedEventDateOnly(String onebrickDate) {
+        try {
+            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final String date = eventDate.format(d);
+            return date;
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + onebrickDate);
+        }
+        return "";
+    }
+    public String getFormattedEventEndTime(String onebrickDate) {
+        try {
+            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final String time = eventTime.format(d);
+            return time;
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + onebrickDate);
+        }
+        return "";
+    }
+
+    public Date getLocalTime(Date utc) {
+        return new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
+    }
+
+    public String getFormattedTimeEndOnly(String start, String end){
+        String startDate = getFormattedEventDateOnly(start);
+        String endDate = getFormattedEventDateOnly(end);
+
+        if (startDate.equals(endDate)){
+            return getFormattedEventEndTime(end);
+        }else{
+            return getFormattedEventDate(end);
+        }
+    }
+
+    @Nullable
+    public Date getDate(String onebrickDate) {
+        try {
+            return dateFormat.parse(onebrickDate);
+        } catch (Exception e) {
+            Log.w(TAG, "Exception while date format: " + onebrickDate);
+            return null;
+        }
     }
 
     public Date getDateFromString(String dateTime) {
@@ -36,28 +108,18 @@ public class DateTimeFormatter {
                 System.currentTimeMillis()));
     }
 
-    public String getDateOnly(Date d) {
-        String dayOfTheWeek = (String) android.text.format.DateFormat.format("EEE", d);
-        String month = (String) android.text.format.DateFormat.format("MMM", d);
-        String  day = (String) android.text.format.DateFormat.format("dd", d);
-        String thisYear = ""+cal.get(Calendar.YEAR);
-        String eventYear = (String) android.text.format.DateFormat.format("yyyy", d);
-        StringBuffer toReturn = new StringBuffer();
-        toReturn.append(dayOfTheWeek);
-        toReturn.append(", ");
-        toReturn.append(month);
-        toReturn.append(" ");
-        toReturn.append(day);
-        if(!thisYear.equalsIgnoreCase(eventYear)){
-            toReturn.append(", ");
-            toReturn.append(eventYear);
+    public boolean isPastEvent(String endDate){
+        try {
+            Date eventDate = getLocalTime(dateFormat.parse(endDate));
+            Date currentDate = new Date();
+            if (eventDate.before(currentDate)){
+                return true;
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "cannot parse date: " + endDate);
         }
-        return  toReturn.toString();
-    }
+        return false;
 
-    public String getTimeOnly(Date d) {
-        String time =  (String) android.text.format.DateFormat.format("KK:mm a", d);
-        return time;
     }
 
 }

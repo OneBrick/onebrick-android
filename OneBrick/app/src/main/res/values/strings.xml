@@ -58,7 +58,6 @@
         <item>A week before the event</item>
     </string-array>
 
-    <string name="title_activity_seach">SeachActivity</string>
-    <string name="title_activity_calendar_view">CalendarViewActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

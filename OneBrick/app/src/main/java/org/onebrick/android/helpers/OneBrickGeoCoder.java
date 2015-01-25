@@ -5,7 +5,7 @@ import android.location.Geocoder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.onebrick.android.OneBrickApplication;
+import org.onebrick.android.core.OneBrickApplication;
 
 import java.util.List;
 

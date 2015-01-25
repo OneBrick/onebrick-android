@@ -190,7 +190,7 @@
                         android:background="@drawable/social_button_selector"
                         android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
-                        android:drawableStart="@drawable/ic_email_3"
+                        android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="3dp"
                         android:text="@string/manager_label"/>
                     <Button
@@ -201,7 +201,7 @@
                         android:textSize="@dimen/event_detail_text_small_size"
                         android:textColor="@color/charcoal"
                         android:layout_toRightOf="@+id/btnEmailManager"
-                        android:drawableStart="@drawable/ic_email_3"
+                        android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="3dp"
                         android:text="@string/coordinator_label"/>
                 </RelativeLayout>
