@@ -624,6 +624,10 @@ public class EventInfoActivity extends ActionBarActivity implements
 
         @Override
         protected void onPostExecute(String result) {
+            if (map == null) {
+                return;
+            }
+
             if (eventAddress != null) {
                 lat = eventAddress.getLatitude();
                 lng = eventAddress.getLongitude();

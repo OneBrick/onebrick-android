@@ -46,7 +46,9 @@ public class OneBrickGeoCoder {
                 } 
 
             }
-            geoCodedAddress = addressList.get(0);
+            if(addressList != null && !addressList.isEmpty()) {
+                geoCodedAddress = addressList.get(0);
+            }
         } catch (Exception e) {
             Log.e("Geocoder Error","Something wrong");
             e.printStackTrace();
