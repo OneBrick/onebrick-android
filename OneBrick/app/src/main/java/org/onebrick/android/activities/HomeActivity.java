@@ -256,12 +256,4 @@ public class HomeActivity extends ActionBarActivity
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
-
-    public void showCalendarView (MenuItem mi) {
-        Intent i = new Intent(getApplicationContext(), CalendarViewActivity.class);
-        i.putExtra("chapterId", ((HomeEventsFragment)eventListFragment).getChapterId());
-        i.putExtra("chapterName", ((HomeEventsFragment)eventListFragment).getChapterName());
-        startActivity(i);
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-    }
 }
