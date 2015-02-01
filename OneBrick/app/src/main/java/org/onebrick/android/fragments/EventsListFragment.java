@@ -1,8 +1,11 @@
 package org.onebrick.android.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +25,14 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventsListFragment extends Fragment {
+public abstract class EventsListFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = EventsListFragment.class.getName().toString();
 
     @InjectView(R.id.progressBar) ProgressBar progressBar;
     @InjectView(R.id.lvEventSearchList) SwipeListView lvEvents;
-    EventSearchListAdapter aEventList;
+    protected EventSearchListAdapter mAdapter;
     ArrayList<Event> eventList;
     protected OneBrickClient client;
     String chapterName;
@@ -36,49 +40,45 @@ public class EventsListFragment extends Fragment {
 
 
     public EventsListFragment() {
-        // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventList = new ArrayList<Event>();
-        aEventList = new EventSearchListAdapter(getActivity(), eventList);
+        eventList = new ArrayList<>();
+        mAdapter = new EventSearchListAdapter(getActivity(), null);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_search, container, false);
         ButterKnife.inject(this, view);
-        lvEvents.setAdapter(aEventList);
+        lvEvents.setAdapter(mAdapter);
         setupEventsListeners();
         return view;
     }
 
     private void setupEventsListeners() {
-        /*
-        lvEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
-                Event event = aEventList.getItem(position);
-                eventInfo.putExtra("EventId",""+event.getEventId());
-                startActivity(eventInfo);
-                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            }
-        });*/
-
         lvEvents.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onClickFrontView(int position) {
                 Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
-                Event event = aEventList.getItem(position);
-                //Toast.makeText(getActivity(), "The Event Title to display is :" + event.getTitle() + " with id " + event.getEventId(), Toast.LENGTH_LONG).show();
-                eventInfo.putExtra("EventId",""+event.getEventId());
+                final Event event = Event.fromCursor((Cursor) mAdapter.getItem(position));
+                eventInfo.putExtra("EventId", "" + event.getEventId());
                 startActivity(eventInfo);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mAdapter.swapCursor(null);
     }
 }

@@ -1,6 +1,8 @@
 package org.onebrick.android.models;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -285,5 +287,11 @@ public class Event extends Model {
 
         }
         return events;
+    }
+
+    public static Event fromCursor(@NonNull Cursor cursor) {
+        final Event event = new Event();
+        event.loadFromCursor(cursor);
+        return event;
     }
 }

@@ -1,6 +1,8 @@
 package org.onebrick.android.models;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -113,5 +115,11 @@ public class Chapter extends Model {
         From sql = new Select().from(Chapter.class);
         Log.i("SQL is", sql.toSql());
         return sql.execute();
+    }
+
+    public static Chapter fromCursor(@NonNull Cursor cursor) {
+        final Chapter ch = new Chapter();
+        ch.loadFromCursor(cursor);
+        return ch;
     }
 }

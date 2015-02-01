@@ -1,13 +1,15 @@
 package org.onebrick.android.fragments;
 
-
-import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.activeandroid.content.ContentProvider;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -20,17 +22,11 @@ import org.onebrick.android.models.Event;
 import java.util.Date;
 import java.util.Iterator;
 
-/**
- * A simple {@link Fragment} subclass.
- *
- */
 public class MyPastEventsFragment extends EventsListFragment {
-
 
     private int myChapterId;
 
     public MyPastEventsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -81,9 +77,9 @@ public class MyPastEventsFragment extends EventsListFragment {
                         }
                     }
 
-                    aEventList.clear();
-                    aEventList.addAll(eventList);
-                    aEventList.notifyDataSetChanged();
+//                    mAdapter.clear();
+//                    mAdapter.addAll(eventList);
+//                    mAdapter.notifyDataSetChanged();
                 }
             }
             @Override
@@ -102,5 +98,21 @@ public class MyPastEventsFragment extends EventsListFragment {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        final String[] projection = null;
+        final String selection = null;
+        final String[] selectionArgs = null;
+        final String sortOrder = null;
+        // TODO use appropriate params
+        return new CursorLoader(getActivity(),
+                ContentProvider.createUri(Event.class, null),
+                projection,
+                selection,
+                selectionArgs,
+                sortOrder
+        );
     }
 }
