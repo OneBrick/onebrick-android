@@ -55,34 +55,30 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
-        String apiUri = getApiUrl("/user/login.json");
+        StringBuilder apiUri = new StringBuilder();
+        apiUri.append(getApiUrl("/user/login.json"));
+        // redundant parameters?
+        apiUri.append("/?username=");
+        apiUri.append(username.trim());
+        apiUri.append("&password=");
+        apiUri.append(password.trim());
+
         RequestParams params = new RequestParams();
         params.put("username", username.trim());
         params.put("password", password.trim());
-        apiUri = apiUri + "/?username=" + username.trim() + "&password=" + password.trim();
-//        String apiUri = "http://dev-v3.gotpantheon.com/noauth/user/login.json?username=" + username + "&password=" + password;
-//        RequestParams params = new RequestParams();
-//        params.put("username", username);
-//        params.put("password", password);
-//        Log.i(TAG,"get request for user login URL: "+apiUri);
-        client.post(apiUri, params, handler);
+
+        client.post(apiUri.toString(), params, handler);
     }
 
     public void getEventInfo(String eventId, long userId,AsyncHttpResponseHandler handler){
-        String apiUri = getApiUrl("/event/"+eventId+".json");
+        StringBuilder apiUri = new StringBuilder();
+        apiUri.append(getApiUrl("/event/"+eventId+".json"));
         if(userId > 1) {
-            apiUri = apiUri+"&uid="+userId;
+            apiUri.append("&uid");
+            apiUri.append(userId);
         }
-
         Log.i(TAG,"get request for URL"+apiUri);
-        client.get(apiUri, null, handler);
-    }
-
-    public void getLatLongFromAddress(String address, AsyncHttpResponseHandler handler){
-        //String apiUri = getApiUrl("/event/"+eventId+".json");
-        String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA";
-        //Log.i(TAG,"get request for URL"+apiUrl);
-        client.get(apiUrl, null, handler);
+        client.get(apiUri.toString(), null, handler);
     }
 
     /*

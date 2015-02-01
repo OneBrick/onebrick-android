@@ -15,23 +15,25 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.NavigationChapterListAdapter;
+import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.models.Chapter;
 
 import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class SelectChapterActivity extends Activity {
 
     private static final String TAG = SelectChapterActivity.class.getName().toString();
 
-    ListView lvChapters;
+    @InjectView(R.id.lvChapterPrompt) ListView lvChapters;
     NavigationChapterListAdapter chapterListAdapter;
     ArrayList<Chapter> chapterList;
     OneBrickClient obClient;
-    //TextView tvChapteOptions;
 
     JsonHttpResponseHandler chapterListResponseHandler = new JsonHttpResponseHandler() {
         @Override
@@ -54,9 +56,9 @@ public class SelectChapterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
-        lvChapters = (ListView) findViewById(R.id.lvChapterPrompt);
-        //tvChapteOptions = (TextView) findViewById(R.id.tvOrLbl);
-        //tvChapteOptions.setTypeface(FontsHelper.getRobotoThinItalic());
+        // annotation injection
+        ButterKnife.inject(this);
+
         chapterList = new ArrayList<Chapter>();
         obClient = OneBrickApplication.getRestClient();
         chapterListAdapter = new NavigationChapterListAdapter(this,R.layout.drawer_nav_item,chapterList);
