@@ -111,7 +111,7 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void searchForEvents(int chapterId, String query, AsyncHttpResponseHandler handler) {
-        String apiUri = getApiUrl("/event.json?chapter="+chapterId+"&"+"search="+query);
+        String apiUri = getApiUrl("/event.json?chapter="+chapterId+"&search="+query);
         Log.i("API","Calling"+apiUri);
         client.get(apiUri, null, handler);
     }
