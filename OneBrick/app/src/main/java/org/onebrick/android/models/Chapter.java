@@ -1,9 +1,6 @@
 package org.onebrick.android.models;
 
-/**
- * Created by AshwinGV on 10/11/14.
- */
-
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -21,36 +18,24 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-@Table(name="Chapters")
+@Table(name = "chapters", id = BaseColumns._ID)
 public class Chapter extends Model {
 
     private static final String TAG = Chapter.class.getName().toString();
 
-
-    @Column(name="Name",
+    @Column(name="name",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
     String name;
 
-    @Column(name="ChapterId",
+    @Column(name="chapter_id",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
-    int id;
+    int chapterId;
 
-
-    public Chapter(){
-        super();
-    }
-
-
-    public Chapter(String name, int id) {
-        super();
-        this.name = name;
-        this.id = id;
-    }
-
+    @Override
     public String toString() {
-        return ""+this.name+" "+this.id;
+        return name + " " + chapterId;
     }
 
     public String getChapterName() {
@@ -58,18 +43,14 @@ public class Chapter extends Model {
     }
 
     public int getChapterId() {
-        return this.id;
-    }
-
-    public String getChaterIdAsString() {
-        return ""+this.id;
+        return this.chapterId;
     }
 
     public static Chapter getChapterFromJsonObject(JSONObject jsonObject) {
         Chapter newChapter = new Chapter();
         try {
             newChapter.name = jsonObject.getString("title");
-            newChapter.id = jsonObject.getInt("nid");
+            newChapter.chapterId = jsonObject.getInt("nid");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -129,10 +110,8 @@ public class Chapter extends Model {
 
     public static List<Chapter> getChapterListFromDb() {
         Log.i(TAG,"Getting Chapters from DB");
-        From sql = new Select()
-                .from(Chapter.class);
+        From sql = new Select().from(Chapter.class);
         Log.i("SQL is", sql.toSql());
         return sql.execute();
     }
-
 }

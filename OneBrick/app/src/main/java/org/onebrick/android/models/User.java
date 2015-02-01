@@ -1,28 +1,30 @@
 package org.onebrick.android.models;
 
+import android.provider.BaseColumns;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Table(name="User")
+@Table(name="user", id = BaseColumns._ID)
 public class User extends Model {
 
     private static final String TAG = User.class.getName().toString();
 
-    @Column(name="Name")
+    @Column(name="name")
     public String name;
-    @Column(name="Email")
+    @Column(name="email")
     public String email;
-    @Column(name="ChapterId")
+    @Column(name="chapter_id")
     public int chapterId = -1; // San Francisco
-    @Column(name="SessionId")
+    @Column(name="session_id")
     public String sessionId;
-    @Column(name="SessionName")
+    @Column(name="session_name")
     public String sessionName;
 
-    @Column(name="profileImageUri")
+    @Column(name="profile_image_uri")
     public String profileImageUri;
 
     /*
@@ -30,7 +32,7 @@ public class User extends Model {
     needs to be set to a valid UID after successful authentication
     if this value is -1 ==> un authenticated. And login activity will be prompted.
      */
-    @Column(name="UID")
+    @Column(name="uid")
     public long UID = -1;
 
     public static User fromJSON(JSONObject jsonObject){

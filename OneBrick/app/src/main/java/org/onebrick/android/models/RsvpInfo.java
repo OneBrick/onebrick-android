@@ -1,5 +1,6 @@
 package org.onebrick.android.models;
 
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -10,14 +11,10 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
-/**
- * Created by AshwinGV on 10/17/14.
- */
-
-@Table(name="RsvpInfo")
+@Table(name="rsvp_info", id = BaseColumns._ID)
 public class RsvpInfo extends Model {
 
-    @Column(name="Event")
+    @Column(name="event")
     Event event;
 
     private RsvpInfo() {
