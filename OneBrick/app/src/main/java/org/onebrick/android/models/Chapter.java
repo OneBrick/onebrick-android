@@ -61,10 +61,6 @@ public class Chapter extends Model {
         return this.id;
     }
 
-    public String getChaterIdAsString() {
-        return ""+this.id;
-    }
-
     public static Chapter getChapterFromJsonObject(JSONObject jsonObject) {
         Chapter newChapter = new Chapter();
         try {
@@ -73,7 +69,7 @@ public class Chapter extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i(TAG,"Saving Chapter to DB");
+        Log.d(TAG,"Saving Chapter to DB");
         newChapter.save();
         return newChapter;
     }
@@ -112,7 +108,7 @@ public class Chapter extends Model {
                 new Select().from(Chapter.class).where("ChapterId = ?", eventId).executeSingle();
         if (existingChapter != null) {
             // found and return existing
-            Log.i(TAG, "Returning existing chapter. Not saving new chapter to DB");
+            Log.d(TAG, "Returning existing chapter. Not saving new chapter to DB");
             return existingChapter;
         } else {
             // create and return new
@@ -128,11 +124,10 @@ public class Chapter extends Model {
     }
 
     public static List<Chapter> getChapterListFromDb() {
-        Log.i(TAG,"Getting Chapters from DB");
+        Log.d(TAG,"Getting Chapters from DB");
         From sql = new Select()
                 .from(Chapter.class);
-        Log.i("SQL is", sql.toSql());
+        Log.d("SQL is", sql.toSql());
         return sql.execute();
     }
-
 }

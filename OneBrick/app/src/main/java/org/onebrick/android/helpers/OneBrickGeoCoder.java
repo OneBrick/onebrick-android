@@ -31,7 +31,7 @@ public class OneBrickGeoCoder {
 
    @Nullable
     public static Address getAddressFromLocationName(String location) {
-        Log.i(TAG,"Get lat lng for address"+location);
+        Log.d(TAG,"Get lat lng for address"+location);
         List<Address> addressList = null;
         Address geoCodedAddress = null;
         try {

@@ -48,7 +48,7 @@ public class SelectChapterActivity extends Activity {
         @Override
         public void onFailure(int statusCode, Header[] headers,
                               Throwable throwable, JSONObject errorResponse) {
-            Log.i(TAG,"Api called failed!");
+            Log.e(TAG,"Api called failed!");
         }
     };
 

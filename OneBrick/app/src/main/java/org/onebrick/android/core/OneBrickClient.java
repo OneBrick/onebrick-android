@@ -1,7 +1,6 @@
 package org.onebrick.android.core;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -32,6 +31,15 @@ public class OneBrickClient extends OAuthBaseClient {
     public static final String REST_CONSUMER_SECRET = ""; // Change this
     public static final String REST_CALLBACK_URL = "oauth://onebrick-android"; // Change this (here and in manifest)
 
+    private static final String PATH_SEPARATOR = "/";
+    private static final String GET_CHAPTERS_END_POINT = "chapters.json";
+    private static final String GET_EVENT_END_POINT = "event.json";
+    private static final String GET_LOGIN_END_POINT = "user/login.json";
+    private static final String RSVP_END_POINT = "rsvp.json";
+    private static final String UN_RSVP_END_POINT = "unrsvp.json";
+    private static final String EVENT_PATH = "event";
+    private static final String JSON_FILE_EXTENSION = ".json";
+
     public OneBrickClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
@@ -40,12 +48,11 @@ public class OneBrickClient extends OAuthBaseClient {
         This Function access the endpoint to get the list of chapters.
      */
     public void getChapters(AsyncHttpResponseHandler handler) {
-        String apiUri = getApiUrl("/chapters.json");
-        Log.d(TAG, "getChapters params");
+        String apiUri = getApiUrl(PATH_SEPARATOR + GET_CHAPTERS_END_POINT);
         client.get(apiUri, null, handler);
     }
     public void getEventsList(int chapterId, long userId, AsyncHttpResponseHandler handler){
-        String apiUri = getApiUrl("/event.json");
+        String apiUri = getApiUrl(PATH_SEPARATOR + GET_EVENT_END_POINT);
         RequestParams params = new RequestParams();
         params.put("chapter", Integer.toString(chapterId));
         if(userId > 1) {
@@ -56,9 +63,9 @@ public class OneBrickClient extends OAuthBaseClient {
 
     public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
         StringBuilder apiUri = new StringBuilder();
-        apiUri.append(getApiUrl("/user/login.json"));
-        // redundant parameters?
-        apiUri.append("/?username=");
+        apiUri.append(getApiUrl(PATH_SEPARATOR + GET_LOGIN_END_POINT));
+        // TODO redundant parameters?
+        apiUri.append("?username=");
         apiUri.append(username.trim());
         apiUri.append("&password=");
         apiUri.append(password.trim());
@@ -66,40 +73,39 @@ public class OneBrickClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("username", username.trim());
         params.put("password", password.trim());
-
         client.post(apiUri.toString(), params, handler);
     }
 
     public void getEventInfo(String eventId, long userId,AsyncHttpResponseHandler handler){
         StringBuilder apiUri = new StringBuilder();
-        apiUri.append(getApiUrl("/event/"+eventId+".json"));
+        apiUri.append(getApiUrl(PATH_SEPARATOR + EVENT_PATH + PATH_SEPARATOR + eventId + JSON_FILE_EXTENSION));
+        RequestParams params = null;
         if(userId > 1) {
-            apiUri.append("&uid");
-            apiUri.append(userId);
+            params = new RequestParams();
+            params.put("uid", Long.toString(userId));
         }
-        Log.i(TAG,"get request for URL"+apiUri);
-        client.get(apiUri.toString(), null, handler);
+        client.get(apiUri.toString(), params, handler);
     }
 
     /*
     This function is called to post rsvp request to an event
      */
     public void postRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
-        String apiUri = getApiUrl("/event/"+eventId+"/rsvp.json");
+        String apiUri = getApiUrl(PATH_SEPARATOR + EVENT_PATH + PATH_SEPARATOR + eventId + PATH_SEPARATOR + RSVP_END_POINT);
         RequestParams params = new RequestParams();
         params.put("uid", Long.toString(userId));
         client.post(apiUri, params, handler);
     }
 
     public void postUnRsvpToEvent(long eventId, long userId, AsyncHttpResponseHandler handler) {
-        String apiUri = getApiUrl("/event/"+eventId+"/unrsvp.json");
+        String apiUri = getApiUrl(PATH_SEPARATOR + EVENT_PATH + PATH_SEPARATOR + eventId + PATH_SEPARATOR + UN_RSVP_END_POINT);
         RequestParams params = new RequestParams();
         params.put("uid", Long.toString(userId));
         client.post(apiUri, params, handler);
     }
 
     public void getMyEvents(long userId, boolean isPastEvent, AsyncHttpResponseHandler handler){
-        String apiUri = getApiUrl("/event.json");
+        String apiUri = getApiUrl(PATH_SEPARATOR + GET_EVENT_END_POINT);
         RequestParams params = new RequestParams();
         params.put("uid", Long.toString(userId));
         if (isPastEvent){
@@ -111,8 +117,10 @@ public class OneBrickClient extends OAuthBaseClient {
     }
 
     public void searchForEvents(int chapterId, String query, AsyncHttpResponseHandler handler) {
-        String apiUri = getApiUrl("/event.json?chapter="+chapterId+"&search="+query);
-        Log.i("API","Calling"+apiUri);
-        client.get(apiUri, null, handler);
+        String apiUri = getApiUrl(PATH_SEPARATOR + GET_EVENT_END_POINT);
+        RequestParams params = new RequestParams();
+        params.put("chapter", chapterId);
+        params.put("search", query);
+        client.get(apiUri, params, handler);
     }
 }

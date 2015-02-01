@@ -57,6 +57,9 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ TODO this class should be revisited
+ */
 public class EventInfoActivity extends ActionBarActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
@@ -215,6 +218,8 @@ public class EventInfoActivity extends ActionBarActivity implements
         eventDesc = Utils.removeHTagsFromHTML(eventDesc);
         tvEventBrief.setText(Html.fromHtml(eventDesc));
         tvEventLocation.setText(updatedEvent.getEventAddress());
+
+        // TODO overall RSVP/UNRSVP should be revisited
         if(loginMgr.isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText(R.string.un_rsvp_button);
@@ -615,10 +620,10 @@ public class EventInfoActivity extends ActionBarActivity implements
         Address eventAddress = null;
         @Override
         protected String doInBackground(String... params) {
-            Log.i(TAG, "Event address is " + updatedEvent.getEventAddress());
-            Log.i(TAG, "Is Geocode present " + obGeoCoder.isPresent());
+            Log.d(TAG, "Event address is " + updatedEvent.getEventAddress());
+            Log.d(TAG, "Is Geocode present " + obGeoCoder.isPresent());
             eventAddress = OneBrickGeoCoder.getAddressFromLocationName(updatedEvent.getEventAddress());
-            Log.i(TAG, "Geocoded Event address is " + eventAddress);
+            Log.d(TAG, "Geocoded Event address is " + eventAddress);
             return null;
         }
 

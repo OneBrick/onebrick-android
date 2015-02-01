@@ -63,22 +63,22 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-            Log.i("INFO", "callback success"); // logcat log
+            Log.d("INFO", "callback success"); // logcat log
             aEventSearchList.clear();
             eventList.clear();
             aEventSearchList.notifyDataSetChanged();
-            Log.i("Debug","The size of search list is"+eventList.size());
+            Log.d("Debug","The size of search list is"+eventList.size());
             if (response != null){
                 aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
                 if(aEventSearchList.isEmpty()){
-                    Log.i("Searching result", "Is Empty");
+                    Log.d("Searching result", "Is Empty");
                     aEventSearchList.clear();
                     eventList.clear();
                     Event e = new Event();
                     e.setTitle("Error");
                     aEventSearchList.add(e);
                 }
-                Log.i("Debug","The size of search list is"+eventList.size());
+                Log.d("Debug","The size of search list is"+eventList.size());
                 aEventSearchList.notifyDataSetChanged();
             }
         }

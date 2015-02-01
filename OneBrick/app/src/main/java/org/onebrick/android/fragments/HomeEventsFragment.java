@@ -27,10 +27,7 @@ public class HomeEventsFragment extends EventsListFragment {
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
 
-
     LoginManager loginManager;
-
-
 
     public static HomeEventsFragment newInstance(String chapterName, int chapterId) {
         HomeEventsFragment fragment = new HomeEventsFragment();
@@ -62,7 +59,7 @@ public class HomeEventsFragment extends EventsListFragment {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
         }
-        Log.i("chapter id: ", String.valueOf(chapterId));
+        Log.d("chapter id: ", String.valueOf(chapterId));
     }
 
     @Override
@@ -88,14 +85,12 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
-                Log.i("INFO", "callback success"); // logcat
+                Log.d("INFO", "callback success"); // logcat
                 aEventList.clear();
                 if (response != null){
                     aEventList.addAll(Event.fromJSONArray(response, cid));
                     if(aEventList.isEmpty()) {
-                        /*
-                        Handle the case where there are no events in chapter
-                         */
+                        /* Handle the case where there are no events in chapter */
                         aEventList.clear();
                         Event e = new Event();
                         e.setTitle("Error");
@@ -145,6 +140,4 @@ public class HomeEventsFragment extends EventsListFragment {
         }
 
     }
-
-
 }

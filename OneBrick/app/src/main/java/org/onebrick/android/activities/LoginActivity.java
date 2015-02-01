@@ -132,7 +132,7 @@ public class LoginActivity extends Activity{
                 //super.onSuccess(statusCode, headers, response);
                 //Log.i("login success1", response.toString());
                 try {
-                    Log.i("id", response.getJSONObject("user").optString("uid"));
+                    Log.d("id", response.getJSONObject("user").optString("uid"));
                     User user = User.fromJSON(response);
                     userId = user.getUId();
                     LoginManager manager = LoginManager.getInstance(LoginActivity.this);

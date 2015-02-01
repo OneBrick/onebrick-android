@@ -38,7 +38,7 @@ public class RsvpInfo extends Model {
     public static List<RsvpInfo> getRsvpInfo() {
         From sql = new Select()
                 .from(RsvpInfo.class);
-        Log.i("RSVP SQL", sql.toSql());
+        Log.d("RSVP SQL", sql.toSql());
         return sql.execute();
     }
 
