@@ -11,9 +11,6 @@ import android.support.v4.app.NotificationCompat;
 
 import org.onebrick.android.R;
 
-/**
- * Created by AshwinGV on 10/21/14.
- */
 public class DisplayNotificationReceiver extends BroadcastReceiver {
     final static String GROUP_RSVP_REMAINDERS = "group_key_emails";
     @Override

@@ -34,7 +34,7 @@ import org.onebrick.android.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventLocationView extends ActionBarActivity implements
+public class EventLocationActivity extends ActionBarActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 

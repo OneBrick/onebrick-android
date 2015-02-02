@@ -1,4 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.onebrick.android.activities.EventLocationView" >
+    tools:context="org.onebrick.android.activities.EventLocationActivity" >
 </menu>

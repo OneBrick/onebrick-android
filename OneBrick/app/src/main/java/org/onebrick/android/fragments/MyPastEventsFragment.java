@@ -32,10 +32,8 @@ public class MyPastEventsFragment extends EventsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = OneBrickApplication.getRestClient();
-        myChapterId = OneBrickApplication
-                .getApplicationSharedPreference()
-                .getInt("MyChapterId", -1);
+        client = OneBrickApplication.getInstance().getRestClient();
+        myChapterId = OneBrickApplication.getInstance().getChapterId();
     }
 
     @Override

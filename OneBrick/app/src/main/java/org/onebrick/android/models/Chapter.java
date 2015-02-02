@@ -41,11 +41,11 @@ public class Chapter extends Model {
     }
 
     public String getChapterName() {
-        return this.name;
+        return name;
     }
 
     public int getChapterId() {
-        return this.chapterId;
+        return chapterId;
     }
 
     public static Chapter getChapterFromJsonObject(JSONObject jsonObject) {
@@ -56,8 +56,6 @@ public class Chapter extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i(TAG,"Saving Chapter to DB");
-        newChapter.save();
         return newChapter;
     }
 
@@ -68,7 +66,6 @@ public class Chapter extends Model {
             String key = iter.next();
             try {
                 JSONObject chapterJsonObject = jsonObject.getJSONObject(key);
-                //Log.i("PASS",""+object.toString());
                 Chapter toAdd = findOrCreateFromJson(chapterJsonObject);
                 if(toAdd != null) {
                     chapterList.add(toAdd);
@@ -92,21 +89,23 @@ public class Chapter extends Model {
     public static Chapter findOrCreateFromJson(JSONObject jsonObj) {
         int eventId = jsonObj.optInt("nid");
         Chapter existingChapter =
-                new Select().from(Chapter.class).where("ChapterId = ?", eventId).executeSingle();
+                new Select().from(Chapter.class).where("chapter_id = ?", eventId).executeSingle();
         if (existingChapter != null) {
             // found and return existing
-            Log.i(TAG, "Returning existing chapter. Not saving new chapter to DB");
+            Log.d(TAG, "Returning existing chapter. Not saving new chapter to DB");
             return existingChapter;
         } else {
             // create and return new
             Chapter chapter = getChapterFromJsonObject(jsonObj);
+            Log.d(TAG,"Saving Chapter to DB");
+            chapter.save();
             return chapter;
         }
     }
 
     public static Chapter getChapterFromId(int id) {
         return new Select().from(Chapter.class)
-                .where("ChapterId = ?", id)
+                .where("chapter_id = ?", id)
                 .executeSingle();
     }
 

@@ -20,7 +20,7 @@ public class OneBrickGeoCoder {
 
     public static Geocoder getInstance() {
         if (geocoder == null) {
-            geocoder = new Geocoder(OneBrickApplication.getContext());
+            geocoder = new Geocoder(OneBrickApplication.getInstance());
         }
         return geocoder;
     }

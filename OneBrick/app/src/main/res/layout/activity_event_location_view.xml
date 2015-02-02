@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_grey"
-    tools:context="org.onebrick.android.activities.EventLocationView"
+    tools:context="org.onebrick.android.activities.EventLocationActivity"
     android:orientation="vertical">
     <fragment
         android:id="@+id/mapViewFragment"

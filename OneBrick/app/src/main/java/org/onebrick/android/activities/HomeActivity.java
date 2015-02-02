@@ -192,10 +192,8 @@ public class HomeActivity extends ActionBarActivity
         /*
         Saving the new chapter information if the user changes chapter
          */
-        SharedPreferences.Editor editor = OneBrickApplication.getApplicationSharedPreference().edit();
-        editor.putInt("MyChapterId", ch.getChapterId());
-        editor.putString("MyChapterName", ch.getChapterName());
-        editor.apply();
+        OneBrickApplication.getInstance().setChapterName(ch.getChapterName());
+        OneBrickApplication.getInstance().setChapterId(ch.getChapterId());
 
     }
 
@@ -203,16 +201,6 @@ public class HomeActivity extends ActionBarActivity
     public void onSelectChapter(@NonNull Chapter chapter) {
         displayEventsInChapter(chapter);
         removeSelectChapterFragment();
-    }
-
-    @Override
-    public void onStartLoading() {
-        pbSelectChapter.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onFinishLoading() {
-        pbSelectChapter.setVisibility(View.GONE);
     }
 
     private void removeSelectChapterFragment() {
@@ -235,14 +223,10 @@ public class HomeActivity extends ActionBarActivity
         ) {
             public void onDrawerClosed(View view) {
                 removeSelectChapterFragment();
-                // setTitle(getCurrentTitle());
-                // call onPrepareOptionsMenu()
                 supportInvalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                // setTitle("Navigate");
-                // call onPrepareOptionsMenu()
                 supportInvalidateOptionsMenu();
             }
         };

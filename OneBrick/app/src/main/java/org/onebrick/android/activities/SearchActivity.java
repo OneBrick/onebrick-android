@@ -28,11 +28,15 @@ import org.onebrick.android.adapters.EventSearchListAdapter;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SearchActivity extends ActionBarActivity implements OnQueryTextListener {
+
+    List<String> list = new LinkedList<>();
 
     EventSearchListAdapter aEventSearchList;
     ArrayList<Event> eventList;
@@ -64,34 +68,34 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
             Log.i("INFO", "callback success"); // logcat log
-            aEventSearchList.clear();
+            //aEventSearchList.clear();
             eventList.clear();
-            aEventSearchList.notifyDataSetChanged();
+            //aEventSearchList.notifyDataSetChanged();
             Log.i("Debug","The size of search list is"+eventList.size());
             if (response != null){
-                aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
-                if(aEventSearchList.isEmpty()){
-                    Log.i("Searching result", "Is Empty");
-                    aEventSearchList.clear();
-                    eventList.clear();
-                    Event e = new Event();
-                    e.setTitle("Error");
-                    aEventSearchList.add(e);
-                }
+                //aEventSearchList.addAll(Event.fromJSONArray(response, chapterId));
+//                if(aEventSearchList.isEmpty()){
+//                    Log.i("Searching result", "Is Empty");
+//                    aEventSearchList.clear();
+//                    eventList.clear();
+//                    Event e = new Event();
+//                    e.setTitle("Error");
+//                    aEventSearchList.add(e);
+//                }
                 Log.i("Debug","The size of search list is"+eventList.size());
-                aEventSearchList.notifyDataSetChanged();
+//                aEventSearchList.notifyDataSetChanged();
             }
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             super.onFailure(statusCode, headers, throwable, errorResponse);
-            aEventSearchList.clear();
-            eventList.clear();
-            Event e = new Event();
-            e.setTitle("Error");
-            aEventSearchList.add(e);
-            aEventSearchList.notifyDataSetChanged();
+//            aEventSearchList.clear();
+//            eventList.clear();
+//            Event e = new Event();
+//            e.setTitle("Error");
+//            aEventSearchList.add(e);
+//            aEventSearchList.notifyDataSetChanged();
         }
 
         @Override
@@ -100,12 +104,12 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
             super.onFailure(statusCode, headers, responseString, throwable);
             Log.e("ERROR", responseString);
             Log.e("ERROR", throwable.toString());
-            eventList.clear();
-            aEventSearchList.clear();
-            Event e = new Event();
-            e.setTitle("Error");
-            aEventSearchList.add(e);
-            aEventSearchList.notifyDataSetChanged();
+//            eventList.clear();
+//            aEventSearchList.clear();
+//            Event e = new Event();
+//            e.setTitle("Error");
+//            aEventSearchList.add(e);
+//            aEventSearchList.notifyDataSetChanged();
         }
 
         @Override
@@ -114,12 +118,12 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
             super.onFailure(statusCode, headers, throwable, errorResponse);
             Log.e("ERROR", errorResponse.toString());
             Log.e("ERROR", throwable.toString());
-            eventList.clear();
-            aEventSearchList.clear();
-            Event e = new Event();
-            e.setTitle("Error");
-            aEventSearchList.add(e);
-            aEventSearchList.notifyDataSetChanged();
+//            eventList.clear();
+//            aEventSearchList.clear();
+//            Event e = new Event();
+//            e.setTitle("Error");
+//            aEventSearchList.add(e);
+//            aEventSearchList.notifyDataSetChanged();
         }
 
     };
@@ -131,9 +135,9 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         getSupportActionBar().setTitle("Search");
         // annotation injection
         ButterKnife.inject(this);
-        obClient = OneBrickApplication.getRestClient();
+        obClient = OneBrickApplication.getInstance().getRestClient();
         eventList = new ArrayList<Event>();
-        aEventSearchList = new EventSearchListAdapter(this,eventList);
+        //aEventSearchList = new EventSearchListAdapter(this);
         Intent chapterInfo = getIntent();
         chapterId = chapterInfo.getIntExtra("chapterId", -1);
         chapterName = chapterInfo.getStringExtra("chapterName");

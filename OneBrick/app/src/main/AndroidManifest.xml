@@ -65,7 +65,7 @@
                 android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.EventDescription"
+            android:name=".activities.EventDescriptionActivity"
             android:label="@string/title_activity_event_description"
             android:parentActivityName=".activities.EventInfoActivity" >
             <meta-data
@@ -73,7 +73,7 @@
                 android:value="org.onebrick.android.activities.EventInfoActivity" />
         </activity>
         <activity
-            android:name=".activities.EventLocationView"
+            android:name=".activities.EventLocationActivity"
             android:label="@string/title_activity_event_location_view"
             android:parentActivityName=".activities.EventInfoActivity" >
             <meta-data
@@ -88,8 +88,7 @@
         <activity
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

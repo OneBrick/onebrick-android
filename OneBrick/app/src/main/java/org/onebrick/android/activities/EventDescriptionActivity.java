@@ -14,9 +14,10 @@ import org.onebrick.android.helpers.Utils;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventDescription extends ActionBarActivity {
+public class EventDescriptionActivity extends ActionBarActivity {
     @InjectView(R.id.tvEventDescription) TextView tvEventDetails;
     String details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

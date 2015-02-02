@@ -2,6 +2,7 @@ package org.onebrick.android.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 //public class LoginActivity extends OAuthLoginActivity<OneBrickClient> {
-public class LoginActivity extends Activity{
+public class LoginActivity extends ActionBarActivity {
 
     // UI references.
     @InjectView(R.id.email) EditText mEmailView;
@@ -111,7 +112,7 @@ public class LoginActivity extends Activity{
         }
     }
     private void getAuthentication(String username, String password) {
-        OneBrickClient client = OneBrickApplication.getRestClient();
+        OneBrickClient client = OneBrickApplication.getInstance().getRestClient();
         client.getUserLogin(username, password, new JsonHttpResponseHandler() {
 
             @Override
@@ -187,13 +188,11 @@ public class LoginActivity extends Activity{
     on the users rsvp events
      */
     private void updateMyEvents() {
-        OneBrickClient client = OneBrickApplication.getRestClient();
+        OneBrickClient client = OneBrickApplication.getInstance().getRestClient();
         client.getMyEvents(userId,true,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                int chapterId = OneBrickApplication
-                        .getApplicationSharedPreference()
-                        .getInt("MyChapterId", -1);
+                int chapterId = OneBrickApplication.getInstance().getChapterId();
                 if (response != null) {
                     ArrayList<Event> arrayOfEvents = Event.fromJSONArray(response, chapterId);
                     for (int i=0;i<arrayOfEvents.size();i++) {

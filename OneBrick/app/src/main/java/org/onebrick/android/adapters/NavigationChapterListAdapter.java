@@ -13,10 +13,6 @@ import org.onebrick.android.models.Chapter;
 
 import java.util.List;
 
-
-/**
- * Created by AshwinGV on 10/11/14.
- */
 public class NavigationChapterListAdapter extends ArrayAdapter<Chapter> {
     TextView tvNavChapterName;
     public NavigationChapterListAdapter(Context context, int resource, List<Chapter> objects) {

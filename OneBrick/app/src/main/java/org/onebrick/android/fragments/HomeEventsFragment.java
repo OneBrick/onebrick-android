@@ -50,7 +50,7 @@ public class HomeEventsFragment extends EventsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = OneBrickApplication.getRestClient();
+        client = OneBrickApplication.getInstance().getRestClient();
         loginManager = LoginManager.getInstance(getActivity());
         final Bundle args = getArguments();
         if (args != null) {

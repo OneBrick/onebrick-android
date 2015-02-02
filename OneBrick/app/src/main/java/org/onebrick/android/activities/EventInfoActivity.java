@@ -281,7 +281,7 @@ public class EventInfoActivity extends ActionBarActivity implements
         progressBar.setVisibility(View.INVISIBLE);
 
         loginMgr = LoginManager.getInstance(getApplicationContext());
-        obClient = OneBrickApplication.getRestClient();
+        obClient = OneBrickApplication.getInstance().getRestClient();
         obGeoCoder = OneBrickGeoCoder.getInstance();
         Intent eventInfo = getIntent();
         eventId = eventInfo.getStringExtra("EventId");
@@ -319,7 +319,7 @@ public class EventInfoActivity extends ActionBarActivity implements
          tvEventBrief.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
+                        Intent eventDetails = new Intent(getApplicationContext(), EventDescriptionActivity.class);
                 eventDetails.putExtra("Details", "" + selectedEvent.getEventDescription());
                 startActivity(eventDetails);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -329,7 +329,7 @@ public class EventInfoActivity extends ActionBarActivity implements
         tvLearnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent eventDetails = new Intent(getApplicationContext(), EventDescription.class);
+                Intent eventDetails = new Intent(getApplicationContext(), EventDescriptionActivity.class);
                 eventDetails.putExtra("Details", "" + selectedEvent.getEventDescription());
                 startActivity(eventDetails);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -647,7 +647,7 @@ public class EventInfoActivity extends ActionBarActivity implements
                     @Override
                     public void onMapClick(LatLng latLng) {
                         //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
-                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationActivity.class);
                         eventLocationMap.putExtra("Latitude", lat);
                         eventLocationMap.putExtra("Longitude", lng);
                         eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
@@ -675,7 +675,7 @@ public class EventInfoActivity extends ActionBarActivity implements
                     @Override
                     public void onMapClick(LatLng latLng) {
                         //Toast.makeText(getBaseContext(),"Map is clicked "+latLng,Toast.LENGTH_LONG).show();
-                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationView.class);
+                        Intent eventLocationMap = new Intent(getApplicationContext(), EventLocationActivity.class);
                         eventLocationMap.putExtra("Latitude", lat);
                         eventLocationMap.putExtra("Longitude", lng);
                         eventLocationMap.putExtra("Address", selectedEvent.getEventAddress());
