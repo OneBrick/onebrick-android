@@ -44,6 +44,7 @@ public class SplashScreenActivity extends ActionBarActivity {
         final int myChapterId = OneBrickApplication.getInstance().getChapterId();
 
         if(myChapterName == null) {
+            // TODO move this to Service to make REST calls
             OneBrickApplication.getInstance().getRestClient()
                     .getChapters(new JsonHttpResponseHandler() {
                 @Override

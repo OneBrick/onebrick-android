@@ -15,13 +15,12 @@ import butterknife.ButterKnife;
 public class SelectChapterActivity extends ActionBarActivity implements
         SelectChapterFragment.OnSelectChapterFragmentListener {
 
-    private static final String TAG = SelectChapterActivity.class.getName().toString();
+    private static final String TAG = SelectChapterActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
-        // annotation injection
         ButterKnife.inject(this);
     }
 

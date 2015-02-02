@@ -185,7 +185,7 @@ public class Event extends Model {
     public static Event findOrCreateFromJson(JSONObject jsonObj, Chapter ch) {
         int eventId = jsonObj.optInt("nid");
         Event existingEvent =
-                new Select().from(Event.class).where("EventId = ?", eventId).executeSingle();
+                new Select().from(Event.class).where("event_id = ?", eventId).executeSingle();
         if (existingEvent != null) {
             // found and return existing
             //Log.i(TAG, "Returning existing event. Not saving new events to DB");
@@ -212,7 +212,7 @@ public class Event extends Model {
     public static Event findEvent(int eventId   ) {
         return new Select()
                 .from(Event.class)
-                .where("eventId = ?", eventId)
+                .where("event_id = ?", eventId)
                 .executeSingle();
     }
 

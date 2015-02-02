@@ -45,6 +45,8 @@ public abstract class EventsListFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
+
         eventList = new ArrayList<>();
         mAdapter = new EventSearchListAdapter(getActivity(), null);
     }

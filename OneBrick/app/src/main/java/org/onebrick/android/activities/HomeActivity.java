@@ -34,7 +34,7 @@ import butterknife.InjectView;
 public class HomeActivity extends ActionBarActivity
         implements SelectChapterFragment.OnSelectChapterFragmentListener {
 
-    private static final String TAG = HomeActivity.class.getName().toString();
+    private static final String TAG = HomeActivity.class.getName();
     public static final String SELECT_CHAPTER_FRAGMENT_TAG = "select_chapter";
 
     @InjectView(R.id.pbSelectChapter) ProgressBar pbSelectChapter;
@@ -56,7 +56,6 @@ public class HomeActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getSupportActionBar().setTitle(chapterName);
-        // annotation injection
         ButterKnife.inject(this);
 
         setupUi();
@@ -188,17 +187,13 @@ public class HomeActivity extends ActionBarActivity
         closeDrawer();
 
         getSupportActionBar().setTitle(ch.getChapterName());
-
-        /*
-        Saving the new chapter information if the user changes chapter
-         */
-        OneBrickApplication.getInstance().setChapterName(ch.getChapterName());
-        OneBrickApplication.getInstance().setChapterId(ch.getChapterId());
-
     }
 
     @Override
     public void onSelectChapter(@NonNull Chapter chapter) {
+        OneBrickApplication.getInstance().setChapterName(chapter.getChapterName());
+        OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
+
         displayEventsInChapter(chapter);
         removeSelectChapterFragment();
     }
