@@ -42,7 +42,7 @@ public class MyPastEventsFragment extends EventsListFragment {
         LoginManager loginManager = LoginManager.getInstance(getActivity());
 
         if (loginManager.getCurrentUser() != null){
-            populatePastEvents(loginManager.getCurrentUser().getUId());
+            populatePastEvents(loginManager.getCurrentUser().getUserId());
         }
     }
 

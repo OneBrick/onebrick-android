@@ -1,7 +1,6 @@
 package org.onebrick.android.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +36,9 @@ public class HomeActivity extends ActionBarActivity
     private static final String TAG = HomeActivity.class.getName();
     public static final String SELECT_CHAPTER_FRAGMENT_TAG = "select_chapter";
 
+    public static final String EXTRA_CHAPTER_ID = "chapter_id";
+    public static final String EXTRA_CHAPTER_NAME = "chapter_name";
+
     @InjectView(R.id.pbSelectChapter) ProgressBar pbSelectChapter;
     @InjectView(R.id.drawer_layout) DrawerLayout dlDrawerLayout;
     @InjectView(R.id.tvName) TextView tvName;
@@ -46,8 +48,6 @@ public class HomeActivity extends ActionBarActivity
     @InjectView(R.id.tvSelectChapter) LinearLayout tvSelectChapter;
     @InjectView(R.id.rlDrawer) View llDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String chapterName;
-    private int chapterId;
     Fragment eventListFragment;
     FragmentManager fm;
 
@@ -55,24 +55,25 @@ public class HomeActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        getSupportActionBar().setTitle(chapterName);
         ButterKnife.inject(this);
 
-        setupUi();
-        Intent i = getIntent();
-        chapterId = i.getIntExtra("ChapterId", -1);
-        chapterName = i.getStringExtra("ChapterName");
+        setupDrawer();
+
+        Intent intent = getIntent();
+        final int chapterId = intent.getIntExtra(EXTRA_CHAPTER_ID, -1);
+        final String chapterName = intent.getStringExtra(EXTRA_CHAPTER_NAME);
         eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
-    }
 
-    private void setupUi() {
-        mDrawerToggle = setupDrawerToggle();
-        dlDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setTitle(chapterName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
 
+    private void setupDrawer() {
+        mDrawerToggle = setupDrawerToggle();
+        dlDrawerLayout.setDrawerListener(mDrawerToggle);
         tvMyEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,8 +231,8 @@ public class HomeActivity extends ActionBarActivity
 
     public void startSearchEventsActivity (MenuItem mi) {
         Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-        i.putExtra("chapterId", ((HomeEventsFragment)eventListFragment).getChapterId());
-        i.putExtra("chapterName", ((HomeEventsFragment)eventListFragment).getChapterName());
+        i.putExtra(SearchActivity.EXTRA_CHAPTER_ID, ((HomeEventsFragment)eventListFragment).getChapterId());
+        i.putExtra(SearchActivity.EXTRA_CHAPTER_NAME, ((HomeEventsFragment)eventListFragment).getChapterName());
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }

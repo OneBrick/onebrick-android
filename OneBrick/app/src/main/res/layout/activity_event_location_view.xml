@@ -5,16 +5,18 @@
     android:background="@color/bg_grey"
     tools:context="org.onebrick.android.activities.EventLocationActivity"
     android:orientation="vertical">
-    <fragment
+
+    <View
         android:id="@+id/mapViewFragment"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="2dp"
-        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="450dp">
-    </fragment>
+        android:layout_height="450dp"
+        android:background="@android:color/darker_gray">
+    </View>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_marginLeft="12dp"

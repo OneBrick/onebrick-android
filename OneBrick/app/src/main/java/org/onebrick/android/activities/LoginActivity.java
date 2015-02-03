@@ -1,6 +1,5 @@
 package org.onebrick.android.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -41,7 +40,6 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // annotation injection
         ButterKnife.inject(this);
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -135,9 +133,9 @@ public class LoginActivity extends ActionBarActivity {
                 try {
                     Log.i("id", response.getJSONObject("user").optString("uid"));
                     User user = User.fromJSON(response);
-                    userId = user.getUId();
+                    userId = user.getUserId();
                     LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-                    manager.requestLogin(user);
+                    manager.setCurrentUser(user);
                     //Toast.makeText(getApplicationContext(), "login status: " + manager.isLoggedIn(), Toast.LENGTH_SHORT).show();
                     /*
                     Calling method to update rsvp info on methods

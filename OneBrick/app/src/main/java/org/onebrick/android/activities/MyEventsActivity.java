@@ -28,7 +28,6 @@ public class MyEventsActivity extends ActionBarActivity {
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         return super.onCreateView(parent, name, context, attrs);
-
     }
 
     private void setupTabs() {
@@ -39,7 +38,7 @@ public class MyEventsActivity extends ActionBarActivity {
         ActionBar.Tab tab1 = actionBar
                 .newTab()
                 .setText(R.string.upcoming)
-                .setTabListener(new SupportFragmentTabListener<MyUpcomingEventsFragment>(R.id.flMyEventsContainer, this,
+                .setTabListener(new SupportFragmentTabListener<>(R.id.flMyEventsContainer, this,
                         UPCOMING_EVENTS_TAG, MyUpcomingEventsFragment.class));
 
         actionBar.addTab(tab1);
@@ -48,7 +47,7 @@ public class MyEventsActivity extends ActionBarActivity {
         ActionBar.Tab tab2 = actionBar
                 .newTab()
                 .setText(R.string.past_events)
-                .setTabListener(new SupportFragmentTabListener<MyPastEventsFragment>(R.id.flMyEventsContainer, this,
+                .setTabListener(new SupportFragmentTabListener<>(R.id.flMyEventsContainer, this,
                         PAST_EVENTS_TAG, MyPastEventsFragment.class));
         actionBar.addTab(tab2);
     }
@@ -62,7 +61,6 @@ public class MyEventsActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 onBackPressed();
                 return true;

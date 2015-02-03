@@ -129,32 +129,14 @@
                     android:gravity="center"
                     android:layout_alignLeft="@+id/mapFrame"
                     android:text="Some Address to the event location"/>
-                <fragment
+                <View
                     android:id="@+id/mapFrame"
-                    class="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_below="@+id/tvEventLocation"
-                    android:layout_height="200dp">
-                </fragment>
+                    android:layout_height="200dp"
+                    android:background="@android:color/darker_gray" />
 
             </RelativeLayout>
-            <!--
-            <RelativeLayout
-                android:id="@+id/rlWeatherInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="0dp"
-                android:background="@drawable/item_seperation_border">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_weather15"/>
-            </RelativeLayout>
-            -->
             <RelativeLayout
                 android:id="@+id/rlContact"
                 android:layout_width="match_parent"
@@ -250,16 +232,6 @@
                     android:layout_height="@dimen/share_images_small_size"
                     android:src="@drawable/ic_gen_share"
                     android:background="@drawable/share_bg_selector"/>
-                <!--
-                <ImageView
-                    android:id="@+id/ivEventInfoAddReminder"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_reminder"/>
-                    -->
             </LinearLayout>
             <View
                 android:id="@+id/llDummySpace"

@@ -36,7 +36,9 @@ import butterknife.InjectView;
 
 public class SearchActivity extends ActionBarActivity implements OnQueryTextListener {
 
-    List<String> list = new LinkedList<>();
+
+    public static final String EXTRA_CHAPTER_ID = "chapter_id";
+    public static final String EXTRA_CHAPTER_NAME = "chapter_name";
 
     EventSearchListAdapter aEventSearchList;
     ArrayList<Event> eventList;
@@ -139,8 +141,8 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         eventList = new ArrayList<Event>();
         //aEventSearchList = new EventSearchListAdapter(this);
         Intent chapterInfo = getIntent();
-        chapterId = chapterInfo.getIntExtra("chapterId", -1);
-        chapterName = chapterInfo.getStringExtra("chapterName");
+        chapterId = chapterInfo.getIntExtra(EXTRA_CHAPTER_ID, -1);
+        chapterName = chapterInfo.getStringExtra(EXTRA_CHAPTER_NAME);
         eventSearchList.setAdapter(aEventSearchList);
     }
 

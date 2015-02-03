@@ -119,7 +119,7 @@ public class HomeEventsFragment extends EventsListFragment {
         };
         if(loginManager.isLoggedIn()) {
             User usr = loginManager.getCurrentUser();
-            client.getEventsList(chapterId, usr.getUId(), eventListResponseHandler);
+            client.getEventsList(chapterId, usr.getUserId(), eventListResponseHandler);
         } else {
             client.getEventsList(chapterId, -1, eventListResponseHandler);
         }

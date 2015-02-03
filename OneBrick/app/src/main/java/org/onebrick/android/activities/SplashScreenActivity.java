@@ -73,8 +73,8 @@ public class SplashScreenActivity extends ActionBarActivity {
                 @Override
                 public void run() {
                     Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                    i.putExtra("ChapterId", myChapterId);
-                    i.putExtra("ChapterName", myChapterName);
+                    i.putExtra(HomeActivity.EXTRA_CHAPTER_ID, myChapterId);
+                    i.putExtra(HomeActivity.EXTRA_CHAPTER_NAME, myChapterName);
                     startActivity(i);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
