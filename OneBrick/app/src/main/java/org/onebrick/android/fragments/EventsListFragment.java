@@ -65,10 +65,10 @@ public abstract class EventsListFragment extends Fragment implements
         lvEvents.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onClickFrontView(int position) {
-                Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
+                final Intent intent = new Intent(getActivity(), EventInfoActivity.class);
                 final Event event = Event.fromCursor((Cursor) mAdapter.getItem(position));
-                eventInfo.putExtra("EventId", "" + event.getEventId());
-                startActivity(eventInfo);
+                intent.putExtra(EventInfoActivity.EXTRA_EVENT_ID, event.getId());
+                startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });

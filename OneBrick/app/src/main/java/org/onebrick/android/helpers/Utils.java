@@ -1,6 +1,7 @@
 package org.onebrick.android.helpers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -26,11 +27,8 @@ public class Utils {
         return input;
     }
 
-    public static boolean isValidEmail(@NonNull String email){
-        if (!"null".equals(email.trim().toLowerCase())){
-            return true;
-        }
-        return false;
+    public static boolean isValidEmail(@Nullable String email){
+        return !(email == null || "null".equals(email.trim().toLowerCase()));
     }
 
 }

@@ -1,8 +1,12 @@
 package org.onebrick.android.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
@@ -16,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.activeandroid.content.ContentProvider;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -36,9 +41,12 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventInfoActivity extends ActionBarActivity {
+public class EventInfoActivity extends ActionBarActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = EventInfoActivity.class.getName().toString();
+    private static final String TAG = EventInfoActivity.class.getName();
+
+    public static final String EXTRA_EVENT_ID = "event_id";
 
     @InjectView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
     @InjectView(R.id.rlContact) RelativeLayout rlContact;
@@ -59,52 +67,13 @@ public class EventInfoActivity extends ActionBarActivity {
     @InjectView(R.id.rlRsvp) LinearLayout llRsvpSegment;
     @InjectView(R.id.llDummySpace) View llDummySpace;
 
-    Event updatedEvent;
-    String eventId;
+    private long eventId;
+    Event mEvent;
     OneBrickClient obClient;
 
     Event selectedEvent;
-    LoginManager loginMgr;
-    User user;
     DateTimeFormatter obDtf;
 
-    /*
-    This is the response handler to handle the callbacks from Event info rest call
-     */
-    JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            super.onSuccess(statusCode, headers, response);
-            Log.d("TAG", "Success" + response.toString());
-            updatedEvent = Event.getUpdatedEvent(response);
-            updateViews(updatedEvent);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.e("TAG", "Json Request to fetch event info failed");
-            super.onFailure(statusCode, headers, throwable, errorResponse);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.e("TAG", "FAIL " + responseString);
-            super.onFailure(statusCode, headers, responseString, throwable);
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            llRsvpSegment.setVisibility(View.INVISIBLE);
-            svMainContent.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onFinish() {
-            super.onFinish();
-        }
-    };
 
     // TODO make REST calls in service
     /*
@@ -116,8 +85,8 @@ public class EventInfoActivity extends ActionBarActivity {
             //Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp_button);
             btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-            updatedEvent.rsvp = true;
-            Event.updateEvent(updatedEvent);
+            mEvent.rsvp = true;
+            Event.updateEvent(mEvent);
 
         }
 
@@ -142,8 +111,8 @@ public class EventInfoActivity extends ActionBarActivity {
             //Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp_button);
             btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-            updatedEvent.rsvp = false;
-            Event.updateEvent(updatedEvent);
+            mEvent.rsvp = false;
+            Event.updateEvent(mEvent);
         }
 
         @Override
@@ -170,11 +139,13 @@ public class EventInfoActivity extends ActionBarActivity {
         tvEventDateTime.setText(DateTimeFormatter.getInstance().getFormattedEventDate(updatedEvent.getEventStartDate())
                 + " - "
                 + DateTimeFormatter.getInstance().getFormattedTimeEndOnly(updatedEvent.getEventStartDate(), updatedEvent.getEventEndDate()));
-        String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
-        eventDesc = Utils.removeHTagsFromHTML(eventDesc);
-        tvEventBrief.setText(Html.fromHtml(eventDesc));
+        if (updatedEvent.getEventDescription() != null) {
+            String eventDesc = Utils.removeImgTagsFromHTML(updatedEvent.getEventDescription());
+            eventDesc = Utils.removeHTagsFromHTML(eventDesc);
+            tvEventBrief.setText(Html.fromHtml(eventDesc));
+        }
         tvEventLocation.setText(updatedEvent.getEventAddress());
-        if(loginMgr.isLoggedIn()) {
+        if(LoginManager.getInstance(this).isLoggedIn()) {
             if (updatedEvent.rsvp == true) {
                 btnRsvp.setText(R.string.un_rsvp_button);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
@@ -230,18 +201,13 @@ public class EventInfoActivity extends ActionBarActivity {
         ButterKnife.inject(this);
         progressBar.setVisibility(View.INVISIBLE);
 
-        loginMgr = LoginManager.getInstance(getApplicationContext());
         obClient = OneBrickApplication.getInstance().getRestClient();
         Intent eventInfo = getIntent();
-        eventId = eventInfo.getStringExtra("EventId");
-        if(loginMgr.isLoggedIn()) {
-            User usr = loginMgr.getCurrentUser();
-            obClient.getEventInfo(eventId, usr.getUserId(), responseHandler);
-        } else {
-            obClient.getEventInfo(eventId, -1, responseHandler);
-        }
+        eventId = eventInfo.getLongExtra(EXTRA_EVENT_ID, -1);
         obDtf = DateTimeFormatter.getInstance();
         setupListeners();
+
+        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     private void setupListeners() {
@@ -268,10 +234,11 @@ public class EventInfoActivity extends ActionBarActivity {
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!loginMgr.isLoggedIn()) {
+                final LoginManager loginManager = LoginManager.getInstance(EventInfoActivity.this);
+                if (!loginManager.isLoggedIn()) {
                     Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loginActivity);
-                    if (updatedEvent.rsvp == true) {
+                    if (mEvent.rsvp == true) {
                         btnRsvp.setText(R.string.un_rsvp_button);
                         btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     } else {
@@ -279,12 +246,12 @@ public class EventInfoActivity extends ActionBarActivity {
                         btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     }
                 } else {
-                    user = loginMgr.getCurrentUser();
+                    final User currentUser = loginManager.getCurrentUser();
                     if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp_button))) {
-                        obClient.postRsvpToEvent(selectedEvent.eventId, user.getUserId(), rsvpResponseHandler);
+                        obClient.postRsvpToEvent(selectedEvent.eventId, currentUser.getUserId(), rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp_button))) {
-                        obClient.postUnRsvpToEvent(selectedEvent.eventId, user.getUserId(), unRsvpResponseHandler);
+                        obClient.postUnRsvpToEvent(selectedEvent.eventId, currentUser.getUserId(), unRsvpResponseHandler);
                     }
                 }
             }
@@ -294,9 +261,9 @@ public class EventInfoActivity extends ActionBarActivity {
         btnEmailManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = updatedEvent.getManagerEmail();
+                String email = mEvent.getManagerEmail();
                 if (Utils.isValidEmail(email)) {
-                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
+                    SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
                 }
             }
         });
@@ -305,9 +272,9 @@ public class EventInfoActivity extends ActionBarActivity {
         btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = updatedEvent.getCoordinatorEmail();
+                String email = mEvent.getCoordinatorEmail();
                 if (Utils.isValidEmail(email)) {
-                    SocialShareEmail.sendEmails(v, updatedEvent.getTitle(), updatedEvent.getEventId(), email);
+                    SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
                 }
             }
         });
@@ -316,15 +283,15 @@ public class EventInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Calendar beginTime = Calendar.getInstance();
-                beginTime.setTime(obDtf.getDateFromString(updatedEvent.getEventStartDate()));
+                beginTime.setTime(obDtf.getDateFromString(mEvent.getEventStartDate()));
                 Calendar endTime = Calendar.getInstance();
-                beginTime.setTime(obDtf.getDateFromString(updatedEvent.getEventEndDate()));
+                beginTime.setTime(obDtf.getDateFromString(mEvent.getEventEndDate()));
                 Intent intent = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                         .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
-                        .putExtra(CalendarContract.Events.TITLE, updatedEvent.getTitle())
-                        .putExtra(CalendarContract.Events.EVENT_LOCATION, updatedEvent.getEventAddress())
+                        .putExtra(CalendarContract.Events.TITLE, mEvent.getTitle())
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getEventAddress())
                         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
                 startActivity(intent);
                 ivAdd2Calendar.setImageResource(R.drawable.ic_in_calendar);
@@ -334,22 +301,42 @@ public class EventInfoActivity extends ActionBarActivity {
         ivEventInfoFbShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShareEmail.shareFacebook(v, updatedEvent.getTitle(), updatedEvent.eventId);
+                SocialShareEmail.shareFacebook(v, mEvent.getTitle(), mEvent.eventId);
             }
         });
 
         ivEventInfoTwitterShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShareEmail.shareTwitter(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareTwitter(v, mEvent.getTitle(), mEvent.getEventId());
             }
         });
 
         ivEventInfoGenShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShareEmail.shareOthers(v, updatedEvent.getTitle(), updatedEvent.getEventId());
+                SocialShareEmail.shareOthers(v, mEvent.getTitle(), mEvent.getEventId());
             }
         });
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        return new CursorLoader(this, ContentProvider.createUri(Event.class, eventId),
+                null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        if (cursor != null && cursor.moveToFirst()) {
+            mEvent = Event.fromCursor(cursor);
+            updateViews(mEvent);
+        } else {
+            // TODO error
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 }

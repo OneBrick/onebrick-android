@@ -15,10 +15,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="org.onebrick.android.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--<uses-permission android:name="org.onebrick.android.permission.MAPS_RECEIVE" />-->
+    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
     <application
         android:name=".core.OneBrickApplication"
@@ -48,13 +48,6 @@
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask" >
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activities.EventInfoActivity"
@@ -67,14 +60,6 @@
         <activity
             android:name=".activities.EventDescriptionActivity"
             android:label="@string/title_activity_event_description"
-            android:parentActivityName=".activities.EventInfoActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.onebrick.android.activities.EventInfoActivity" />
-        </activity>
-        <activity
-            android:name=".activities.EventLocationActivity"
-            android:label="@string/title_activity_event_location_view"
             android:parentActivityName=".activities.EventInfoActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
