@@ -1,7 +1,9 @@
 package org.onebrick.android.core;
 
-import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.newrelic.agent.android.NewRelic;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -10,14 +12,21 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
-    private static Context context;
-    private static SharedPreferences sharedPref;
 
+    private static final String PREF_CHAPTER_NAME = "CHAPTER_NAME";
+    private static final String PREF_CHAPTER_ID = "CHAPTER_ID";
+
+    private static OneBrickApplication sInstance;
+
+    public static OneBrickApplication getInstance() {
+        return sInstance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        OneBrickApplication.context = this;
+
+        sInstance = this;
 
         NewRelic.withApplicationToken(
                 "AAd5aec03c54ce6bd6d21ae5b4168b5342bf276e97"
@@ -30,22 +39,31 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
-        sharedPref = this.getSharedPreferences("OneBrickSharedPref", Context.MODE_PRIVATE);
     }
 
-    public static OneBrickClient getRestClient() {
-        return (OneBrickClient) OneBrickClient.getInstance(OneBrickClient.class,
-                OneBrickApplication.context);
-    }
-
-    public static SharedPreferences getApplicationSharedPreference() {
-        return sharedPref;
-    }
-
-    public static Context getContext() {
-        return OneBrickApplication.context;
+    public OneBrickClient getRestClient() {
+        return (OneBrickClient) OneBrickClient.getInstance(OneBrickClient.class, this);
     }
 
 
+    public void setChapterName(@NonNull String chapterName) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString(PREF_CHAPTER_NAME, chapterName).apply();
+    }
+
+    @Nullable
+    public String getChapterName() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_CHAPTER_NAME, null);
+    }
+
+    public void setChapterId(int chapterId) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putInt(PREF_CHAPTER_ID, chapterId).apply();
+    }
+
+    @Nullable
+    public int getChapterId() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getInt(PREF_CHAPTER_ID, -1);
+    }
 
 }

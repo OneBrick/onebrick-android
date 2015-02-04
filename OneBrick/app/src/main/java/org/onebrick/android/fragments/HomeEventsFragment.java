@@ -1,13 +1,16 @@
 package org.onebrick.android.fragments;
 
 
-import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.activeandroid.content.ContentProvider;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -18,11 +21,9 @@ import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
 
-/**
- * A simple {@link Fragment} subclass.
- *
- */
 public class HomeEventsFragment extends EventsListFragment {
+
+    private static final String TAG = HomeEventsFragment.class.getName();
 
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
@@ -46,14 +47,15 @@ public class HomeEventsFragment extends EventsListFragment {
     }
 
     public HomeEventsFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = OneBrickApplication.getRestClient();
+
+        client = OneBrickApplication.getInstance().getRestClient();
         loginManager = LoginManager.getInstance(getActivity());
+
         final Bundle args = getArguments();
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
@@ -68,9 +70,9 @@ public class HomeEventsFragment extends EventsListFragment {
         populateHomeEventsList(chapterId);
     }
 
-    private void populateHomeEventsList(int chapterId) {
-        final int cid = chapterId;
-        JsonHttpResponseHandler eventListResponseHandler = new JsonHttpResponseHandler() {
+    // TODO use Service to request REST calls
+    private void populateHomeEventsList(final int chapterId) {
+        final JsonHttpResponseHandler eventListResponseHandler = new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -85,20 +87,10 @@ public class HomeEventsFragment extends EventsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
-                Log.d("INFO", "callback success"); // logcat
-                aEventList.clear();
+                Log.d(TAG, "callback success");
                 if (response != null){
-                    aEventList.addAll(Event.fromJSONArray(response, cid));
-                    if(aEventList.isEmpty()) {
-                        /* Handle the case where there are no events in chapter */
-                        aEventList.clear();
-                        Event e = new Event();
-                        e.setTitle("Error");
-                        aEventList.add(e);
-                    }
-                    aEventList.notifyDataSetChanged();
+                    Event.fromJSONArray(response, chapterId);
                 }
-                //progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
 
             @Override
@@ -111,13 +103,6 @@ public class HomeEventsFragment extends EventsListFragment {
             public void onFailure(int statusCode, Header[] headers,
                                   String responseString, Throwable throwable) {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
-                //super.onFailure(statusCode, headers, responseString, throwable);
-                //Toast.makeText(getActivity(),"API Called error",Toast.LENGTH_SHORT).show();
-                aEventList.clear();
-                Event e = new Event();
-                e.setTitle("Error");
-                aEventList.add(e);
-                aEventList.notifyDataSetChanged();
                 Log.e("ERROR", responseString);
                 Log.e("ERROR", throwable.toString());
             }
@@ -134,10 +119,25 @@ public class HomeEventsFragment extends EventsListFragment {
         };
         if(loginManager.isLoggedIn()) {
             User usr = loginManager.getCurrentUser();
-            client.getEventsList(cid, usr.getUId(),eventListResponseHandler);
+            client.getEventsList(chapterId, usr.getUserId(), eventListResponseHandler);
         } else {
-            client.getEventsList(cid, -1, eventListResponseHandler);
+            client.getEventsList(chapterId, -1, eventListResponseHandler);
         }
+    }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        final String[] projection = null;
+        final String selection = null;
+        final String[] selectionArgs = null;
+        final String sortOrder = null;
+        // TODO use appropriate params
+        return new CursorLoader(getActivity(),
+                ContentProvider.createUri(Event.class, null),
+                projection,
+                selection,
+                selectionArgs,
+                sortOrder
+        );
     }
 }

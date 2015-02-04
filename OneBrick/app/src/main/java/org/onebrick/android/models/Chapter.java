@@ -1,9 +1,8 @@
 package org.onebrick.android.models;
 
-/**
- * Created by AshwinGV on 10/11/14.
- */
-
+import android.database.Cursor;
+import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -21,56 +20,42 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-@Table(name="Chapters")
+@Table(name = "chapters", id = BaseColumns._ID)
 public class Chapter extends Model {
 
-    private static final String TAG = Chapter.class.getName().toString();
+    private static final String TAG = Chapter.class.getName();
 
-
-    @Column(name="Name",
+    @Column(name="name",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
     String name;
 
-    @Column(name="ChapterId",
+    @Column(name="chapter_id",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
-    int id;
+    int chapterId;
 
-
-    public Chapter(){
-        super();
-    }
-
-
-    public Chapter(String name, int id) {
-        super();
-        this.name = name;
-        this.id = id;
-    }
-
+    @Override
     public String toString() {
-        return ""+this.name+" "+this.id;
+        return name + " " + chapterId;
     }
 
     public String getChapterName() {
-        return this.name;
+        return name;
     }
 
     public int getChapterId() {
-        return this.id;
+        return chapterId;
     }
 
     public static Chapter getChapterFromJsonObject(JSONObject jsonObject) {
         Chapter newChapter = new Chapter();
         try {
             newChapter.name = jsonObject.getString("title");
-            newChapter.id = jsonObject.getInt("nid");
+            newChapter.chapterId = jsonObject.getInt("nid");
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "couldn't create object", e);
         }
-        Log.d(TAG,"Saving Chapter to DB");
-        newChapter.save();
         return newChapter;
     }
 
@@ -81,7 +66,6 @@ public class Chapter extends Model {
             String key = iter.next();
             try {
                 JSONObject chapterJsonObject = jsonObject.getJSONObject(key);
-                //Log.i("PASS",""+object.toString());
                 Chapter toAdd = findOrCreateFromJson(chapterJsonObject);
                 if(toAdd != null) {
                     chapterList.add(toAdd);
@@ -105,7 +89,7 @@ public class Chapter extends Model {
     public static Chapter findOrCreateFromJson(JSONObject jsonObj) {
         int eventId = jsonObj.optInt("nid");
         Chapter existingChapter =
-                new Select().from(Chapter.class).where("ChapterId = ?", eventId).executeSingle();
+                new Select().from(Chapter.class).where("chapter_id = ?", eventId).executeSingle();
         if (existingChapter != null) {
             // found and return existing
             Log.d(TAG, "Returning existing chapter. Not saving new chapter to DB");
@@ -113,21 +97,22 @@ public class Chapter extends Model {
         } else {
             // create and return new
             Chapter chapter = getChapterFromJsonObject(jsonObj);
+            Log.d(TAG,"Saving Chapter to DB");
+            chapter.save();
             return chapter;
         }
     }
 
+    // TODO annotation to that it should be run on NonUiThread
     public static Chapter getChapterFromId(int id) {
         return new Select().from(Chapter.class)
-                .where("ChapterId = ?", id)
+                .where("chapter_id = ?", id)
                 .executeSingle();
     }
 
-    public static List<Chapter> getChapterListFromDb() {
-        Log.d(TAG,"Getting Chapters from DB");
-        From sql = new Select()
-                .from(Chapter.class);
-        Log.d("SQL is", sql.toSql());
-        return sql.execute();
+    public static Chapter fromCursor(@NonNull Cursor cursor) {
+        final Chapter ch = new Chapter();
+        ch.loadFromCursor(cursor);
+        return ch;
     }
 }

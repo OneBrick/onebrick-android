@@ -1,6 +1,7 @@
 package org.onebrick.android.helpers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.onebrick.android.models.User;
@@ -26,16 +27,8 @@ public final class LoginManager {
         return currentUser != null;
     }
 
-    public void requestLogin(User user) {
-        // 1. start activity/webview to login
-        // 2. create currentUser object with all the information
-
-        if (user != null){
-            currentUser = new User();
-            currentUser.setName(user.getName());
-            currentUser.setUId(user.getUId());
-            currentUser.setEmail(user.getEmail());
-        }
+    public void setCurrentUser(@NonNull User user) {
+        currentUser = user;
     }
 
     @Nullable

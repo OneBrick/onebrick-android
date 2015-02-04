@@ -1,5 +1,8 @@
 package org.onebrick.android.models;
 
+import android.database.Cursor;
+import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -14,72 +17,70 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-@Table(name="Events")
+@Table(name = "events", id = BaseColumns._ID)
 public class Event extends Model {
 
     private static final String TAG = Event.class.getName().toString();
 
-    @Column(name="Title",
+    @Column(name="title",
             notNull = true)
     public String title;
 
 
-    @Column(name="StartDate",
+    @Column(name="start_date",
             notNull = true)
     public String eventStartDate;
 
-    @Column(name="EndDate",
+    @Column(name="end_date",
             notNull = true)
     public String eventEndDate;
 
-    @Column(name="EventId",
+    @Column(name="event_id",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
     public long eventId;
 
 
-    @Column(name="EventAddress",
+    @Column(name="event_address",
             notNull = true)
     public String eventAddress;
 
-    @Column(name="LocationName",
+    @Column(name="location_name",
             notNull = true)
     public String locationName;
 
 
-    @Column(name="EventSummary")
+    @Column(name="event_summary")
     public String eventSummary;
 
-    @Column(name="RsvpCapacity",
+    @Column(name="rsvp_capacity",
             notNull = true)
     public int maxRsvpCapacity;
 
 
-    @Column(name="RsvpCount")
+    @Column(name="rsvp_count")
     public int rsvpCount;
 
-    @Column(name="usrRSVP")
+    @Column(name="user_rsvp")
     public int usrRSVP;
 
-    @Column(name="Description")
+    @Column(name="description")
     public String description;
 
-    @Column(name="CoordinatorEmail")
+    @Column(name="coordinator_email")
     public String coordinatorEmail;
 
-    @Column(name="ManagerEmail")
+    @Column(name="manager_email")
     public String managerEmail;
 
-    @Column(name="Chapter")
+    @Column(name="chapter")
     public Chapter chapter;
 
-    @Column(name="Rsvp")
+    @Column(name="rsvp")
     public boolean rsvp;
 
-    @Column(name="profilePhotoUri")
+    @Column(name="profile_photo_uri")
     public String profilePhotoUri;
-
-
 
     public String toString() {
        return ""+title;
@@ -184,7 +185,7 @@ public class Event extends Model {
     public static Event findOrCreateFromJson(JSONObject jsonObj, Chapter ch) {
         int eventId = jsonObj.optInt("nid");
         Event existingEvent =
-                new Select().from(Event.class).where("EventId = ?", eventId).executeSingle();
+                new Select().from(Event.class).where("event_id = ?", eventId).executeSingle();
         if (existingEvent != null) {
             // found and return existing
             //Log.i(TAG, "Returning existing event. Not saving new events to DB");
@@ -211,7 +212,7 @@ public class Event extends Model {
     public static Event findEvent(int eventId   ) {
         return new Select()
                 .from(Event.class)
-                .where("eventId = ?", eventId)
+                .where("event_id = ?", eventId)
                 .executeSingle();
     }
 
@@ -286,5 +287,11 @@ public class Event extends Model {
 
         }
         return events;
+    }
+
+    public static Event fromCursor(@NonNull Cursor cursor) {
+        final Event event = new Event();
+        event.loadFromCursor(cursor);
+        return event;
     }
 }
