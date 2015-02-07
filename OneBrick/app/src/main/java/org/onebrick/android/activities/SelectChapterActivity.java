@@ -13,7 +13,7 @@ import org.onebrick.android.models.Chapter;
 import butterknife.ButterKnife;
 
 public class SelectChapterActivity extends ActionBarActivity implements
-        SelectChapterFragment.OnSelectChapterFragmentListener {
+        SelectChapterFragment.OnSelectChapterListener {
 
     private static final String TAG = SelectChapterActivity.class.getName();
 

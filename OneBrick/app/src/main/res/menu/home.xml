@@ -1,12 +1,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="org.onebrick.android.activities.HomeActivity" >
     <item
-        android:id="@+id/miSearch"
-        android:showAsAction="always"
+        android:id="@+id/mi_search"
+        android:orderInCategory="10"
+        android:title="@string/search"
         android:icon="@drawable/ic_ab_search"
-        android:onClick="startSearchEventsActivity"
-        android:title="Search" >
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/mi_login"
+        android:orderInCategory="10"
+        android:title="@string/login"
+        app:showAsAction="collapseActionView">
+    </item>
+    <item
+        android:id="@+id/mi_my_events"
+        android:orderInCategory="10"
+        android:title="@string/my_events"
+        app:showAsAction="collapseActionView">
+    </item>
+    <item
+        android:id="@+id/mi_select_chapter"
+        android:orderInCategory="10"
+        android:title="@string/select_chapter"
+        app:showAsAction="collapseActionView">
+    </item>
+    <item
+        android:id="@+id/mi_logout"
+        android:orderInCategory="10"
+        android:title="@string/logout"
+        app:showAsAction="collapseActionView">
     </item>
 
 </menu>

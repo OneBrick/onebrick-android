@@ -28,8 +28,6 @@ import org.onebrick.android.adapters.EventSearchListAdapter;
 import org.onebrick.android.models.Event;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -155,7 +153,7 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         menuInflater.inflate(R.menu.search, menu);
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(android.R.color.white));
         actionBar.setDisplayHomeAsUpEnabled(true);
-        searchItem = menu.findItem(R.id.miSearch);
+        searchItem = menu.findItem(R.id.mi_search);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchItem.expandActionView();

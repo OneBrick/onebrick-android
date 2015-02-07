@@ -1,109 +1,13 @@
-<android.support.v4.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f5f5">
 
-    <!-- The main content view -->
     <FrameLayout
         android:id="@+id/flHomeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <!--<TextView-->
-    <!--android:id="@+id/tvLogin"-->
-    <!--android:text="@string/login"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/tvMyEvents"-->
-    <!--android:text="@string/my_events"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"/>-->
-
-    <!-- The navigation drawer -->
-    <RelativeLayout
-        android:id="@+id/rlDrawer"
-        android:layout_width="240dp"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_gravity="start"
-        android:background="@android:color/white">
-
-        <ImageView
-            android:id="@+id/ivUserPic"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/profile_pic"/>
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_below="@id/ivUserPic"
-            android:text="@string/name_label"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textSize="@dimen/big"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/tvLogin"
-            android:layout_below="@id/tvName"
-            android:text="@string/login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/drawerItem"
-            android:gravity="center_vertical"
-            android:drawableLeft="@drawable/ic_login"/>
-
-        <TextView
-            android:id="@+id/tvMyEvents"
-            android:layout_below="@id/tvLogin"
-            android:layout_alignLeft="@id/tvLogin"
-            android:text="@string/my_events"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/drawerItem"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:drawableLeft="@drawable/ic_my_events"/>
-
-        <LinearLayout
-            android:id="@+id/tvSelectChapter"
-            android:layout_below="@id/tvMyEvents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:text="@string/select_chapter"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/drawerItem"
-            android:gravity="center_vertical"
-            android:layout_alignLeft="@id/tvLogin"
-            android:layout_marginLeft="5dp"
-            android:drawableLeft="@drawable/ic_select_chapter"/>
-
-        <ProgressBar
-            android:id="@+id/pbSelectChapter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            style="@style/progressBar.Medium"
-            android:visibility="gone"/>
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/flChaptersContainer"
-            android:layout_below="@id/tvSelectChapter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </RelativeLayout>
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>

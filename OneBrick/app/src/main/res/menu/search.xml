@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.onebrick.android.activities.HomeActivity" >
     <item
-        android:id="@+id/miSearch"
+        android:id="@+id/mi_search"
         android:showAsAction="always|collapseActionView"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_ab_search"

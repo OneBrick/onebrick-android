@@ -26,13 +26,13 @@ import butterknife.InjectView;
 
 /**
  * A fragment representing a list to select chapter.
- * Activities containing this fragment MUST implement the {@link OnSelectChapterFragmentListener}
+ * Activities containing this fragment MUST implement the {@link org.onebrick.android.fragments.SelectChapterFragment.OnSelectChapterListener}
  * interface.
  */
 public class SelectChapterFragment extends Fragment implements AbsListView.OnItemClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = SelectChapterFragment.class.getName().toString();
+    private static final String TAG = SelectChapterFragment.class.getName();
 
     private static final int CHAPTER_LOADER = 1;
 
@@ -40,14 +40,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
 
     private SimpleCursorAdapter mAdapter;
 
-    private OnSelectChapterFragmentListener mListener;
-
-    public static SelectChapterFragment newInstance() {
-        SelectChapterFragment fragment = new SelectChapterFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private OnSelectChapterListener mListener;
 
     public SelectChapterFragment() {
     }
@@ -98,7 +91,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnSelectChapterFragmentListener) activity;
+            mListener = (OnSelectChapterListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -126,7 +119,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnSelectChapterFragmentListener {
+    public interface OnSelectChapterListener {
         public void onSelectChapter(@NonNull Chapter chapter);
     }
 }

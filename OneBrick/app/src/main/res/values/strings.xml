@@ -41,8 +41,8 @@
     <string name="coordinator_label"> Coordinator</string>
     <string name="contacts">Would like to contact organizers?</string>
 
-    <!-- Drawer items -->
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="my_events">My Events</string>
     <string name="select_chapter">Select Chapter</string>
     <string name="select_your_chapter">Select Your Chapter</string>
