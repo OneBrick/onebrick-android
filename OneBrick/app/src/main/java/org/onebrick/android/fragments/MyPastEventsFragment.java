@@ -59,25 +59,10 @@ public class MyPastEventsFragment extends EventsListFragment {
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                eventList.clear();
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (response != null) {
-                    eventList.clear();
-                    eventList = Event.fromJSONArray(response, myChapterId);
-
-                    // remove upcoming event
-                    final Iterator<Event> itr = eventList.iterator();
-                    final long currentTime = System.currentTimeMillis();
-                    while (itr.hasNext()) {
-                        final Date date = DateTimeFormatter.getInstance().getDate(itr.next().eventStartDate);
-                        if (date != null && date.getTime() > currentTime) {
-                            itr.remove();
-                        }
-                    }
-
-//                    mAdapter.clear();
-//                    mAdapter.addAll(eventList);
-//                    mAdapter.notifyDataSetChanged();
+                    Event.fromJSONArray(response, myChapterId);
+                    // TODO remove upcoming event or update query to get only upcoming events
                 }
             }
             @Override

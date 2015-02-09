@@ -57,19 +57,10 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
             public void onStart() {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                //progressBar.setVisibility(ProgressBar.GONE);
-            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                eventList.clear();
-                eventList = Event.fromJSONArray(response, myChapterId);
-//                mAdapter.clear();
-//                mAdapter.addAll(eventList);
-//                mAdapter.notifyDataSetChanged();
+                Event.fromJSONArray(response, myChapterId);
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
 
             }

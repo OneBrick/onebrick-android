@@ -10,12 +10,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
-import com.fortysevendeg.swipelistview.SwipeListView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -48,7 +48,8 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
     MenuInflater menuInflater;
     MenuItem searchItem;
     SearchView searchView;
-    @InjectView(R.id.lvEventSearchList) SwipeListView eventSearchList;
+    @InjectView(R.id.lvEventSearchList)
+    ListView eventSearchList;
     @InjectView(R.id.progressBar) ProgressBar progressBar;
 
     JsonHttpResponseHandler searchResultHandler = new JsonHttpResponseHandler() {
@@ -69,7 +70,7 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
             Log.i("INFO", "callback success"); // logcat log
             //aEventSearchList.clear();
-            eventList.clear();
+            //eventList.clear();
             //aEventSearchList.notifyDataSetChanged();
             Log.i("Debug","The size of search list is"+eventList.size());
             if (response != null){
