@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/rsvp_button_height">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/iv_share_fb"
+        android:layout_width="@dimen/share_images_small_size"
+        android:layout_height="@dimen/share_images_small_size"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_fb_share"
+        android:background="@drawable/share_bg_selector"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/iv_share_twitter"
+        android:layout_width="@dimen/share_images_small_size"
+        android:layout_height="@dimen/share_images_small_size"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_twitter_share"
+        android:background="@drawable/share_bg_selector"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="@dimen/share_images_small_size"
+        android:layout_height="@dimen/share_images_small_size"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_gen_share"
+        android:background="@drawable/share_bg_selector"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+</LinearLayout>
