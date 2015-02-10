@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.onebrick.android.R;
-import org.onebrick.android.activities.EventInfoActivity;
+import org.onebrick.android.activities.EventDetailActivity;
 import org.onebrick.android.adapters.EventSearchListAdapter;
 import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.models.Event;
@@ -56,9 +56,9 @@ public abstract class EventsListFragment extends Fragment implements
         lvEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+                final Intent intent = new Intent(getActivity(), EventDetailActivity.class);
                 final Event event = Event.fromCursor((Cursor) mAdapter.getItem(position));
-                intent.putExtra(EventInfoActivity.EXTRA_EVENT_ID, event.getId());
+                intent.putExtra(EventDetailActivity.EXTRA_EVENT_ID, event.getId());
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }

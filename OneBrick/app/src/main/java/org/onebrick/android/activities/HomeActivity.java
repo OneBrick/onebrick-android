@@ -60,7 +60,11 @@ public class HomeActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.mi_search:
-                startSearchEventsActivity(item);
+                final Intent i = new Intent(this, SearchActivity.class);
+                i.putExtra(SearchActivity.EXTRA_CHAPTER_ID, ((HomeEventsFragment) eventListFragment).getChapterId());
+                i.putExtra(SearchActivity.EXTRA_CHAPTER_NAME, ((HomeEventsFragment) eventListFragment).getChapterName());
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 return true;
 
             case R.id.mi_login:
@@ -68,6 +72,7 @@ public class HomeActivity extends ActionBarActivity
                 return true;
 
             case R.id.mi_select_chapter: {
+                // TODO this is holding reference for long time
                 mSelectChapterDialog = new Dialog(this);
                 mSelectChapterDialog.setContentView(R.layout.dialog_select_chapter);
                 mSelectChapterDialog.setTitle(R.string.select_chapter);
@@ -124,13 +129,5 @@ public class HomeActivity extends ActionBarActivity
         OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
 
         displayEventsInChapter(chapter);
-    }
-
-    private void startSearchEventsActivity (MenuItem mi) {
-        Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-        i.putExtra(SearchActivity.EXTRA_CHAPTER_ID, ((HomeEventsFragment)eventListFragment).getChapterId());
-        i.putExtra(SearchActivity.EXTRA_CHAPTER_NAME, ((HomeEventsFragment)eventListFragment).getChapterName());
-        startActivity(i);
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }

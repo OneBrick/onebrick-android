@@ -80,11 +80,6 @@ public class HomeEventsFragment extends EventsListFragment {
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 Log.d(TAG, "callback success");

@@ -38,10 +38,10 @@ import butterknife.InjectView;
 /**
  TODO this class should be revisited
  */
-public class EventInfoActivity extends ActionBarActivity implements
+public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = EventInfoActivity.class.getName();
+    private static final String TAG = EventDetailActivity.class.getName();
     public static final String EXTRA_EVENT_ID = "event_id";
 
     @InjectView(R.id.btn_rsvp) Button btnRsvp;
@@ -159,9 +159,9 @@ public class EventInfoActivity extends ActionBarActivity implements
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final LoginManager loginManager = LoginManager.getInstance(EventInfoActivity.this);
+                final LoginManager loginManager = LoginManager.getInstance(EventDetailActivity.this);
                 if (!loginManager.isLoggedIn()) {
-                    final Intent loginActivity = new Intent(EventInfoActivity.this, LoginActivity.class);
+                    final Intent loginActivity = new Intent(EventDetailActivity.this, LoginActivity.class);
                     startActivity(loginActivity);
                     if (mEvent.rsvp == true) {
                         btnRsvp.setText(R.string.un_rsvp);

@@ -50,7 +50,7 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name=".activities.EventInfoActivity"
+            android:name=".activities.EventDetailActivity"
             android:label="@string/title_activity_event_info"
             android:parentActivityName=".activities.HomeActivity" >
             <meta-data
@@ -60,10 +60,10 @@
         <activity
             android:name=".activities.EventDescriptionActivity"
             android:label="@string/title_activity_event_description"
-            android:parentActivityName=".activities.EventInfoActivity" >
+            android:parentActivityName=".activities.EventDetailActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.onebrick.android.activities.EventInfoActivity" />
+                android:value=".activities.EventDetailActivity" />
         </activity>
         <activity
             android:name=".activities.MyEventsActivity"
