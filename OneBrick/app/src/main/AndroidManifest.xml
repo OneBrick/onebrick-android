@@ -36,6 +36,11 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBk8aP1fu9H2CfMbSeoWlbGyXRFIMa08Ws" />
 
+        <provider
+            android:authorities="org.onebrick.android.provider"
+            android:exported="false"
+            android:name=".providers.ChapterContentProvider" />
+
         <provider android:authorities="org.onebrick.android" android:exported="false"
                   android:name="com.activeandroid.content.ContentProvider" />
 

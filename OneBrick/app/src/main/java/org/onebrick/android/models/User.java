@@ -8,7 +8,7 @@ import com.activeandroid.Model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User extends Model {
+public class User {
 
     private static final String TAG = User.class.getName();
 
@@ -20,11 +20,11 @@ public class User extends Model {
     @Nullable
     public static User fromJSON(JSONObject jsonObject){
         User user = new User();
-        try{
+        try {
             user.userId = jsonObject.getJSONObject("user").optLong("uid");
             user.name = jsonObject.getJSONObject("user").optString("signature");
             user.email = jsonObject.getJSONObject("user").optString("name");
-        }catch(JSONException e){
+        } catch(JSONException e){
             Log.e(TAG, "unable to create user", e);
             return null;
         }

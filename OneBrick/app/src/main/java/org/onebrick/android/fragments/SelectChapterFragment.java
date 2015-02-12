@@ -20,6 +20,7 @@ import com.activeandroid.content.ContentProvider;
 
 import org.onebrick.android.R;
 import org.onebrick.android.models.Chapter;
+import org.onebrick.android.providers.ChapterContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,14 +49,13 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getActivity(),
-                ContentProvider.createUri(Chapter.class, null),
+                ChapterContentProvider.CONTENT_URI,
                 null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
-
     }
 
     @Override

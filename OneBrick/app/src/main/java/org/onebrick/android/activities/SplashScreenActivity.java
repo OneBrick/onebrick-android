@@ -1,5 +1,6 @@
 package org.onebrick.android.activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,10 +14,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.R;
+import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.helpers.FontsHelper;
 import org.onebrick.android.models.Chapter;
+import org.onebrick.android.providers.ChapterContentProvider;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,8 +54,19 @@ public class SplashScreenActivity extends ActionBarActivity {
                     .getChapters(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Chapter.getChapterListFromJsonObject(response);
                     Log.d(TAG, "get chapters api call success");
+                    // TODO should be inserted through SyncAdapter
+                    List<Chapter> chapters = Chapter.listFromJson(response);
+//                    final List<ContentValues> valuesList = new ArrayList<>(chapters.size());
+                    for (Chapter chapter : chapters) {
+                        final ContentValues values = new ContentValues(2);
+                        values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
+                        values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
+//                        valuesList.add(values);
+                        getContentResolver().insert(ChapterContentProvider.CONTENT_URI, values);
+                    }
+//                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
+//                            valuesList.toArray(new ContentValues[0]));
                 }
 
                 @Override

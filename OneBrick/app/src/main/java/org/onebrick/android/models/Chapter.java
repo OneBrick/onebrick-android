@@ -3,12 +3,12 @@ package org.onebrick.android.models;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 
 import org.json.JSONException;
@@ -48,15 +48,36 @@ public class Chapter extends Model {
         return chapterId;
     }
 
-    public static Chapter getChapterFromJsonObject(JSONObject jsonObject) {
-        Chapter newChapter = new Chapter();
+    @Nullable
+    public static Chapter fromJson(JSONObject jsonObject) {
         try {
-            newChapter.name = jsonObject.getString("title");
-            newChapter.chapterId = jsonObject.getInt("nid");
+            final Chapter chapter = new Chapter();
+            chapter.name = jsonObject.getString("title");
+            chapter.chapterId = jsonObject.getInt("nid");
+            return chapter;
         } catch (JSONException e) {
-            Log.e(TAG, "couldn't create object", e);
+            Log.e(TAG, "couldn't create chapter from json", e);
         }
-        return newChapter;
+        return null;
+    }
+
+    @NonNull
+    public static List<Chapter> listFromJson(JSONObject jsonObject) {
+        List<Chapter> chapterList = new ArrayList<>();
+        Iterator<String> itr = jsonObject.keys();
+        while (itr.hasNext()) {
+            String key = itr.next();
+            try {
+                JSONObject chapterJsonObject = jsonObject.getJSONObject(key);
+                Chapter chapter = fromJson(chapterJsonObject);
+                if(chapter != null) {
+                    chapterList.add(chapter);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "couldn't create chapter list from json", e);
+            }
+        }
+        return chapterList;
     }
 
     public static ArrayList<Chapter> getChapterListFromJsonObject(JSONObject jsonObject) {
@@ -96,7 +117,7 @@ public class Chapter extends Model {
             return existingChapter;
         } else {
             // create and return new
-            Chapter chapter = getChapterFromJsonObject(jsonObj);
+            Chapter chapter = fromJson(jsonObj);
             Log.d(TAG,"Saving Chapter to DB");
             chapter.save();
             return chapter;
