@@ -12,13 +12,13 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>-->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="org.onebrick.android.permission.MAPS_RECEIVE" />-->
-    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
     <application
         android:name=".core.OneBrickApplication"
@@ -32,14 +32,31 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBk8aP1fu9H2CfMbSeoWlbGyXRFIMa08Ws" />
+
+        <service android:name=".sync.AuthenticatorService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                       android:resource="@xml/authenticator" />
+        </service>
+
+        <service
+            android:name=".sync.SyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                       android:resource="@xml/syncadapter" />
+        </service>
 
         <provider
+            android:name=".providers.ChapterContentProvider"
             android:authorities="org.onebrick.android.provider"
             android:exported="false"
-            android:name=".providers.ChapterContentProvider" />
+            android:syncable="true" />
 
         <provider android:authorities="org.onebrick.android" android:exported="false"
                   android:name="com.activeandroid.content.ContentProvider" />

@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class ChapterContentProvider extends ContentProvider {
 
-    private static final String AUTHORITY = "org.onebrick.android.provider";
+    public static final String AUTHORITY = "org.onebrick.android.provider";
     private static final String BASE_PATH = "chapters";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
 
