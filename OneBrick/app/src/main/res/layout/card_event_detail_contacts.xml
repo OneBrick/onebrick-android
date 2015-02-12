@@ -33,6 +33,7 @@
         android:layout_toRightOf="@+id/btn_email_manager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:textSize="@dimen/event_detail_text_small_size"
         android:textColor="@color/charcoal"
         android:drawableLeft="@drawable/ic_email"

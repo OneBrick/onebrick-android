@@ -18,7 +18,7 @@ public abstract class BaseCard implements Card {
 
     @Nullable
     @Override
-    public View getView(ViewGroup parent) {
+    public View getView() {
         return mView;
     }
 

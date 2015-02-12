@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:textStyle="bold"
         android:padding="8dp"/>
 
     <LinearLayout
@@ -33,12 +32,25 @@
             android:textSize="@dimen/event_detail_text_size"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_event_address"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/charcoal"
-        android:textSize="@dimen/event_detail_text_size"
-        android:layout_marginTop="4dp"/>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/img_location_grey"/>
+
+        <TextView
+            android:id="@+id/tv_event_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/charcoal"
+            android:textSize="@dimen/event_detail_text_size"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
 </LinearLayout>
 

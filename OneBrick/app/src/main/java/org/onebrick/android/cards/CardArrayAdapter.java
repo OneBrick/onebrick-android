@@ -15,7 +15,7 @@ public class CardArrayAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Card card = getItem(position);
 
-        View view = card.getView(parent);
+        View view = card.getView();
         if (view == null) {
             view = card.initView(parent);
         }

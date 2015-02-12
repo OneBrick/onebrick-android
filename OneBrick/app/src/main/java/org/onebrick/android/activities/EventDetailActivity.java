@@ -20,6 +20,7 @@ import org.apache.http.Header;
 import org.json.JSONObject;
 import org.onebrick.android.R;
 import org.onebrick.android.cards.CardArrayAdapter;
+import org.onebrick.android.cards.ContactsCard;
 import org.onebrick.android.cards.DescriptionCard;
 import org.onebrick.android.cards.MapCard;
 import org.onebrick.android.cards.PhotoGalleryCard;
@@ -199,6 +200,7 @@ public class EventDetailActivity extends ActionBarActivity implements
             mAdapter.add(new PhotoGalleryCard(this, mEvent));
             mAdapter.add(new DescriptionCard(this, mEvent));
             mAdapter.add(new MapCard(this, mEvent));
+            mAdapter.add(new ContactsCard(this, mEvent));
             mAdapter.add(new ShareCard(this, mEvent));
             mAdapter.notifyDataSetChanged();
 

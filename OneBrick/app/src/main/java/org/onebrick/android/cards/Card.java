@@ -10,5 +10,5 @@ public interface Card {
     View initView(@NonNull ViewGroup parent);
 
     @Nullable
-    View getView(ViewGroup parent);
+    View getView();
 }
