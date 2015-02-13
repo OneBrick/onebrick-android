@@ -10,6 +10,8 @@ public class ChapterTable {
 
     public static final String TABLE_NAME = "chapters";
 
+    // TODO move to contracts class
+
     public interface Columns {
         public static final String _ID = BaseColumns._ID;
         public static final String NAME = "name";

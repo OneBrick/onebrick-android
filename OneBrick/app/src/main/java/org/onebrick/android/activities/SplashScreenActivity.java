@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.helpers.FontsHelper;
 import org.onebrick.android.models.Chapter;
-import org.onebrick.android.providers.ChapterContentProvider;
+import org.onebrick.android.providers.OneBrickContentProvider;
 
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class SplashScreenActivity extends ActionBarActivity {
                                 values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
                                 values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
 //                        valuesList.add(values);
-                                getContentResolver().insert(ChapterContentProvider.CONTENT_URI, values);
+                                getContentResolver().insert(OneBrickContentProvider.CHAPTERS_URI, values);
                             }
 //                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
 //                            valuesList.toArray(new ContentValues[0]));
@@ -133,6 +134,6 @@ public class SplashScreenActivity extends ActionBarActivity {
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(mAccount, ChapterContentProvider.AUTHORITY, settingsBundle);
+        ContentResolver.requestSync(mAccount, OneBrickContentProvider.AUTHORITY, settingsBundle);
     }
 }

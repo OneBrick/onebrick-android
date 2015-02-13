@@ -1,6 +1,7 @@
 package org.onebrick.android.providers;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -10,32 +11,38 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import org.onebrick.android.database.ChapterTable;
-import org.onebrick.android.database.MainDatabasehelper;
+import org.onebrick.android.database.OneBrickDatabaseHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ChapterContentProvider extends ContentProvider {
+public class OneBrickContentProvider extends ContentProvider {
 
     public static final String AUTHORITY = "org.onebrick.android.provider";
-    private static final String BASE_PATH = "chapters";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
+
+    public static final Uri CHAPTERS_URI = Uri.parse("content://" + AUTHORITY + "/chapters");
+    public static final Uri EVENTS_URI = Uri.parse("content://" + AUTHORITY + "/events");
 
     // used for the UriMacher
     private static final int CHAPTERS = 10;
     private static final int CHAPTER_ID = 20;
+    private static final int EVENTS = 30;
+    private static final int EVENT_ID = 40;
+
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI(AUTHORITY, BASE_PATH, CHAPTERS);
-        sUriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", CHAPTER_ID);
+        sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
+        sUriMatcher.addURI(AUTHORITY, "chapters/#", CHAPTER_ID);
+        sUriMatcher.addURI(AUTHORITY, "events", EVENTS);
+        sUriMatcher.addURI(AUTHORITY, "events/#", EVENT_ID);
     }
 
-    private MainDatabasehelper mDatabasehelper;
+    private OneBrickDatabaseHelper mDatabasehelper;
 
     @Override
     public boolean onCreate() {
-        mDatabasehelper = new MainDatabasehelper(getContext());
+        mDatabasehelper = new OneBrickDatabaseHelper(getContext());
         return false;
     }
 
@@ -86,7 +93,7 @@ public class ChapterContentProvider extends ContentProvider {
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(BASE_PATH + "/" + id);
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override

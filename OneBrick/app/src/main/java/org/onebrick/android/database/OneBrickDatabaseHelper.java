@@ -5,14 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class MainDatabasehelper extends SQLiteOpenHelper {
+public class OneBrickDatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String TAG = MainDatabasehelper.class.getName();
+    public static final String TAG = OneBrickDatabaseHelper.class.getName();
 
     public static final int DB_VERSION = 1;
     public static final String DB_NAME = "main.sqlite";
 
-    public MainDatabasehelper(Context context) {
+    public OneBrickDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
