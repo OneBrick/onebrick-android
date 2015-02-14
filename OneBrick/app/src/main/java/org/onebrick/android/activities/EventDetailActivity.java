@@ -19,7 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONObject;
 import org.onebrick.android.R;
-import org.onebrick.android.cards.CardArrayAdapter;
+import org.onebrick.android.adapters.CardArrayAdapter;
 import org.onebrick.android.cards.ContactsCard;
 import org.onebrick.android.cards.DescriptionCard;
 import org.onebrick.android.cards.MapCard;
@@ -64,7 +64,7 @@ public class EventDetailActivity extends ActionBarActivity implements
             //Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp);
             btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-            mEvent.rsvp = true;
+            mEvent.userRSVP = 1;
             Event.updateEvent(mEvent);
 
         }
@@ -90,7 +90,7 @@ public class EventDetailActivity extends ActionBarActivity implements
             //Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp);
             btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-            mEvent.rsvp = false;
+            mEvent.userRSVP= 0;
             Event.updateEvent(mEvent);
         }
 
@@ -108,7 +108,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     private void updateViews() {
         if(LoginManager.getInstance(this).isLoggedIn()) {
-            if (mEvent.rsvp == true) {
+            if (mEvent.userRSVP == 1) {
                 btnRsvp.setText(R.string.un_rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
             } else {
@@ -118,7 +118,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         }
 
         // TODO check current date for past events. if past events, don't show rsvp/unrsvp buttons
-        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEventEndDate())){
+        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())){
             //llRsvpSegment.setVisibility(View.GONE);
         }
     }
@@ -164,7 +164,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                 if (!loginManager.isLoggedIn()) {
                     final Intent loginActivity = new Intent(EventDetailActivity.this, LoginActivity.class);
                     startActivity(loginActivity);
-                    if (mEvent.rsvp == true) {
+                    if (mEvent.userRSVP == 1) {
                         btnRsvp.setText(R.string.un_rsvp);
                         btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     } else {

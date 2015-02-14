@@ -64,9 +64,9 @@ public class EventSearchListAdapter extends CursorAdapter {
             String imageUri = "assets://images/image"+imgId+".jpg";
             imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
             viewHolder.tvEventName.setText(event.getTitle());
-            viewHolder.tvEventAddress.setText(event.getEventAddress());
+            viewHolder.tvEventAddress.setText(event.getAddress());
             viewHolder.tvEventDate.setText(DateTimeFormatter.getInstance().getFormattedEventStartDate(
-                    event.getEventStartDate()));
+                    event.getStartDate()));
             viewHolder.btnRsvp.setVisibility(View.GONE);
     }
 }

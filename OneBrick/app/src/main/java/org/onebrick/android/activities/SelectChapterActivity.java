@@ -29,10 +29,10 @@ public class SelectChapterActivity extends ActionBarActivity implements
         OneBrickApplication.getInstance().setChapterName(chapter.getChapterName());
         OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
 
-        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-        i.putExtra(HomeActivity.EXTRA_CHAPTER_ID, chapter.getChapterId());
-        i.putExtra(HomeActivity.EXTRA_CHAPTER_NAME, chapter.getChapterName());
-        startActivity(i);
+        final Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(HomeActivity.EXTRA_CHAPTER_ID, chapter.getChapterId());
+        intent.putExtra(HomeActivity.EXTRA_CHAPTER_NAME, chapter.getChapterName());
+        startActivity(intent);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }

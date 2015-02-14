@@ -15,54 +15,51 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Table(name = "events", id = BaseColumns._ID)
 public class Event extends Model {
 
-    private static final String TAG = Event.class.getName().toString();
-
-    @Column(name="title",
-            notNull = true)
-    public String title;
-
-
-    @Column(name="start_date",
-            notNull = true)
-    public String eventStartDate;
-
-    @Column(name="end_date",
-            notNull = true)
-    public String eventEndDate;
+    private static final String TAG = "Event";
 
     @Column(name="event_id",
             notNull = true, unique=true,
             onUniqueConflict = Column.ConflictAction.REPLACE)
     public long eventId;
 
-
-    @Column(name="event_address",
+    @Column(name="title",
             notNull = true)
-    public String eventAddress;
+    public String title;
 
-    @Column(name="location_name",
+    @Column(name="start_date",
             notNull = true)
-    public String locationName;
+    public String startDate;
 
+    @Column(name="end_date",
+            notNull = true)
+    public String endDate;
 
-    @Column(name="event_summary")
-    public String eventSummary;
+    @Column(name="address",
+            notNull = true)
+    public String address;
+
+    @Column(name="esn_title",
+            notNull = true)
+    public String esnTitle;
+
+    @Column(name="summary")
+    public String summary;
 
     @Column(name="rsvp_capacity",
             notNull = true)
-    public int maxRsvpCapacity;
-
+    public int rsvpCapacity;
 
     @Column(name="rsvp_count")
     public int rsvpCount;
 
     @Column(name="user_rsvp")
-    public int usrRSVP;
+    public int userRSVP;
 
     @Column(name="description")
     public String description;
@@ -76,11 +73,8 @@ public class Event extends Model {
     @Column(name="chapter")
     public Chapter chapter;
 
-    @Column(name="rsvp")
-    public boolean rsvp;
-
-    @Column(name="profile_photo_uri")
-    public String profilePhotoUri;
+    @Column(name="photos")
+    public List<String> photos;
 
     public String toString() {
        return ""+title;
@@ -89,25 +83,15 @@ public class Event extends Model {
     public String getTitle(){
         return this.title;
     }
-    public void setTitle(String title){
-        this.title = title;
+    public String getStartDate(){
+        return this.startDate;
     }
-    public String getEventStartDate(){
-        return this.eventStartDate;
+    public String getEndDate(){
+        return this.endDate;
     }
-    public void setEventStartDate(String eventStartDate){
-        this.eventStartDate = eventStartDate;
+    public String getAddress() {
+        return address;
     }
-    public String getEventEndDate(){
-        return this.eventEndDate;
-    }
-    public void setEventEndDate(String eventEndDate){
-        this.eventEndDate = eventEndDate;
-    }
-    public String getEventAddress() {
-        return eventAddress;
-    }
-    public void setEventAddress(String eventAddress) { this.eventAddress = eventAddress; }
     public long getEventId() {
         return this.eventId;
     }
@@ -125,7 +109,7 @@ public class Event extends Model {
     }
 
     public String getProfilePhotoUri() {
-        return profilePhotoUri;
+        return getProfilePhotoUri(eventId);
     }
 
     public static Event fromJSON(JSONObject jsonObject, Chapter ch){
@@ -133,12 +117,11 @@ public class Event extends Model {
         try{
             event.title = jsonObject.optString("title");
             event.chapter = ch;
-            event.rsvp = false;
             event.eventId = jsonObject.optLong("nid");
-            event.locationName = jsonObject.optString("esn_title");
-            event.eventStartDate = jsonObject.optString("field_event_date_value");
-            event.eventEndDate = jsonObject.getString("field_event_date_value2");
-            event.maxRsvpCapacity = jsonObject.optInt("field_event_max_rsvp_capacity_value");
+            event.esnTitle = jsonObject.optString("esn_title");
+            event.startDate = jsonObject.optString("field_event_date_value");
+            event.endDate = jsonObject.getString("field_event_date_value2");
+            event.rsvpCapacity = jsonObject.optInt("field_event_max_rsvp_capacity_value");
             if (!jsonObject.isNull("manager_email")){
                 event.managerEmail = jsonObject.optString("manager_email");
             }
@@ -147,24 +130,14 @@ public class Event extends Model {
                 event.coordinatorEmail = jsonObject.optString("coordinator_email");
             }
             if (!jsonObject.isNull("body_summary")){
-                event.eventSummary = jsonObject.optString("body_summary");
+                event.summary = jsonObject.optString("body_summary");
             }else if (!jsonObject.isNull("body_value")){
-                event.eventSummary = jsonObject.optString("body_value");
+                event.summary = jsonObject.optString("body_value");
             }
-            event.eventAddress = jsonObject.optString("address");
+            event.address = jsonObject.optString("address");
             event.rsvpCount = jsonObject.optInt("rsvpCnt");
             if (!jsonObject.isNull("usrRSVP")){
-                event.usrRSVP = jsonObject.optInt("usrRSVP");
-            }
-
-            event.profilePhotoUri = getProfilePhotoUri(event.eventId);
-            if(jsonObject.has("usrRSVP")) {
-                int usrRsvp = jsonObject.getInt("usrRSVP");
-                if (usrRsvp == 1) {
-                    event.rsvp = true;
-                } else {
-                    event.rsvp = false;
-                }
+                event.userRSVP = jsonObject.optInt("usrRSVP");
             }
 
         }catch(JSONException e){
@@ -187,20 +160,9 @@ public class Event extends Model {
         Event existingEvent =
                 new Select().from(Event.class).where("event_id = ?", eventId).executeSingle();
         if (existingEvent != null) {
-            // found and return existing
-            //Log.i(TAG, "Returning existing event. Not saving new events to DB");
-            if(jsonObj.has("usrRSVP")) {
-                int usrRsvp = jsonObj.optInt("usrRSVP");
-                if (usrRsvp == 1) {
-                    existingEvent.rsvp = true;
-                } else {
-                    existingEvent.rsvp = false;
-                }
-            }
             existingEvent.save();
             return existingEvent;
         } else {
-            // create and return new
             Event event = fromJSON(jsonObj,ch);
             return event;
         }
@@ -214,50 +176,6 @@ public class Event extends Model {
                 .from(Event.class)
                 .where("event_id = ?", eventId)
                 .executeSingle();
-    }
-
-
-    /*
-    Returns a updated event with manager email co-ordinator email
-    and event description from json object.
-
-    Note : The event should have already been created when this method
-    is getting invoked. The existing event is searched by calling the method
-    findEvent(<event_id>). find event can return null in such a scenario
-    IllegalArgumentException is thrown;
-     */
-    public static Event getUpdatedEvent(JSONObject jEventObject) {
-        int eventId;
-        String mgrEmail;
-        String coordEmail;
-        String eventDesc;
-        int usrRsvp = -1;
-        try{
-            eventId = jEventObject.optInt("nid");
-            mgrEmail = jEventObject.optString("manager_email");
-            coordEmail = jEventObject.optString("coordinator_email");
-            eventDesc = jEventObject.optString("body_value");
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-        Event e = findEvent(eventId);
-        if(e == null){
-            throw new IllegalArgumentException("Event cannot be null for update");
-        }
-        if(jEventObject.has("usrRSVP")) {
-            usrRsvp = jEventObject.optInt("usrRSVP");
-        }
-        if(usrRsvp == 1) {
-            e.rsvp = true;
-        } else {
-            e.rsvp = false;
-        }
-        e.description = eventDesc;
-        e.managerEmail = mgrEmail;
-        e.coordinatorEmail = coordEmail;
-        e.save();
-        return e;
     }
 
     public static void updateEvent(Event e) {
@@ -284,7 +202,6 @@ public class Event extends Model {
                 continue;
             }
             // convert json to Event model
-
         }
         return events;
     }

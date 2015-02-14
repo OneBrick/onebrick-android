@@ -195,7 +195,7 @@ public class LoginActivity extends ActionBarActivity {
                     ArrayList<Event> arrayOfEvents = Event.fromJSONArray(response, chapterId);
                     for (int i=0;i<arrayOfEvents.size();i++) {
                         Event e = arrayOfEvents.get(i);
-                        e.rsvp = true;
+                        e.userRSVP = 1;
                         Event.updateEvent(e);
                     }
                 }

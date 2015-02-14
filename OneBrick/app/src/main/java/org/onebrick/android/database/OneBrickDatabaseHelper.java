@@ -10,7 +10,7 @@ public class OneBrickDatabaseHelper extends SQLiteOpenHelper {
     public static final String TAG = OneBrickDatabaseHelper.class.getName();
 
     public static final int DB_VERSION = 1;
-    public static final String DB_NAME = "main.sqlite";
+    public static final String DB_NAME = "main.db";
 
     public OneBrickDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -19,6 +19,7 @@ public class OneBrickDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         ChapterTable.onCreate(db);
+        EventTable.onCreate(db);
     }
 
     @Override
@@ -26,5 +27,6 @@ public class OneBrickDatabaseHelper extends SQLiteOpenHelper {
         Log.w(TAG, "Upgrading database. Existing contents will be lost. ["
                 + oldVersion + "]->[" + newVersion + "]");
         ChapterTable.onUpgrade(db, oldVersion, newVersion);
+        EventTable.onUpgrade(db, oldVersion, newVersion);
     }
 }

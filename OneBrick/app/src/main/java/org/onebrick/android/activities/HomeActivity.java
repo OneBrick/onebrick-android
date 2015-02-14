@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class HomeActivity extends ActionBarActivity
         implements SelectChapterFragment.OnSelectChapterListener {
 
-    private static final String TAG = HomeActivity.class.getName();
+    private static final String TAG = "HomeActivity";
 
     public static final String EXTRA_CHAPTER_ID = "chapter_id";
     public static final String EXTRA_CHAPTER_NAME = "chapter_name";

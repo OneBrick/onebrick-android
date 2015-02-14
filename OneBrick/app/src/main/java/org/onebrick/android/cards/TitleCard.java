@@ -33,27 +33,27 @@ public class TitleCard extends EventCard {
         initView(parent, R.layout.card_event_detail_title);
 
         mTitleTextView.setText(mEvent.getTitle());
-        mDateTimeTextView.setText(DateTimeFormatter.getInstance().getFormattedEventDate(mEvent.getEventStartDate())
+        mDateTimeTextView.setText(DateTimeFormatter.getInstance().getFormattedEventDate(mEvent.getStartDate())
                 + " - "
-                + DateTimeFormatter.getInstance().getFormattedTimeEndOnly(mEvent.getEventStartDate(),
-                mEvent.getEventEndDate()));
+                + DateTimeFormatter.getInstance().getFormattedTimeEndOnly(mEvent.getStartDate(),
+                mEvent.getEndDate()));
 
-        mLocationTextView.setText(mEvent.getEventAddress());
+        mLocationTextView.setText(mEvent.getAddress());
 
         mCalendarImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final DateTimeFormatter dtf = DateTimeFormatter.getInstance();
                 final Calendar beginTime = Calendar.getInstance();
-                beginTime.setTime(dtf.getDateFromString(mEvent.getEventStartDate()));
+                beginTime.setTime(dtf.getDateFromString(mEvent.getStartDate()));
                 final Calendar endTime = Calendar.getInstance();
-                beginTime.setTime(dtf.getDateFromString(mEvent.getEventEndDate()));
+                beginTime.setTime(dtf.getDateFromString(mEvent.getEndDate()));
                 Intent intent = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                         .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
                         .putExtra(CalendarContract.Events.TITLE, mEvent.getTitle())
-                        .putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getEventAddress())
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getAddress())
                         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
                 mContext.startActivity(intent);
                 mCalendarImageView.setImageResource(R.drawable.ic_in_calendar);

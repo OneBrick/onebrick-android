@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import org.onebrick.android.database.ChapterTable;
+import org.onebrick.android.database.EventTable;
 import org.onebrick.android.database.OneBrickDatabaseHelper;
 
 import java.util.Arrays;
@@ -49,17 +50,26 @@ public class OneBrickContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        checkColumns(projection);
 
-        queryBuilder.setTables(ChapterTable.TABLE_NAME);
-        final int uriType = sUriMatcher.match(uri);
+        final int uriTypeCode = sUriMatcher.match(uri);
+        final String tableName = getTableName(uriTypeCode);
+        checkColumns(projection, tableName);
 
-        switch (uriType) {
+        queryBuilder.setTables(getTableName(uriTypeCode));
+
+        switch (uriTypeCode) {
             case CHAPTERS:
                 break;
 
             case CHAPTER_ID:
                 queryBuilder.appendWhere(ChapterTable.Columns._ID + "=" + uri.getLastPathSegment());
+                break;
+
+            case EVENTS:
+                break;
+
+            case EVENT_ID:
+                queryBuilder.appendWhere(EventTable.Columns._ID + "=" + uri.getLastPathSegment());
                 break;
 
             default:
@@ -81,11 +91,14 @@ public class OneBrickContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = mDatabasehelper.getWritableDatabase();
-        final int uriType = sUriMatcher.match(uri);
+        final int uriTypeCode = sUriMatcher.match(uri);
+
         long id;
-        switch (uriType) {
+        final String tableName = getTableName(uriTypeCode);
+        switch (uriTypeCode) {
             case CHAPTERS:
-                id = db.replace(ChapterTable.TABLE_NAME, null, values);
+            case EVENTS:
+                id = db.replace(tableName, null, values);
                 break;
 
             default:
@@ -99,20 +112,24 @@ public class OneBrickContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mDatabasehelper.getWritableDatabase();
-        final int uriType = sUriMatcher.match(uri);
+        final int uriTypeCode = sUriMatcher.match(uri);
+        final String tableName = getTableName(uriTypeCode);
+
         int rowsDeleted;
-        switch (uriType) {
+        switch (uriTypeCode) {
             case CHAPTERS:
-                rowsDeleted = db.delete(ChapterTable.TABLE_NAME, selection, selectionArgs);
+            case EVENTS:
+                rowsDeleted = db.delete(tableName, selection, selectionArgs);
                 break;
 
             case CHAPTER_ID:
+            case EVENT_ID:
                 final String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = db.delete(ChapterTable.TABLE_NAME,
+                    rowsDeleted = db.delete(tableName,
                             ChapterTable.Columns._ID + "=" + id, null);
                 } else {
-                    rowsDeleted = db.delete(ChapterTable.TABLE_NAME,
+                    rowsDeleted = db.delete(tableName,
                             ChapterTable.Columns._ID + "=" + id + " and " + selection,
                             selectionArgs);
                 }
@@ -129,20 +146,24 @@ public class OneBrickContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mDatabasehelper.getWritableDatabase();
-        final int uriType = sUriMatcher.match(uri);
+        final int uriTypeCode = sUriMatcher.match(uri);
+        final String tableName = getTableName(uriTypeCode);
+
         int rowsUpdated;
-        switch (uriType) {
+        switch (uriTypeCode) {
             case CHAPTERS:
-                rowsUpdated = db.update(ChapterTable.TABLE_NAME, values, selection, selectionArgs);
+            case EVENTS:
+                rowsUpdated = db.update(tableName, values, selection, selectionArgs);
                 break;
 
             case CHAPTER_ID:
+            case EVENT_ID:
                 final String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = db.update(ChapterTable.TABLE_NAME, values,
+                    rowsUpdated = db.update(tableName, values,
                             ChapterTable.Columns._ID + "=" + id, null);
                 } else {
-                    rowsUpdated = db.update(ChapterTable.TABLE_NAME, values,
+                    rowsUpdated = db.update(tableName, values,
                             ChapterTable.Columns._ID + "=" + id + " and " + selection,
                             selectionArgs);
                 }
@@ -156,16 +177,56 @@ public class OneBrickContentProvider extends ContentProvider {
         return rowsUpdated;
     }
 
-    private void checkColumns(String[] projection) {
+    private String getTableName(int uriType) {
+        switch (uriType) {
+            case CHAPTERS:
+            case CHAPTER_ID:
+                return ChapterTable.TABLE_NAME;
+
+            case EVENTS:
+            case EVENT_ID:
+                return EventTable.TABLE_NAME;
+
+            default:
+                return "";
+        }
+    }
+
+    private void checkColumns(String[] projection, String tableName) {
         if (projection != null) {
-            final String []available = {ChapterTable.Columns._ID,
-                    ChapterTable.Columns.CHAPTER_ID,
-                    ChapterTable.Columns.NAME};
+            final String[] available;
+
+            if (ChapterTable.TABLE_NAME.equals(tableName)) {
+                available = new String[] {
+                        ChapterTable.Columns._ID,
+                        ChapterTable.Columns.CHAPTER_ID,
+                        ChapterTable.Columns.NAME};
+            } else if(EventTable.TABLE_NAME.equals(tableName)) {
+                available = new String[] {
+                        EventTable.Columns._ID,
+                        EventTable.Columns.EVENT_ID,
+                        EventTable.Columns.CHAPTER_ID,
+                        EventTable.Columns.TITLE,
+                        EventTable.Columns.ESN_TITLE,
+                        EventTable.Columns.ADDRESS,
+                        EventTable.Columns.START_DATE,
+                        EventTable.Columns.END_DATE,
+                        EventTable.Columns.SUMMARY,
+                        EventTable.Columns.RSVP_CAPACITY,
+                        EventTable.Columns.RSVP_COUNT,
+                        EventTable.Columns.USER_RSVP,
+                        EventTable.Columns.DESCRIPTION,
+                        EventTable.Columns.COORDINATOR_EMAIL,
+                        EventTable.Columns.MANAGER_EMAIL,
+                        EventTable.Columns.PHOTOS};
+            } else {
+                available = new String[0];
+            }
+
             final Set<String> requestedColumns = new HashSet<>(Arrays.asList(projection));
             final Set<String> availableColumns = new HashSet<>(Arrays.asList(available));
-
             if (!availableColumns.containsAll(requestedColumns)) {
-                throw new IllegalArgumentException("Unknown columns in projection");
+                throw new IllegalArgumentException(tableName + ": unknown columns in projection");
             }
         }
     }
