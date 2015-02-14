@@ -74,7 +74,7 @@ public class Event extends Model {
     public Chapter chapter;
 
     @Column(name="photos")
-    public List<String> photos;
+    public String photos;
 
     public String toString() {
        return ""+title;
