@@ -65,32 +65,8 @@ public class SplashScreenActivity extends ActionBarActivity {
         final int myChapterId = OneBrickApplication.getInstance().getChapterId();
 
         if(myChapterName == null) {
-            //requestChapters();
-            OneBrickApplication.getInstance().getRestClient()
-                    .getChapters(new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            Log.d(TAG, "get chapters api call success");
-                            // TODO should be inserted through SyncAdapter
-                            List<Chapter> chapters = Chapter.listFromJson(response);
-//                    final List<ContentValues> valuesList = new ArrayList<>(chapters.size());
-                            for (Chapter chapter : chapters) {
-                                final ContentValues values = new ContentValues(2);
-                                values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
-                                values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
-//                        valuesList.add(values);
-                                getContentResolver().insert(OneBrickContentProvider.CHAPTERS_URI, values);
-                            }
-//                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
-//                            valuesList.toArray(new ContentValues[0]));
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers,
-                                              Throwable throwable, JSONObject errorResponse) {
-                            Log.w(TAG, "get chapters api call failed");
-                        }
-                    });
+            requestChapters();
+            //requestChapters2();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -113,6 +89,34 @@ public class SplashScreenActivity extends ActionBarActivity {
         }
     }
 
+    private void requestChapters2() {
+        OneBrickApplication.getInstance().getRestClient()
+                .getChapters(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d(TAG, "get chapters api call success");
+                        // TODO should be inserted through SyncAdapter
+                        List<Chapter> chapters = Chapter.listFromJson(response);
+//                    final List<ContentValues> valuesList = new ArrayList<>(chapters.size());
+                        for (Chapter chapter : chapters) {
+                            final ContentValues values = new ContentValues(2);
+                            values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
+                            values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
+//                        valuesList.add(values);
+                            getContentResolver().insert(OneBrickContentProvider.CHAPTERS_URI, values);
+                        }
+//                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
+//                            valuesList.toArray(new ContentValues[0]));
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers,
+                                          Throwable throwable, JSONObject errorResponse) {
+                        Log.w(TAG, "get chapters api call failed");
+                    }
+                });
+    }
+
     /**
      * Create a new dummy account for the sync adapter
      *
@@ -131,9 +135,10 @@ public class SplashScreenActivity extends ActionBarActivity {
     }
 
     private void requestChapters() {
-        Bundle settingsBundle = new Bundle();
+        final Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
         ContentResolver.requestSync(mAccount, OneBrickContentProvider.AUTHORITY, settingsBundle);
     }
 }

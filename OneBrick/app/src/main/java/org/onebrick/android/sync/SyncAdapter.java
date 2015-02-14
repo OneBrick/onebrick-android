@@ -8,18 +8,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
-import java.util.List;
+import java.util.Map;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -41,28 +36,37 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
 
-        OneBrickApplication.getInstance().getRestClient().getChapters(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d(TAG, "get chapters api call success");
-                List<Chapter> chapters = Chapter.listFromJson(response);
-//                    final List<ContentValues> valuesList = new ArrayList<>(chapters.size());
-                for (Chapter chapter : chapters) {
-                    final ContentValues values = new ContentValues(2);
-                    values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
-                    values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
-//                        valuesList.add(values);
-                    mContentResolver.insert(OneBrickContentProvider.CHAPTERS_URI, values);
-                }
-//                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
-//                            valuesList.toArray(new ContentValues[0]));
-            }
+        Map<String, Chapter> chapters = OneBrickApplication.getInstance().getRestService().getAllChapters();
+        for (Map.Entry<String, Chapter> entry : chapters.entrySet()) {
+            final Chapter chapter = entry.getValue();
+            final ContentValues values = new ContentValues(2);
+            values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
+            values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
+            mContentResolver.insert(OneBrickContentProvider.CHAPTERS_URI, values);
+        }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  Throwable throwable, JSONObject errorResponse) {
-                Log.w(TAG, "get chapters api call failed");
-            }
-        });
+//        OneBrickApplication.getInstance().getRestClient().getChapters(new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d(TAG, "get chapters api call success");
+//                List<Chapter> chapters = Chapter.listFromJson(response);
+////                    final List<ContentValues> valuesList = new ArrayList<>(chapters.size());
+//                for (Chapter chapter : chapters) {
+//                    final ContentValues values = new ContentValues(2);
+//                    values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
+//                    values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
+////                        valuesList.add(values);
+//                    mContentResolver.insert(OneBrickContentProvider.CHAPTERS_URI, values);
+//                }
+////                    getContentResolver().bulkInsert(ChapterContentProvider.CONTENT_URI,
+////                            valuesList.toArray(new ContentValues[0]));
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers,
+//                                  Throwable throwable, JSONObject errorResponse) {
+//                Log.w(TAG, "get chapters api call failed");
+//            }
+//        });
     }
 }

@@ -79,14 +79,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
-        <activity
-            android:name=".activities.EventDescriptionActivity"
-            android:label="@string/title_activity_event_description"
-            android:parentActivityName=".activities.EventDetailActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.EventDetailActivity" />
-        </activity>
+
         <activity
             android:name=".activities.MyEventsActivity"
             android:label="@string/title_activity_my_events"
@@ -107,8 +100,6 @@
             android:label="@string/select_your_chapter"
             android:noHistory="true" >
         </activity>
-
-        <receiver android:name=".activities.DisplayNotificationReceiver" />
 
         <activity
             android:name=".activities.SearchActivity"

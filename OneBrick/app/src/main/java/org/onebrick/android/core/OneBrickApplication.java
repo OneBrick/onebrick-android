@@ -5,10 +5,17 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.newrelic.agent.android.NewRelic;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import org.onebrick.android.models.Chapter;
+
+import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String TAG = "OneBrickApplication";
@@ -17,6 +24,7 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
     private static final String PREF_CHAPTER_ID = "CHAPTER_ID";
 
     private static OneBrickApplication sInstance;
+    private OneBrickService mRestService;
 
     public static OneBrickApplication getInstance() {
         return sInstance;
@@ -39,6 +47,21 @@ public class OneBrickApplication extends com.activeandroid.app.Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
+
+        final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Chapter.class, new Chapter.ChapterJsonDeserializer())
+                .create();
+
+        final RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://dev-v3.gotpantheon.com/noauth")
+                .setConverter(new GsonConverter(gson))
+                .build();
+
+        mRestService = restAdapter.create(OneBrickService.class);
+    }
+
+    public OneBrickService getRestService() {
+        return mRestService;
     }
 
     public OneBrickClient getRestClient() {
