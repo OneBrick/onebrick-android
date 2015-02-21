@@ -3,14 +3,12 @@ package org.onebrick.android.models;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.activeandroid.Model;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class User {
 
-    private static final String TAG = User.class.getName();
+    private static final String TAG = "User";
 
     public String name;
     public String email;

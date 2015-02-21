@@ -1,5 +1,6 @@
 package org.onebrick.android.core;
 
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -10,7 +11,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class OneBrickApplication extends com.activeandroid.app.Application {
+public class OneBrickApplication extends Application {
     private static final String TAG = "OneBrickApplication";
 
     private static final String PREF_CHAPTER_NAME = "CHAPTER_NAME";

@@ -10,14 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.activeandroid.content.ContentProvider;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.helpers.LoginManager;
-import org.onebrick.android.models.Event;
+import org.onebrick.android.providers.OneBrickContentProvider;
 
 public class MyUpcomingEventsFragment extends EventsListFragment {
 
@@ -60,7 +59,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Event.fromJSONArray(response, myChapterId);
+                //Event.fromJSONArray(response, myChapterId);
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
 
             }
@@ -91,7 +90,7 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
         final String sortOrder = null;
         // TODO use appropriate params
         return new CursorLoader(getActivity(),
-                ContentProvider.createUri(Event.class, null),
+                OneBrickContentProvider.EVENTS_URI,
                 projection,
                 selection,
                 selectionArgs,

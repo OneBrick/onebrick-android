@@ -3,24 +3,11 @@ package org.onebrick.android.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import com.activeandroid.content.ContentProvider;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
-import org.onebrick.android.helpers.LoginManager;
-import org.onebrick.android.models.Event;
-import org.onebrick.android.models.User;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
 public class HomeEventsFragment extends EventsListFragment {

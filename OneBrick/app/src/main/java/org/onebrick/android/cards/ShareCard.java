@@ -28,7 +28,7 @@ public class ShareCard extends EventCard {
         ivEventInfoFbShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SocialShareEmail.shareFacebook(v, mEvent.getTitle(), mEvent.eventId);
+                SocialShareEmail.shareFacebook(v, mEvent.getTitle(), mEvent.getEventId());
             }
         });
 
