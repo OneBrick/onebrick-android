@@ -1,7 +1,9 @@
 package org.onebrick.android.activities;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -13,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.activeandroid.content.ContentProvider;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -32,6 +33,7 @@ import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
+import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,15 +44,15 @@ import butterknife.InjectView;
 public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = EventDetailActivity.class.getName();
-    public static final String EXTRA_EVENT_ID = "event_id";
+    private static final String TAG = "EventDetailActivity";
+    public static final String EXTRA__ID = "_id";
 
     @InjectView(R.id.btn_rsvp) Button btnRsvp;
     @InjectView(R.id.lv_event_detail_cards)
     ListView mCardsListView;
 
     private CardArrayAdapter mAdapter;
-    private long eventId;
+    private long _Id;
     private Event mEvent;
     private OneBrickClient obClient;
 
@@ -61,11 +63,11 @@ public class EventDetailActivity extends ActionBarActivity implements
     JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            //Toast.makeText(getApplication(),"RSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.un_rsvp);
             btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-            mEvent.userRSVP = 1;
-            Event.updateEvent(mEvent);
+            mEvent.rsvp();
+            // TODO update through SyncAdapter
+            //Event.updateEvent(mEvent);
 
         }
 
@@ -87,11 +89,11 @@ public class EventDetailActivity extends ActionBarActivity implements
     JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            //Toast.makeText(getApplication(),"UnRSVP Success",Toast.LENGTH_SHORT).show();
             btnRsvp.setText(R.string.rsvp);
             btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-            mEvent.userRSVP= 0;
-            Event.updateEvent(mEvent);
+            mEvent.unRsvp();
+            // TODO update through SyncAdapter
+            //Event.updateEvent(mEvent);
         }
 
         @Override
@@ -108,7 +110,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     private void updateViews() {
         if(LoginManager.getInstance(this).isLoggedIn()) {
-            if (mEvent.userRSVP == 1) {
+            if (mEvent.isRsvp()) {
                 btnRsvp.setText(R.string.un_rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
             } else {
@@ -152,7 +154,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
         obClient = OneBrickApplication.getInstance().getRestClient();
         Intent eventInfo = getIntent();
-        eventId = eventInfo.getLongExtra(EXTRA_EVENT_ID, -1);
+        _Id = eventInfo.getLongExtra(EXTRA__ID, -1);
         getSupportLoaderManager().initLoader(0, null, this);
     }
 
@@ -164,7 +166,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                 if (!loginManager.isLoggedIn()) {
                     final Intent loginActivity = new Intent(EventDetailActivity.this, LoginActivity.class);
                     startActivity(loginActivity);
-                    if (mEvent.userRSVP == 1) {
+                    if (mEvent.isRsvp()) {
                         btnRsvp.setText(R.string.un_rsvp);
                         btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     } else {
@@ -174,10 +176,10 @@ public class EventDetailActivity extends ActionBarActivity implements
                 } else {
                     final User currentUser = loginManager.getCurrentUser();
                     if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
-                        obClient.postRsvpToEvent(mEvent.eventId, currentUser.getUserId(), rsvpResponseHandler);
+                        obClient.postRsvpToEvent(mEvent.getEventId(), currentUser.getUserId(), rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
-                        obClient.postUnRsvpToEvent(mEvent.eventId, currentUser.getUserId(), unRsvpResponseHandler);
+                        obClient.postUnRsvpToEvent(mEvent.getEventId(), currentUser.getUserId(), unRsvpResponseHandler);
                     }
                 }
             }
@@ -186,7 +188,8 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        return new CursorLoader(this, ContentProvider.createUri(Event.class, eventId),
+        final Uri uri = ContentUris.withAppendedId(OneBrickContentProvider.EVENTS_URI, _Id);
+        return new CursorLoader(this, uri,
                 null, null, null, null);
     }
 

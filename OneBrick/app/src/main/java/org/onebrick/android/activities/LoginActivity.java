@@ -15,19 +15,15 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickClient;
-import org.onebrick.android.R;
 import org.onebrick.android.helpers.LoginManager;
-import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
-
-import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-//public class LoginActivity extends OAuthLoginActivity<OneBrickClient> {
 public class LoginActivity extends ActionBarActivity {
 
     // UI references.
@@ -114,32 +110,13 @@ public class LoginActivity extends ActionBarActivity {
         client.getUserLogin(username, password, new JsonHttpResponseHandler() {
 
             @Override
-            public void onStart() {
-                super.onStart();
-                //mProgressView.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                //mProgressView.setVisibility(ProgressBar.GONE);
-                //finish();
-            }
-
-            @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //super.onSuccess(statusCode, headers, response);
-                //Log.i("login success1", response.toString());
                 try {
                     Log.d("id", response.getJSONObject("user").optString("uid"));
                     User user = User.fromJSON(response);
                     userId = user.getUserId();
                     LoginManager manager = LoginManager.getInstance(LoginActivity.this);
                     manager.setCurrentUser(user);
-                    //Toast.makeText(getApplicationContext(), "login status: " + manager.isLoggedIn(), Toast.LENGTH_SHORT).show();
-                    /*
-                    Calling method to update rsvp info on methods
-                     */
                     updateMyEvents();
                     finish();
                 } catch (JSONException e) {
@@ -167,7 +144,6 @@ public class LoginActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                //super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("login failure3", "Authentication failed");
                 Log.e("login failure3", throwable.toString());
                 Log.e("login failure3", errorResponse.toString());
@@ -192,12 +168,12 @@ public class LoginActivity extends ActionBarActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 int chapterId = OneBrickApplication.getInstance().getChapterId();
                 if (response != null) {
-                    ArrayList<Event> arrayOfEvents = Event.fromJSONArray(response, chapterId);
-                    for (int i=0;i<arrayOfEvents.size();i++) {
-                        Event e = arrayOfEvents.get(i);
-                        e.userRSVP = 1;
-                        Event.updateEvent(e);
-                    }
+//                    ArrayList<Event> arrayOfEvents = Event.fromJSONArray(response, chapterId);
+//                    for (int i=0;i<arrayOfEvents.size();i++) {
+//                        Event e = arrayOfEvents.get(i);
+//                        e.userRSVP = 1;
+//                        Event.updateEvent(e);
+//                    }
                 }
 
             }
@@ -206,14 +182,12 @@ public class LoginActivity extends ActionBarActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("login failure1", responseString);
                 Log.e("login failure1", throwable.toString());
-                //Toast.makeText(getApplicationContext(), "Couldn't login", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.e("login failure2", errorResponse.toString());
                 Log.e("login failure2", throwable.toString());
-                //Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
             }
 
         });
