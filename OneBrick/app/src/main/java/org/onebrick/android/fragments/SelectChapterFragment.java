@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import org.onebrick.android.R;
+import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
@@ -48,7 +49,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public Loader onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getActivity(),
                 OneBrickContentProvider.CHAPTERS_URI,
-                null, null, null, null);
+                null, null, null, ChapterTable.Columns.NAME + " ASC");
     }
 
     @Override

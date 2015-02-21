@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 
-import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.core.OneBrickService;
 import org.onebrick.android.database.ChapterTable;
@@ -53,9 +52,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         if (syncType == SYNC_CHAPTERS) {
             Map<String, Chapter> chapters = restService.getAllChapters();
+            final ContentValues values = new ContentValues(2);
             for (Map.Entry<String, Chapter> entry : chapters.entrySet()) {
                 final Chapter chapter = entry.getValue();
-                final ContentValues values = new ContentValues(2);
+                values.clear();
                 values.put(ChapterTable.Columns.CHAPTER_ID, chapter.getChapterId());
                 values.put(ChapterTable.Columns.NAME, chapter.getChapterName());
                 mContentResolver.insert(OneBrickContentProvider.CHAPTERS_URI, values);
@@ -64,8 +64,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             final int chapterId = extras.getInt(EXTRA_CHAPTER_ID);
             List<Event> eventList = restService.getAllEvents(chapterId);
 
+            final ContentValues values = new ContentValues(14);
             for (Event event : eventList) {
-                final ContentValues values = new ContentValues(14);
+                values.clear();
                 values.put(EventTable.Columns.EVENT_ID, event.getEventId());
                 values.put(EventTable.Columns.CHAPTER_ID, chapterId);
                 values.put(EventTable.Columns.TITLE, event.getTitle());
@@ -80,7 +81,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 values.put(EventTable.Columns.DESCRIPTION, event.getDescription());
                 values.put(EventTable.Columns.COORDINATOR_EMAIL, event.getCoordinatorEmail());
                 values.put(EventTable.Columns.MANAGER_EMAIL, event.getManagerEmail());
-
                 mContentResolver.insert(OneBrickContentProvider.EVENTS_URI, values);
             }
         }
