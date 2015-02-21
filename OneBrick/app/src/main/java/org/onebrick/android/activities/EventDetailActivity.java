@@ -1,7 +1,9 @@
 package org.onebrick.android.activities;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -32,6 +34,7 @@ import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.User;
+import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +45,7 @@ import butterknife.InjectView;
 public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = EventDetailActivity.class.getName();
+    private static final String TAG = "EventDetailActivity";
     public static final String EXTRA_EVENT_ID = "event_id";
 
     @InjectView(R.id.btn_rsvp) Button btnRsvp;
@@ -186,7 +189,8 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        return new CursorLoader(this, ContentProvider.createUri(Event.class, eventId),
+        final Uri uri = ContentUris.withAppendedId(OneBrickContentProvider.EVENTS_URI, eventId);
+        return new CursorLoader(this, uri,
                 null, null, null, null);
     }
 

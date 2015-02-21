@@ -25,7 +25,7 @@ import butterknife.InjectView;
 public abstract class EventsListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = EventsListFragment.class.getName();
+    private static final String TAG = "EventsListFragment";
 
     @InjectView(R.id.progressBar) ProgressBar progressBar;
     @InjectView(R.id.lvEventSearchList)

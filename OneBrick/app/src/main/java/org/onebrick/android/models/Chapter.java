@@ -147,7 +147,7 @@ public class Chapter extends Model {
         @Override
         public Chapter deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
-            final JsonObject jsonObject = (JsonObject) json;
+            final JsonObject jsonObject = json.getAsJsonObject();
             final Chapter chapter = new Chapter();
             chapter.name = jsonObject.get("title").getAsString();
             chapter.chapterId = jsonObject.get("nid").getAsInt();
