@@ -45,7 +45,7 @@ public class OneBrickApplication extends Application {
     }
 
     public OneBrickClient getRestClient() {
-        return (OneBrickClient) OneBrickClient.getInstance(OneBrickClient.class, this);
+        return new OneBrickClient(this);
     }
 
 

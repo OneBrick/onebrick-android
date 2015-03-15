@@ -15,7 +15,10 @@ import org.onebrick.android.providers.OneBrickContentProvider;
 import org.onebrick.android.sync.SyncAdapter;
 
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
+import se.akerfeldt.signpost.retrofit.RetrofitHttpOAuthConsumer;
+import se.akerfeldt.signpost.retrofit.SigningOkClient;
 
 public class OneBrickRESTClient {
     private static OneBrickRESTClient sInstance;
@@ -38,9 +41,15 @@ public class OneBrickRESTClient {
                 .registerTypeAdapter(Event.class, new Event.EventJsonDeserializer())
                 .create();
 
+        RetrofitHttpOAuthConsumer oAuthConsumer = new RetrofitHttpOAuthConsumer(
+                OneBrickClient.REST_CONSUMER_KEY, OneBrickClient.REST_CONSUMER_SECRET);
+        oAuthConsumer.setTokenWithSecret("", "");
+        OkClient client = new SigningOkClient(oAuthConsumer);
+
         final RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://dev-v3.gotpantheon.com/noauth")
+                .setEndpoint("http://dev-v3.gotpantheon.com/auth")
                 .setConverter(new GsonConverter(gson))
+                .setClient(client)
                 .build();
 
         mRestService = restAdapter.create(OneBrickService.class);
