@@ -56,7 +56,7 @@ public class TitleCard extends EventCard {
                         .putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getAddress())
                         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
                 mContext.startActivity(intent);
-                mCalendarImageView.setImageResource(R.drawable.ic_in_calendar);
+                mCalendarImageView.setImageResource(R.drawable.ic_calendar);
             }
         });
 
