@@ -15,8 +15,8 @@ public class OneBrickCrypt {
     private SecretKeySpec keyspec;
     private Cipher cipher;
 
-    private String iv = "";
-    private String secretKey = "";
+    private String iv = "3745d9ebc4477bde";
+    private String secretKey = "922d099257054202";
 
     public OneBrickCrypt() {
         ivspec = new IvParameterSpec(iv.getBytes());

@@ -48,8 +48,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     public static final String EXTRA__ID = "_id";
 
     @InjectView(R.id.btn_rsvp) Button btnRsvp;
-    @InjectView(R.id.lv_event_detail_cards)
-    ListView mCardsListView;
+    @InjectView(R.id.lv_event_detail_cards) ListView mCardsListView;
 
     private CardArrayAdapter mAdapter;
     private long _Id;
@@ -209,6 +208,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
             updateViews();
             setupListeners();
+
         } else {
             // TODO error
         }
@@ -217,4 +217,9 @@ public class EventDetailActivity extends ActionBarActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
+
+
+
 }
+
+

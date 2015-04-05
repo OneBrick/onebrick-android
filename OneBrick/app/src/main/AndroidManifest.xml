@@ -19,6 +19,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".core.OneBrickApplication"
@@ -99,6 +101,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.onebrick.android.activities.HomeActivity" />
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value=""/>
+
     </application>
+
 
 </manifest>

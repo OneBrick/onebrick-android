@@ -23,8 +23,8 @@ public class OneBrickClient {
 
     //public static final Class<? extends Api> REST_API_CLASS = SimpleGeoApi.class; // Change this
     public static final String REST_URL = "http://dev-v3.gotpantheon.com/auth"; // Change this, base API URL
-    public static final String REST_CONSUMER_KEY = "";       // Change this
-    public static final String REST_CONSUMER_SECRET = ""; // Change this
+    public static final String REST_CONSUMER_KEY = "bgehZuhH9eDVNSRtqKasoAVqFRJyrfj6";       // Change this
+    public static final String REST_CONSUMER_SECRET = "oCkXA73M2EYGSSUxb8FxZUmMD5srSCFd"; // Change this
     public static final String REST_CALLBACK_URL = "oauth://onebrick-android"; // Change this (here and in manifest)
 
     private static final String PATH_SEPARATOR = "/";

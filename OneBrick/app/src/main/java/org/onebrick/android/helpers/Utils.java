@@ -31,4 +31,11 @@ public class Utils {
         return !(email == null || "null".equals(email.trim().toLowerCase()));
     }
 
+    public static String replaceWhiteSpace(@NonNull String input){
+        if (!input.isEmpty()){
+            input = input.replaceAll("\\s+", "+");
+        }
+        return input;
+    }
+
 }
