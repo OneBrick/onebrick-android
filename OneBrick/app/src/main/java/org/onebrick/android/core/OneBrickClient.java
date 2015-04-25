@@ -1,7 +1,5 @@
 package org.onebrick.android.core;
 
-import android.content.Context;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -23,10 +21,7 @@ public class OneBrickClient {
 
     //public static final Class<? extends Api> REST_API_CLASS = SimpleGeoApi.class; // Change this
     public static final String REST_URL = "http://dev-v3.gotpantheon.com/auth"; // Change this, base API URL
-    public static final String REST_CONSUMER_KEY = "";       // Change this
-    public static final String REST_CONSUMER_SECRET = ""; // Change this
     public static final String REST_CALLBACK_URL = "oauth://onebrick-android"; // Change this (here and in manifest)
-
     private static final String PATH_SEPARATOR = "/";
     private static final String GET_CHAPTERS_END_POINT = "chapters.json";
     private static final String GET_EVENT_END_POINT = "event.json";
@@ -36,28 +31,7 @@ public class OneBrickClient {
     private static final String EVENT_PATH = "event";
     private static final String JSON_FILE_EXTENSION = ".json";
 
-    public OneBrickClient(Context context) {
-        //super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
-    }
-
-    /*
-        This Function access the endpoint to get the list of chapters.
-     */
-    public void getChapters(AsyncHttpResponseHandler handler) {
-//        String apiUri = getApiUrl(PATH_SEPARATOR + GET_CHAPTERS_END_POINT);
-//        client.get(apiUri, null, handler);
-    }
-    public void getEventsList(int chapterId, long userId, AsyncHttpResponseHandler handler){
-//        String apiUri = getApiUrl(PATH_SEPARATOR + GET_EVENT_END_POINT);
-        RequestParams params = new RequestParams();
-        params.put("chapter", Integer.toString(chapterId));
-        if(userId > 1) {
-            params.put("uid", Long.toString(userId));
-        }
-//        client.get(apiUri, params, handler);
-    }
-
-    public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler){
+    public void getUserLogin(String username, String password, AsyncHttpResponseHandler handler) {
         StringBuilder apiUri = new StringBuilder();
         //apiUri.append(getApiUrl(PATH_SEPARATOR + GET_LOGIN_END_POINT));
         // TODO redundant parameters?
@@ -72,11 +46,11 @@ public class OneBrickClient {
         //client.post(apiUri.toString(), params, handler);
     }
 
-    public void getEventInfo(String eventId, long userId,AsyncHttpResponseHandler handler){
+    public void getEventInfo(String eventId, long userId, AsyncHttpResponseHandler handler) {
         StringBuilder apiUri = new StringBuilder();
         //apiUri.append(getApiUrl(PATH_SEPARATOR + EVENT_PATH + PATH_SEPARATOR + eventId + JSON_FILE_EXTENSION));
         RequestParams params = null;
-        if(userId > 1) {
+        if (userId > 1) {
             params = new RequestParams();
             params.put("uid", Long.toString(userId));
         }
@@ -100,13 +74,13 @@ public class OneBrickClient {
         //client.post(apiUri, params, handler);
     }
 
-    public void getMyEvents(long userId, boolean isPastEvent, AsyncHttpResponseHandler handler){
+    public void getMyEvents(long userId, boolean isPastEvent, AsyncHttpResponseHandler handler) {
         //String apiUri = getApiUrl(PATH_SEPARATOR + GET_EVENT_END_POINT);
         RequestParams params = new RequestParams();
         params.put("uid", Long.toString(userId));
-        if (isPastEvent){
+        if (isPastEvent) {
             params.put("includePastEvents", Long.toString(1));
-        }else{
+        } else {
             params.put("includePastEvents", Long.toString(0));
         }
         //client.get(apiUri, params, handler);

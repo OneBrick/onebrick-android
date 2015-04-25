@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.onebrick.android.BuildConfig;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.providers.OneBrickContentProvider;
@@ -42,7 +43,7 @@ public class OneBrickRESTClient {
                 .create();
 
         RetrofitHttpOAuthConsumer oAuthConsumer = new RetrofitHttpOAuthConsumer(
-                OneBrickClient.REST_CONSUMER_KEY, OneBrickClient.REST_CONSUMER_SECRET);
+                BuildConfig.CONSUMER_KEY, BuildConfig.CONSUMER_SECRET);
         oAuthConsumer.setTokenWithSecret("", "");
         OkClient client = new SigningOkClient(oAuthConsumer);
 

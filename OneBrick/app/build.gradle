@@ -20,6 +20,14 @@ android {
     }
 }
 
+def CONSUMER_KEY = '"' + consumerKey + '"' ?: '"Define Consumer key"';
+def CONSUMER_SECRET = '"' + consumerSecret + '"' ?: '"Define Consumer secret"';
+
+android.buildTypes.each { type ->
+    type.buildConfigField 'String', 'CONSUMER_KEY', CONSUMER_KEY
+    type.buildConfigField 'String', 'CONSUMER_SECRET', CONSUMER_SECRET
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:21.0.+'
