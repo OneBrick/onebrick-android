@@ -34,6 +34,12 @@
     <string name="select_chapter">Select Chapter</string>
     <string name="select_your_chapter">Select Your Chapter</string>
 
+    <!-- event detail: google map -->
+    <string name="map_disconnected">Disconnected. Please re-connect.</string>
+    <string name="map_network_lost">Network lost. Please re-connect.</string>
+    <string name="no_location_service">Sorry. Location services not available to you.</string>
+
+
     <!-- Spinner items for remainder -->
 
     <string-array name="timeSpan">

@@ -38,12 +38,13 @@ public class MapCard extends EventCard implements
     private GoogleApiClient mGoogleApiClient;
     private String eventLocation;
     //Define a request code to send to Google Play services
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private static Context context;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final int ZOOM_LEVEL = 13;
+    private static Context mContext;
 
     public MapCard(Context context, @NonNull Event event) {
         super(context, event);
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
@@ -52,15 +53,15 @@ public class MapCard extends EventCard implements
 
         if (!mEvent.getAddress().isEmpty() ){
             eventLocation = mEvent.getAddress();
-            Log.d("TAG", "event location: " + eventLocation);
+            Log.d(TAG, "event location: " + eventLocation);
             setupMap();
         }
         return mView;
     }
 
     private void setupMap() {
-        if (context instanceof Activity){
-            mapFragment = (MapFragment) ((Activity) context).getFragmentManager().findFragmentById(R.id.map_frame);
+        if (mContext instanceof Activity){
+            mapFragment = (MapFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.map_frame);
             if (mapFragment != null) {
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override
@@ -80,7 +81,7 @@ public class MapCard extends EventCard implements
         map = googleMap;
         map.setMyLocationEnabled(true);
         // Now that map has loaded, let's get our location!
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
+        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
@@ -95,7 +96,7 @@ public class MapCard extends EventCard implements
 
     private boolean isGooglePlayServicesAvailable() {
         // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
         if (ConnectionResult.SUCCESS == resultCode) {
             Log.d(TAG, "Google Play services is available.");
             return true;
@@ -112,12 +113,12 @@ public class MapCard extends EventCard implements
      */
     @Override
     public void onConnected(Bundle dataBundle) {
-        List<Address> geoCode = GeoCodeHelper.getGeoCode(context, eventLocation);
+        List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
         if (geoCode != null && !geoCode.isEmpty() ){
             LatLng location = new LatLng(
                     geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
             map.setMyLocationEnabled(true);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
             map.addMarker(new MarkerOptions()
                     .title(eventLocation)
                     .position(location));
@@ -131,9 +132,9 @@ public class MapCard extends EventCard implements
     @Override
     public void onConnectionSuspended(int i) {
         if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(context, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.map_disconnected, Toast.LENGTH_SHORT).show();
         } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(context, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.map_network_lost, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -150,15 +151,15 @@ public class MapCard extends EventCard implements
         if (connectionResult.hasResolution()) {
             try {
                 // Start an Activity that tries to resolve the error
-                connectionResult.startResolutionForResult((Activity) context,
+                connectionResult.startResolutionForResult((Activity) mContext,
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
             } catch (IntentSender.SendIntentException e) {
-                Log.e(TAG, "Connection failed");
+                Log.e(TAG, "Connection failed.");
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(context,
-                    "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext,
+                    R.string.no_location_service, Toast.LENGTH_LONG).show();
         }
     }
 }
