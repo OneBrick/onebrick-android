@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,6 +16,7 @@ import org.onebrick.android.models.Event;
 import org.onebrick.android.providers.OneBrickContentProvider;
 import org.onebrick.android.sync.SyncAdapter;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -106,5 +108,32 @@ public class OneBrickRESTClient {
         settingsBundle.putInt(SyncAdapter.EXTRA_SYNC_TYPE, SyncAdapter.SYNC_EVENTS);
         settingsBundle.putInt(SyncAdapter.EXTRA_CHAPTER_ID, chapterId);
         ContentResolver.requestSync(mAccount, OneBrickContentProvider.AUTHORITY, settingsBundle);
+    }
+
+    /**
+     * Call retrofit asynchronously
+     */
+    public void verifyLogin(@NonNull String ukey, Callback<String[]> cb) {
+        mRestService.verify(ukey, cb);
+    }
+
+    void eventInfo(int eventId) {
+
+    }
+
+    void rsvp(int eventId) {
+
+    }
+
+    void unrsvp(int eventId) {
+
+    }
+
+    void myEvents(int includePastEvents) {
+
+    }
+
+    void search(int chapterId, String search) {
+
     }
 }

@@ -12,29 +12,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.onebrick.android.R;
-import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickCrypt;
+import org.onebrick.android.core.OneBrickRESTClient;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class LoginActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
 
     // UI references.
-    @InjectView(R.id.email) EditText mEmailView;
-    @InjectView(R.id.password) EditText mPasswordView;
-    @InjectView(R.id.email_sign_in_button) Button mEmailSignInButton;
+    @InjectView(R.id.email)
+    EditText mEmailView;
+    @InjectView(R.id.password)
+    EditText mPasswordView;
+    @InjectView(R.id.email_sign_in_button)
+    Button mEmailSignInButton;
     private long userId;
-
-    OneBrickApplication restClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +46,14 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View view) {
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
-                if(email.length() == 0
+                if (email.length() == 0
                         || email.equalsIgnoreCase("")
                         || !email.contains("@")
-                        || password.length()== 0
+                        || password.length() == 0
                         || password.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(),
                             R.string.error_login_general,
-                    Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
 
                 } else {
                     attemptLogin();
@@ -109,6 +108,7 @@ public class LoginActivity extends ActionBarActivity {
             getAuthentication(email, password);
         }
     }
+
     private void getAuthentication(@NonNull String username, @NonNull String password) {
         byte[] encrypt = null;
         try {
@@ -118,68 +118,34 @@ public class LoginActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         final String finalEncrypted = OneBrickCrypt.bytesToHex(encrypt);
-//        client.getUserLogin(finalEncrypted, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                try {
-//                    Log.d("auth result", response.getJSONObject("result").optString("uid"));
-//                    //User user = User.fromJSON(response);
-//                    //userId = user.getUserId();
-//                    //LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-//                    //manager.setCurrentUser(user);
-//
-//                    updateMyEvents();
-//                    finish();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-//
-//                Log.d("auth result", responseString);
+        OneBrickRESTClient.getInstance().verifyLogin(finalEncrypted, new Callback<String[]>() {
+            @Override
+            public void success(String[] strings, Response response) {
+                if (strings != null && strings.length > 0) {
+                    if (strings[0].equals("1")) {
+                        // successful
 //                saveKey(finalEncrypted);
 //                LoginManager manager = LoginManager.getInstance(LoginActivity.this);
 //                manager.setCurrentUserKey(finalEncrypted);
 //                updateMyEvents();
 //                finish();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                Log.e("login failure1", responseString);
-//                Log.e("login failure1", throwable.toString());
-//                Toast.makeText(getApplicationContext(),
-//                        "Login FailedPassword or Email incorrect",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Log.e("login failure2", errorResponse.toString());
-//                Log.e("login failure2", throwable.toString());
-//                Toast.makeText(getApplicationContext(),
-//                        "Login FailedPassword or Email incorrect",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                Log.e("login failure3", "Authentication failed");
-//                Log.e("login failure3", throwable.toString());
-//                Log.e("login failure3", errorResponse.toString());
-//                Toast.makeText(getApplicationContext(),
-//                        "Login Failed : Password or Email incorrect",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//
-//        });
 
+                    } else {
+                        // invalid credential
+                    }
+                } else {
+                    // invalid json response
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                // rest API call failed
+            }
+        });
     }
 
-    private void saveKey(@NonNull String key){
+    private void saveKey(@NonNull String key) {
         Context context = this.getApplicationContext();
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_ukey), Context.MODE_PRIVATE);
