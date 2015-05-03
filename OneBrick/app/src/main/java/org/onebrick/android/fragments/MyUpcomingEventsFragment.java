@@ -43,9 +43,9 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
         super.onViewCreated(view, savedInstanceState);
         loginManager = LoginManager.getInstance(getActivity());
 
-        if (loginManager.getCurrentUser() != null){
-            populateUpcomingEvents(loginManager.getCurrentUser().getUserId());
-        }
+//        if (loginManager.getCurrentUser() != null){
+//            populateUpcomingEvents(loginManager.getCurrentUser().getUserId());
+//        }
     }
 
     private void populateUpcomingEvents(long userId){

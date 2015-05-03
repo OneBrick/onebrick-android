@@ -36,9 +36,9 @@ public class MyPastEventsFragment extends EventsListFragment {
         super.onViewCreated(view, savedInstanceState);
         LoginManager loginManager = LoginManager.getInstance(getActivity());
 
-        if (loginManager.getCurrentUser() != null){
-            populatePastEvents(loginManager.getCurrentUser().getUserId());
-        }
+//        if (loginManager.getCurrentUser() != null){
+//            populatePastEvents(loginManager.getCurrentUser().getUserId());
+//        }
     }
 
     private void populatePastEvents(long userId){

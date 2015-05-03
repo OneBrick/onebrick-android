@@ -1,6 +1,9 @@
 package org.onebrick.android.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,6 +21,7 @@ import org.json.JSONObject;
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickClient;
+import org.onebrick.android.core.OneBrickCrypt;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.User;
 
@@ -26,11 +30,20 @@ import butterknife.InjectView;
 
 public class LoginActivity extends ActionBarActivity {
 
+    private static final String TAG = "LoginActivity";
+
     // UI references.
     @InjectView(R.id.email) EditText mEmailView;
     @InjectView(R.id.password) EditText mPasswordView;
     @InjectView(R.id.email_sign_in_button) Button mEmailSignInButton;
     private long userId;
+
+    OneBrickApplication restClient;
+
+    @Inject
+    public LoginActivity(OneBrickApplication restClient){
+        this.restClient = restClient;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +62,8 @@ public class LoginActivity extends ActionBarActivity {
                         || password.length()== 0
                         || password.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(),
-                            "Email format incorrect or Password cannot be null or empty string",
-                            Toast.LENGTH_SHORT).show();
+                            R.string.error_login_general,
+                    Toast.LENGTH_SHORT).show();
 
                 } else {
                     attemptLogin();
@@ -105,23 +118,43 @@ public class LoginActivity extends ActionBarActivity {
             getAuthentication(email, password);
         }
     }
-    private void getAuthentication(String username, String password) {
+    private void getAuthentication(@NonNull String username, @NonNull String password) {
         OneBrickClient client = OneBrickApplication.getInstance().getRestClient();
-        client.getUserLogin(username, password, new JsonHttpResponseHandler() {
-
+        byte[] encrypt = null;
+        try {
+            encrypt = OneBrickCrypt.encrypt(username, password);
+        } catch (Exception e) {
+            Log.e(TAG, "can't get an encrypted key.");
+            e.printStackTrace();
+        }
+        final String finalEncrypted = OneBrickCrypt.bytesToHex(encrypt);
+        client.getUserLogin(finalEncrypted, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    Log.d("id", response.getJSONObject("user").optString("uid"));
-                    User user = User.fromJSON(response);
-                    userId = user.getUserId();
-                    LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-                    manager.setCurrentUser(user);
+                    Log.d("auth result", response.getJSONObject("result").optString("uid"));
+                    //User user = User.fromJSON(response);
+                    //userId = user.getUserId();
+                    //LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+                    //manager.setCurrentUser(user);
+
                     updateMyEvents();
                     finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                Log.d("auth result", responseString);
+                saveKey(finalEncrypted);
+                LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+                manager.setCurrentUserKey(finalEncrypted);
+                updateMyEvents();
+                finish();
+
             }
 
             @Override
@@ -156,6 +189,14 @@ public class LoginActivity extends ActionBarActivity {
 
     }
 
+    private void saveKey(@NonNull String key){
+        Context context = this.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_ukey), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.user_key), key);
+        editor.commit();
+    }
 
     /*
     After the user has logged in, this method is called to update the event table

@@ -9,12 +9,6 @@
     <string name="app_name">OneBrick</string>
     <string name="more_continue">More&#8230;</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Login</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_field_required">This field is required</string>
     <string name="title_activity_event_info">EventInfoActivity</string>
     <string name="title_activity_event_description">EventDescription</string>
     <string name="title_activity_my_events">My Events</string>
@@ -28,8 +22,20 @@
     <string name="coordinator_label"> Coordinator</string>
     <string name="contacts">Would like to contact organizers?</string>
 
+    <!-- authentication -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
+    <string name="preference_file_ukey">org.onebrick.android.PREFERENCE_FILE_UKEY</string>
+    <string name="user_key">ukey</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Login</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_login_general">Email format incorrect or Password cannot be null or empty string.</string>
+    <string name="error_field_required">This field is required</string>
+
+
     <string name="my_events">My Events</string>
     <string name="select_chapter">Select Chapter</string>
     <string name="select_your_chapter">Select Your Chapter</string>

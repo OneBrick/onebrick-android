@@ -1,5 +1,6 @@
 package org.onebrick.android.core;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
@@ -11,12 +12,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class OneBrickCrypt {
 
-    private IvParameterSpec ivspec;
-    private SecretKeySpec keyspec;
-    private Cipher cipher;
+    private static IvParameterSpec ivspec;
+    private static SecretKeySpec keyspec;
+    private static Cipher cipher;
 
-    private String iv = "";
-    private String secretKey = "";
+    private static final String iv = "";
+    private static final String secretKey = "";
 
     public OneBrickCrypt() {
         ivspec = new IvParameterSpec(iv.getBytes());
@@ -31,9 +32,9 @@ public class OneBrickCrypt {
         }
     }
 
-    public byte[] encrypt(String email, String pwd) throws Exception {
-        if(email == null || email.length() == 0 || pwd == null || pwd.length() == 0)
-            throw new Exception("Empty input");
+    public static byte[] encrypt(@NonNull String email, @NonNull String pwd) throws Exception {
+        if(email.length() == 0 || pwd.length() == 0)
+            throw new Exception("Either email or password is empty");
 
         byte[] encrypted = null;
         try {
@@ -46,7 +47,7 @@ public class OneBrickCrypt {
         return encrypted;
     }
 
-    public byte[] decrypt(String code) throws Exception {
+    public static byte[] decrypt(@NonNull String code) throws Exception {
         if(code == null || code.length() == 0)
             throw new Exception("Empty string");
 
@@ -62,7 +63,7 @@ public class OneBrickCrypt {
 
     public static String bytesToHex(byte[] data) {
         if (data==null) {
-            return null;
+            return "";
         }
 
         int len = data.length;
@@ -128,7 +129,7 @@ public class OneBrickCrypt {
 //        String pwd = "";
 //        try {
 //            OneBrickCrypt onebrickCrypt = new OneBrickCrypt();
-//            encrypted = OneBrickCrypt.bytesToHex( onebrickCrypt.encrypt(email, pwd) );
+//            encrypted = oneBrickCrypt.bytesToHex( onebrickCrypt.encrypt(email, pwd) );
 //            decrypted = new String(onebrickCrypt.decrypt( encrypted ));
 //        } catch (Exception e) {
 //            e.printStackTrace();

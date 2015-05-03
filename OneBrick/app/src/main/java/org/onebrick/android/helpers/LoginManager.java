@@ -1,16 +1,18 @@
 package org.onebrick.android.helpers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.onebrick.android.R;
 import org.onebrick.android.models.User;
 
 public final class LoginManager {
     private static LoginManager instance;
 
     private Context context;
-    private User currentUser;
+    private String currentUserKey;
 
     private LoginManager(Context context) {
         this.context = context;
@@ -24,15 +26,28 @@ public final class LoginManager {
     }
 
     public boolean isLoggedIn() {
-        return currentUser != null;
+        return !getCurrentUserKey().isEmpty();
     }
 
-    public void setCurrentUser(@NonNull User user) {
-        currentUser = user;
+//    public void setCurrentUser(@NonNull User user) {
+//        currentUser = user;
+//    }
+    public void setCurrentUserKey(@NonNull String currentUserKey){
+        this.currentUserKey = currentUserKey;
     }
 
     @Nullable
-    public User getCurrentUser() {
-        return currentUser;
+    public String getCurrentUserKey() {
+        if (this.currentUserKey != null && !this.currentUserKey.isEmpty()){
+            return this.currentUserKey;
+        }else{
+            this.currentUserKey = getKeyFromSharePreferences();
+        }
+        return this.currentUserKey;
+    }
+
+    private String getKeyFromSharePreferences(){
+        SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences(this.context.getString(R.string.preference_file_ukey), context.MODE_PRIVATE);
+        return sharedPref.getString(this.context.getString(R.string.user_key), "");
     }
 }

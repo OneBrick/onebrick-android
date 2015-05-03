@@ -173,12 +173,12 @@ public class EventDetailActivity extends ActionBarActivity implements
                         btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     }
                 } else {
-                    final User currentUser = loginManager.getCurrentUser();
+                    final String key = loginManager.getCurrentUserKey();
                     if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
-                        obClient.postRsvpToEvent(mEvent.getEventId(), currentUser.getUserId(), rsvpResponseHandler);
+                        obClient.postRsvpToEvent(mEvent.getEventId(), key, rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
-                        obClient.postUnRsvpToEvent(mEvent.getEventId(), currentUser.getUserId(), unRsvpResponseHandler);
+                        obClient.postUnRsvpToEvent(mEvent.getEventId(), key, unRsvpResponseHandler);
                     }
                 }
             }
