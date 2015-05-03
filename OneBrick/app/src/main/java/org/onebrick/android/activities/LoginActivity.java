@@ -40,11 +40,6 @@ public class LoginActivity extends ActionBarActivity {
 
     OneBrickApplication restClient;
 
-    @Inject
-    public LoginActivity(OneBrickApplication restClient){
-        this.restClient = restClient;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
