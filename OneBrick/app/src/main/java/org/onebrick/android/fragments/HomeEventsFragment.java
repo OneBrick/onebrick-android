@@ -41,8 +41,6 @@ public class HomeEventsFragment extends EventsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        client = OneBrickApplication.getInstance().getRestClient();
-
         final Bundle args = getArguments();
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);

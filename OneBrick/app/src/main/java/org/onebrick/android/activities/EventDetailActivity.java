@@ -28,11 +28,9 @@ import org.onebrick.android.cards.PhotoGalleryCard;
 import org.onebrick.android.cards.ShareCard;
 import org.onebrick.android.cards.TitleCard;
 import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
-import org.onebrick.android.models.User;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
@@ -53,7 +51,6 @@ public class EventDetailActivity extends ActionBarActivity implements
     private CardArrayAdapter mAdapter;
     private long _Id;
     private Event mEvent;
-    private OneBrickClient obClient;
 
     // TODO make REST calls in service
     /*
@@ -151,7 +148,6 @@ public class EventDetailActivity extends ActionBarActivity implements
         mAdapter.setNotifyOnChange(false);
         mCardsListView.setAdapter(mAdapter);
 
-        obClient = OneBrickApplication.getInstance().getRestClient();
         Intent eventInfo = getIntent();
         _Id = eventInfo.getLongExtra(EXTRA__ID, -1);
         getSupportLoaderManager().initLoader(0, null, this);
@@ -175,10 +171,10 @@ public class EventDetailActivity extends ActionBarActivity implements
                 } else {
                     final String key = loginManager.getCurrentUserKey();
                     if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
-                        obClient.postRsvpToEvent(mEvent.getEventId(), key, rsvpResponseHandler);
+                        //obClient.postRsvpToEvent(mEvent.getEventId(), key, rsvpResponseHandler);
 
                     } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
-                        obClient.postUnRsvpToEvent(mEvent.getEventId(), key, unRsvpResponseHandler);
+                        //obClient.postUnRsvpToEvent(mEvent.getEventId(), key, unRsvpResponseHandler);
                     }
                 }
             }

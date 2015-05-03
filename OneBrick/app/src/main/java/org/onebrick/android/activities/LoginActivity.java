@@ -16,14 +16,10 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.core.OneBrickCrypt;
-import org.onebrick.android.helpers.LoginManager;
-import org.onebrick.android.models.User;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -114,7 +110,6 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
     private void getAuthentication(@NonNull String username, @NonNull String password) {
-        OneBrickClient client = OneBrickApplication.getInstance().getRestClient();
         byte[] encrypt = null;
         try {
             encrypt = OneBrickCrypt.encrypt(username, password);
@@ -123,64 +118,64 @@ public class LoginActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         final String finalEncrypted = OneBrickCrypt.bytesToHex(encrypt);
-        client.getUserLogin(finalEncrypted, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    Log.d("auth result", response.getJSONObject("result").optString("uid"));
-                    //User user = User.fromJSON(response);
-                    //userId = user.getUserId();
-                    //LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-                    //manager.setCurrentUser(user);
-
-                    updateMyEvents();
-                    finish();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-
-                Log.d("auth result", responseString);
-                saveKey(finalEncrypted);
-                LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-                manager.setCurrentUserKey(finalEncrypted);
-                updateMyEvents();
-                finish();
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e("login failure1", responseString);
-                Log.e("login failure1", throwable.toString());
-                Toast.makeText(getApplicationContext(),
-                        "Login FailedPassword or Email incorrect",
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.e("login failure2", errorResponse.toString());
-                Log.e("login failure2", throwable.toString());
-                Toast.makeText(getApplicationContext(),
-                        "Login FailedPassword or Email incorrect",
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.e("login failure3", "Authentication failed");
-                Log.e("login failure3", throwable.toString());
-                Log.e("login failure3", errorResponse.toString());
-                Toast.makeText(getApplicationContext(),
-                        "Login Failed : Password or Email incorrect",
-                        Toast.LENGTH_LONG).show();
-            }
-
-        });
+//        client.getUserLogin(finalEncrypted, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                try {
+//                    Log.d("auth result", response.getJSONObject("result").optString("uid"));
+//                    //User user = User.fromJSON(response);
+//                    //userId = user.getUserId();
+//                    //LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+//                    //manager.setCurrentUser(user);
+//
+//                    updateMyEvents();
+//                    finish();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//
+//                Log.d("auth result", responseString);
+//                saveKey(finalEncrypted);
+//                LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+//                manager.setCurrentUserKey(finalEncrypted);
+//                updateMyEvents();
+//                finish();
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.e("login failure1", responseString);
+//                Log.e("login failure1", throwable.toString());
+//                Toast.makeText(getApplicationContext(),
+//                        "Login FailedPassword or Email incorrect",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.e("login failure2", errorResponse.toString());
+//                Log.e("login failure2", throwable.toString());
+//                Toast.makeText(getApplicationContext(),
+//                        "Login FailedPassword or Email incorrect",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+//                Log.e("login failure3", "Authentication failed");
+//                Log.e("login failure3", throwable.toString());
+//                Log.e("login failure3", errorResponse.toString());
+//                Toast.makeText(getApplicationContext(),
+//                        "Login Failed : Password or Email incorrect",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
 
     }
 
@@ -190,7 +185,7 @@ public class LoginActivity extends ActionBarActivity {
                 getString(R.string.preference_file_ukey), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.user_key), key);
-        editor.commit();
+        editor.apply();
     }
 
     /*
@@ -198,35 +193,7 @@ public class LoginActivity extends ActionBarActivity {
     on the users rsvp events
      */
     private void updateMyEvents() {
-        OneBrickClient client = OneBrickApplication.getInstance().getRestClient();
-        client.getMyEvents(userId,true,new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                int chapterId = OneBrickApplication.getInstance().getChapterId();
-                if (response != null) {
-//                    ArrayList<Event> arrayOfEvents = Event.fromJSONArray(response, chapterId);
-//                    for (int i=0;i<arrayOfEvents.size();i++) {
-//                        Event e = arrayOfEvents.get(i);
-//                        e.userRSVP = 1;
-//                        Event.updateEvent(e);
-//                    }
-                }
 
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e("login failure1", responseString);
-                Log.e("login failure1", throwable.toString());
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.e("login failure2", errorResponse.toString());
-                Log.e("login failure2", throwable.toString());
-            }
-
-        });
     }
 
     private boolean isPasswordValid(String password) {

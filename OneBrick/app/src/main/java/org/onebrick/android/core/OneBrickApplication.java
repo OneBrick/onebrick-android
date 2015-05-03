@@ -44,11 +44,6 @@ public class OneBrickApplication extends Application {
         ImageLoader.getInstance().init(config);
     }
 
-    public OneBrickClient getRestClient() {
-        return new OneBrickClient(this);
-    }
-
-
     public void setChapterName(@NonNull String chapterName) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString(PREF_CHAPTER_NAME, chapterName).apply();

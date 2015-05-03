@@ -22,7 +22,6 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.EventSearchListAdapter;
 import org.onebrick.android.models.Event;
@@ -42,7 +41,6 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
     ArrayList<Event> eventList;
     int chapterId;
     String chapterName;
-    OneBrickClient obClient;
     String searchQuery;
     ActionBar actionBar;
     MenuInflater menuInflater;
@@ -136,7 +134,6 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         getSupportActionBar().setTitle("Search");
         // annotation injection
         ButterKnife.inject(this);
-        obClient = OneBrickApplication.getInstance().getRestClient();
         eventList = new ArrayList<Event>();
         //aEventSearchList = new EventSearchListAdapter(this);
         Intent chapterInfo = getIntent();
@@ -183,7 +180,6 @@ public class SearchActivity extends ActionBarActivity implements OnQueryTextList
         searchQuery = query;
         Toast.makeText(this, "Searching for "+query, Toast.LENGTH_SHORT).show();
         //searchTwitter(query);
-        obClient.searchForEvents(chapterId, query, searchResultHandler);
         searchItem.collapseActionView();
         return true;
     }

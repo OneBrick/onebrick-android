@@ -27,7 +27,6 @@ public class MyPastEventsFragment extends EventsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = OneBrickApplication.getInstance().getRestClient();
         myChapterId = OneBrickApplication.getInstance().getChapterId();
     }
 
@@ -43,39 +42,6 @@ public class MyPastEventsFragment extends EventsListFragment {
 
     private void populatePastEvents(long userId){
         // get all events: both past and upcoming events
-        client.getMyEvents(userId, true, new JsonHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                progressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                if (response != null) {
-                    //Event.fromJSONArray(response, myChapterId);
-                    // TODO remove upcoming event or update query to get only upcoming events
-                }
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                Log.e("ERROR", responseString);
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("ERROR", errorResponse.toString());
-                Log.e("ERROR", throwable.toString());
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-        });
     }
 
     @Override

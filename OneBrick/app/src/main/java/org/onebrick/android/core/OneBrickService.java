@@ -27,7 +27,7 @@ public interface OneBrickService {
 
 //    @POST("/user/login.json")
 //    @FormUrlEncoded
-//    Response login(@Field(""));
+//    Response login(@Field("username") String username, @Field("password") String password);
 
     @POST("/event/{eventId}/rsvp.json")
     Response rsvp(@Query("ukey") String ukey, @Path("eventId") int eventId);

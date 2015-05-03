@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import org.onebrick.android.R;
 import org.onebrick.android.activities.EventDetailActivity;
 import org.onebrick.android.adapters.EventSearchListAdapter;
-import org.onebrick.android.core.OneBrickClient;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
@@ -31,7 +30,6 @@ public abstract class EventsListFragment extends Fragment implements
     @InjectView(R.id.lvEventSearchList)
     ListView lvEvents;
     protected EventSearchListAdapter mAdapter;
-    protected OneBrickClient client;
     String chapterName;
     int chapterId;
 
