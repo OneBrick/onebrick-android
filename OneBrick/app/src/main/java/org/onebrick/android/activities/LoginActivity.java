@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickCrypt;
 import org.onebrick.android.core.OneBrickRESTClient;
+import org.onebrick.android.helpers.LoginManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,6 +26,7 @@ import retrofit.client.Response;
 public class LoginActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
+    private static final String SUCCESS = "1";
 
     // UI references.
     @InjectView(R.id.email)
@@ -105,13 +107,14 @@ public class LoginActivity extends ActionBarActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            getAuthentication(email, password);
+            getAuthentication(email.trim(), password);
         }
     }
 
     private void getAuthentication(@NonNull String username, @NonNull String password) {
         byte[] encrypt = null;
         try {
+            Log.d(TAG, "getAuthenticated: user provided username and password: " + username + " -- " + password);
             encrypt = OneBrickCrypt.encrypt(username, password);
         } catch (Exception e) {
             Log.e(TAG, "can't get an encrypted key.");
@@ -122,25 +125,28 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void success(String[] strings, Response response) {
                 if (strings != null && strings.length > 0) {
-                    if (strings[0].equals("1")) {
+                    if (SUCCESS.equals(strings[0])) {
                         // successful
-//                saveKey(finalEncrypted);
-//                LoginManager manager = LoginManager.getInstance(LoginActivity.this);
-//                manager.setCurrentUserKey(finalEncrypted);
-//                updateMyEvents();
-//                finish();
+                        saveKey(finalEncrypted);
+                        LoginManager manager = LoginManager.getInstance(LoginActivity.this);
+                        manager.setCurrentUserKey(finalEncrypted);
+                        updateMyEvents();
+                        finish();
 
                     } else {
                         // invalid credential
+                        Log.d(TAG, "invalid credential: " + strings[0]);
                     }
                 } else {
                     // invalid json response
+                    Log.d(TAG, "invalid json response");
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
                 // rest API call failed
+                Log.e(TAG, "login failure: " + error.toString());
             }
         });
     }
@@ -159,7 +165,7 @@ public class LoginActivity extends ActionBarActivity {
     on the users rsvp events
      */
     private void updateMyEvents() {
-
+        Log.d(TAG, "update my events.");
     }
 
     private boolean isPasswordValid(String password) {

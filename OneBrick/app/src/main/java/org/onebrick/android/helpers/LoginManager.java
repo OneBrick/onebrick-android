@@ -6,9 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.onebrick.android.R;
-import org.onebrick.android.models.User;
 
-public final class LoginManager {
+public class LoginManager {
     private static LoginManager instance;
 
     private Context context;
@@ -29,9 +28,6 @@ public final class LoginManager {
         return !getCurrentUserKey().isEmpty();
     }
 
-//    public void setCurrentUser(@NonNull User user) {
-//        currentUser = user;
-//    }
     public void setCurrentUserKey(@NonNull String currentUserKey){
         this.currentUserKey = currentUserKey;
     }

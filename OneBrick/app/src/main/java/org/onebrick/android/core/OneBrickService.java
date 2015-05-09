@@ -24,7 +24,7 @@ public interface OneBrickService {
     @GET("/event/{eventId}.json")
     Response eventInfo(@Query("ukey") String ukey, @Path("eventId") int eventId);
 
-    @GET("/auth/verify.json")
+    @GET("/verify.json")
     void verify(@Query("ukey") String ukey, Callback<String[]> cb);
 
 //    @POST("/user/login.json")

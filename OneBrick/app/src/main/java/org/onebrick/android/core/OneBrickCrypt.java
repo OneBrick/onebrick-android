@@ -19,7 +19,7 @@ public class OneBrickCrypt {
     private static final String iv = "";
     private static final String secretKey = "";
 
-    public OneBrickCrypt() {
+    private static void initialize(){
         ivspec = new IvParameterSpec(iv.getBytes());
         keyspec = new SecretKeySpec(secretKey.getBytes(), "AES");
 
@@ -31,13 +31,13 @@ public class OneBrickCrypt {
             Log.e("error in ciper: ", e.getMessage());
         }
     }
-
     public static byte[] encrypt(@NonNull String email, @NonNull String pwd) throws Exception {
         if(email.length() == 0 || pwd.length() == 0)
             throw new Exception("Either email or password is empty");
 
         byte[] encrypted = null;
         try {
+            initialize();
             cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
             encrypted = cipher.doFinal(padString(createSeed(email, pwd)).getBytes());
         } catch (Exception e) {
