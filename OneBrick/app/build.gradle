@@ -22,10 +22,14 @@ android {
 
 def CONSUMER_KEY = '"' + consumerKey + '"' ?: '"Define Consumer key"';
 def CONSUMER_SECRET = '"' + consumerSecret + '"' ?: '"Define Consumer secret"';
+def CRYPTO_IV_MODE = '"' + cryptoIVMode + '"' ?: '"Define encryption mode"';
+def CRYPTO_KEY = '"' + cryptoKey + '"' ?: '"Define encryption key"';
 
 android.buildTypes.each { type ->
     type.buildConfigField 'String', 'CONSUMER_KEY', CONSUMER_KEY
     type.buildConfigField 'String', 'CONSUMER_SECRET', CONSUMER_SECRET
+    type.buildConfigField 'String', 'CRYPTO_IV_MODE', CRYPTO_IV_MODE
+    type.buildConfigField 'String', 'CRYPTO_KEY', CRYPTO_KEY
 }
 
 dependencies {
