@@ -1,7 +1,10 @@
 package org.onebrick.android.helpers;
 
+import android.content.pm.ApplicationInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import org.onebrick.android.core.OneBrickApplication;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -38,4 +41,8 @@ public class Utils {
         return input;
     }
 
+    public static boolean isDebug() {
+        return (OneBrickApplication.getInstance().getApplicationInfo().flags
+                & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+    }
 }

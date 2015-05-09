@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.onebrick.android.BuildConfig;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.providers.OneBrickContentProvider;
@@ -50,13 +51,15 @@ public class OneBrickRESTClient {
         oAuthConsumer.setTokenWithSecret("", "");
         OkClient client = new SigningOkClient(oAuthConsumer);
 
-        final RestAdapter restAdapter = new RestAdapter.Builder()
+        final RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint("http://dev-v3.gotpantheon.com/auth")
                 .setConverter(new GsonConverter(gson))
-                .setClient(client)
-                .build();
+                .setClient(client);
 
-        mRestService = restAdapter.create(OneBrickService.class);
+        if (Utils.isDebug()) {
+            builder.setLogLevel(RestAdapter.LogLevel.FULL);
+        }
+        mRestService = builder.build().create(OneBrickService.class);
     }
 
     public static void init(Context appContext) {
