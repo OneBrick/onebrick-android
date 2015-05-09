@@ -25,8 +25,6 @@
     <!-- authentication -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
-    <string name="preference_file_ukey">org.onebrick.android.PREFERENCE_FILE_UKEY</string>
-    <string name="user_key">ukey</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Login</string>

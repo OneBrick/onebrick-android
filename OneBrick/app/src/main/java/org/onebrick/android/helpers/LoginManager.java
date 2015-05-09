@@ -2,19 +2,20 @@ package org.onebrick.android.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import org.onebrick.android.R;
+import android.text.TextUtils;
 
 public class LoginManager {
-    private static LoginManager instance;
+    private static final String PREF_ENCRYPTED_KEY = "encrupted_key";
 
-    private Context context;
-    private String currentUserKey;
+    private static LoginManager instance;
+    private Context mContext;
+    private String mCurrentUserKey;
 
     private LoginManager(Context context) {
-        this.context = context;
+        mContext = context.getApplicationContext();
     }
 
     public static LoginManager getInstance(Context context) {
@@ -25,25 +26,21 @@ public class LoginManager {
     }
 
     public boolean isLoggedIn() {
-        return !getCurrentUserKey().isEmpty();
+        return !TextUtils.isEmpty(getCurrentUserKey());
     }
 
-    public void setCurrentUserKey(@NonNull String currentUserKey){
-        this.currentUserKey = currentUserKey;
+    public void setCurrentUserKey(@NonNull String key) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        sharedPref.edit().putString(PREF_ENCRYPTED_KEY, key).apply();
+        mCurrentUserKey = key;
     }
 
     @Nullable
     public String getCurrentUserKey() {
-        if (this.currentUserKey != null && !this.currentUserKey.isEmpty()){
-            return this.currentUserKey;
-        }else{
-            this.currentUserKey = getKeyFromSharePreferences();
+        if (TextUtils.isEmpty(mCurrentUserKey)) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+            mCurrentUserKey = sharedPref.getString(PREF_ENCRYPTED_KEY, "");
         }
-        return this.currentUserKey;
-    }
-
-    private String getKeyFromSharePreferences(){
-        SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences(this.context.getString(R.string.preference_file_ukey), context.MODE_PRIVATE);
-        return sharedPref.getString(this.context.getString(R.string.user_key), "");
+        return mCurrentUserKey;
     }
 }

@@ -127,7 +127,6 @@ public class LoginActivity extends ActionBarActivity {
                 if (strings != null && strings.length > 0) {
                     if (SUCCESS.equals(strings[0])) {
                         // successful
-                        saveKey(finalEncrypted);
                         LoginManager manager = LoginManager.getInstance(LoginActivity.this);
                         manager.setCurrentUserKey(finalEncrypted);
                         updateMyEvents();
@@ -149,15 +148,6 @@ public class LoginActivity extends ActionBarActivity {
                 Log.e(TAG, "login failure: " + error.toString());
             }
         });
-    }
-
-    private void saveKey(@NonNull String key) {
-        Context context = this.getApplicationContext();
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                getString(R.string.preference_file_ukey), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.user_key), key);
-        editor.apply();
     }
 
     /*
