@@ -3,6 +3,8 @@ package org.onebrick.android.core;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.onebrick.android.BuildConfig;
+
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
@@ -16,12 +18,9 @@ public class OneBrickCrypt {
     private static SecretKeySpec keyspec;
     private static Cipher cipher;
 
-    private static final String iv = "";
-    private static final String secretKey = "";
-
     private static void initialize(){
-        ivspec = new IvParameterSpec(iv.getBytes());
-        keyspec = new SecretKeySpec(secretKey.getBytes(), "AES");
+        ivspec = new IvParameterSpec(BuildConfig.CRYPTO_IV_MODE.getBytes());
+        keyspec = new SecretKeySpec(BuildConfig.CRYPTO_KEY.getBytes(), "AES");
 
         try {
             cipher = Cipher.getInstance("AES/CBC/NoPadding");

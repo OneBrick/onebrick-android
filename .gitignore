@@ -56,3 +56,4 @@ local.properties
 .buildpath
 OneBrick/.gradle
 OneBrick/build
+gradle.properties
