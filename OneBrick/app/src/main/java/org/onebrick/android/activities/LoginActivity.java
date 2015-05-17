@@ -1,7 +1,5 @@
 package org.onebrick.android.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
@@ -13,8 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.onebrick.android.R;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickCrypt;
 import org.onebrick.android.core.OneBrickRESTClient;
+import org.onebrick.android.events.LoginStatusEvent;
+import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.LoginManager;
 
 import butterknife.ButterKnife;
@@ -35,7 +36,6 @@ public class LoginActivity extends ActionBarActivity {
     EditText mPasswordView;
     @InjectView(R.id.email_sign_in_button)
     Button mEmailSignInButton;
-    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +117,7 @@ public class LoginActivity extends ActionBarActivity {
             Log.d(TAG, "getAuthenticated: user provided username and password: " + username + " -- " + password);
             encrypt = OneBrickCrypt.encrypt(username, password);
         } catch (Exception e) {
-            Log.e(TAG, "can't get an encrypted key.");
-            e.printStackTrace();
+            Log.e(TAG, "can't get an encrypted key", e);
         }
         final String finalEncrypted = OneBrickCrypt.bytesToHex(encrypt);
         OneBrickRESTClient.getInstance().verifyLogin(finalEncrypted, new Callback<String[]>() {
@@ -129,22 +128,27 @@ public class LoginActivity extends ActionBarActivity {
                         // successful
                         LoginManager manager = LoginManager.getInstance(LoginActivity.this);
                         manager.setCurrentUserKey(finalEncrypted);
+                        OneBrickApplication.getInstance().getBus().post(
+                                new LoginStatusEvent(Status.SUCCESS));
                         updateMyEvents();
                         finish();
 
                     } else {
-                        // invalid credential
+                        OneBrickApplication.getInstance().getBus().post(
+                                new LoginStatusEvent(Status.FAILED));
                         Log.d(TAG, "invalid credential: " + strings[0]);
                     }
                 } else {
-                    // invalid json response
+                    OneBrickApplication.getInstance().getBus().post(
+                            new LoginStatusEvent(Status.FAILED));
                     Log.d(TAG, "invalid json response");
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                // rest API call failed
+                OneBrickApplication.getInstance().getBus().post(
+                        new LoginStatusEvent(Status.FAILED));
                 Log.e(TAG, "login failure: " + error.toString());
             }
         });

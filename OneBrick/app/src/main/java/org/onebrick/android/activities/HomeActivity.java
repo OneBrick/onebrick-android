@@ -9,9 +9,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
 
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.events.FetchChaptersEvent;
+import org.onebrick.android.events.FetchEventsEvent;
+import org.onebrick.android.events.Status;
 import org.onebrick.android.fragments.HomeEventsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
 import org.onebrick.android.helpers.LoginManager;
@@ -45,8 +51,16 @@ public class HomeActivity extends ActionBarActivity
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
 
         getSupportActionBar().setTitle(chapterName);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+
+        OneBrickApplication.getInstance().getBus().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OneBrickApplication.getInstance().getBus().unregister(this);
     }
 
     @Override
@@ -129,5 +143,14 @@ public class HomeActivity extends ActionBarActivity
         OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
 
         displayEventsInChapter(chapter);
+    }
+
+    @Subscribe
+    public void onFetchEventsEvent(FetchEventsEvent event) {
+        if (event.status == Status.NO_NETWORK) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
+        } else if (event.status == Status.FAILED) {
+            Toast.makeText(this, R.string.failed_to_fetch_chapters, Toast.LENGTH_LONG).show();
+        }
     }
 }

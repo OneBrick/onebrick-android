@@ -10,9 +10,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
 
 import org.onebrick.android.R;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
+import org.onebrick.android.events.FetchMyEventsEvent;
+import org.onebrick.android.events.Status;
 import org.onebrick.android.fragments.MyPastEventsFragment;
 import org.onebrick.android.fragments.MyUpcomingEventsFragment;
 
@@ -30,11 +36,13 @@ public class MyEventsActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             OneBrickRESTClient.getInstance().myEvents();
         }
+        OneBrickApplication.getInstance().getBus().register(this);
     }
 
     @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(parent, name, context, attrs);
+    protected void onDestroy() {
+        super.onDestroy();
+        OneBrickApplication.getInstance().getBus().unregister(this);
     }
 
     private void setupTabs() {
@@ -102,7 +110,7 @@ public class MyEventsActivity extends ActionBarActivity {
         // This version supports specifying the container to replace with fragment content and fragment args
         // new SupportFragmentTabListener<SomeFragment>(R.id.flContent, this, "first", SomeFragment.class, myFragmentArgs))
         public SupportFragmentTabListener(int fragmentContainerId, FragmentActivity activity,
-                String tag, Class<T> clz, Bundle args) {
+                                          String tag, Class<T> clz, Bundle args) {
             mActivity = activity;
             mTag = tag;
             mClass = clz;
@@ -133,6 +141,15 @@ public class MyEventsActivity extends ActionBarActivity {
 
         public void onTabReselected(ActionBar.Tab tab, FragmentTransaction sft) {
             // User selected the already selected tab. Usually do nothing.
+        }
+    }
+
+    @Subscribe
+    public void onFetchMyEventsEvent(FetchMyEventsEvent event) {
+        if (event.status == Status.NO_NETWORK) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
+        } else if (event.status == Status.FAILED) {
+            Toast.makeText(this, R.string.failed_to_fetch_chapters, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -57,4 +57,7 @@
 
     <string name="title_activity_search">SearchActivity</string>
 
+    <!-- Toasts messages -->
+    <string name="no_network">No network</string>
+    <string name="failed_to_fetch_chapters">Failed to fetch chapters</string>
 </resources>

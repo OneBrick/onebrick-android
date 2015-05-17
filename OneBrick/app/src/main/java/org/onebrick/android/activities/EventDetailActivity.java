@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.squareup.otto.Subscribe;
+
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.CardArrayAdapter;
 import org.onebrick.android.cards.ContactsCard;
@@ -24,7 +26,10 @@ import org.onebrick.android.cards.MapCard;
 import org.onebrick.android.cards.PhotoGalleryCard;
 import org.onebrick.android.cards.ShareCard;
 import org.onebrick.android.cards.TitleCard;
+import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
+import org.onebrick.android.events.LoginStatusEvent;
+import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
@@ -38,7 +43,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- TODO this class should be revisited
+ * TODO this class should be revisited
  */
 public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -47,15 +52,18 @@ public class EventDetailActivity extends ActionBarActivity implements
     public static final String EXTRA__ID = "_id";
     public static final String SUCCESS = "0";
 
-    @InjectView(R.id.btn_rsvp) Button btnRsvp;
-    @InjectView(R.id.lv_event_detail_cards) ListView mCardsListView;
+    @InjectView(R.id.btn_rsvp)
+    Button btnRsvp;
+    @InjectView(R.id.lv_event_detail_cards)
+    ListView mCardsListView;
 
     private CardArrayAdapter mAdapter;
     private long _Id;
     private Event mEvent;
+    private boolean mPendingRsvp;
 
     private void updateViews() {
-        if(LoginManager.getInstance(this).isLoggedIn()) {
+        if (LoginManager.getInstance(this).isLoggedIn()) {
             if (mEvent.isRsvp()) {
                 btnRsvp.setText(R.string.un_rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
@@ -66,7 +74,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         }
 
         // TODO check current date for past events. if past events, don't show rsvp/unrsvp buttons
-        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())){
+        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())) {
             //llRsvpSegment.setVisibility(View.GONE);
         }
     }
@@ -101,44 +109,53 @@ public class EventDetailActivity extends ActionBarActivity implements
         Intent eventInfo = getIntent();
         _Id = eventInfo.getLongExtra(EXTRA__ID, -1);
         getSupportLoaderManager().initLoader(0, null, this);
+
+        OneBrickApplication.getInstance().getBus().register(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OneBrickApplication.getInstance().getBus().unregister(this);
+    }
+
 
     private void setupListeners() {
         btnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final LoginManager loginManager = LoginManager.getInstance(EventDetailActivity.this);
+
                 final long eventId = mEvent.getEventId();
                 if (!loginManager.isLoggedIn()) {
+                    mPendingRsvp = true;
+
                     // when a user is not logged in yet, redirect a user to login screen
                     final Intent loginActivity = new Intent(EventDetailActivity.this, LoginActivity.class);
                     startActivity(loginActivity);
-                    if (mEvent.isRsvp()) {
-                        //processUnRSVP(ukey, eventId);
-                        btnRsvp.setText(R.string.un_rsvp);
-                        btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-                    } else {
-                        //processRSVP(ukey, eventId);
-                        btnRsvp.setText(R.string.rsvp);
-                        btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-                    }
                 } else {
                     // already logged in. just get stored ukey
-                    final String ukey = loginManager.getCurrentUserKey();
-                    if (!TextUtils.isEmpty(ukey)){
-                        if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
-                            processRSVP(ukey, eventId);
-                        } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
-                            processUnRSVP(ukey, eventId);
-                        }
-                    }
+                    processRsvpRequest(eventId);
                 }
             }
         });
     }
 
+    private void processRsvpRequest(long eventId) {
+        final LoginManager loginManager = LoginManager.getInstance(this);
+        final String ukey = loginManager.getCurrentUserKey();
+        if (!TextUtils.isEmpty(ukey)) {
+            if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
+                processRSVP(ukey, eventId);
+            } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
+                processUnRSVP(ukey, eventId);
+            }
+        }
+    }
+
     /**
      * This is the response handler to handle the callback from RSVP rest request
+     *
      * @param ukey
      * @param eventId
      */
@@ -154,7 +171,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                     mEvent.rsvp();
                     // TODO update through SyncAdapter
                     //Event.updateEvent(mEvent);
-                }else{
+                } else {
                     Log.d(TAG, "rsvp result return null: ");
                 }
             }
@@ -168,6 +185,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     /**
      * This is the response handle to handle the callbacks from unRSVP rest request
+     *
      * @param ukey
      * @param eventId
      */
@@ -183,7 +201,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                     mEvent.unRsvp();
                     // TODO update through SyncAdapter
                     //Event.updateEvent(mEvent);
-                }else{
+                } else {
                     Log.d(TAG, "unrsvp result return null: ");
                 }
             }
@@ -229,7 +247,12 @@ public class EventDetailActivity extends ActionBarActivity implements
     }
 
 
-
+    @Subscribe
+    public void onLoginStatusEvent(LoginStatusEvent event) {
+        if (mPendingRsvp && event.status == Status.SUCCESS) {
+            processRsvpRequest(mEvent.getEventId());
+        }
+    }
 }
 
 
