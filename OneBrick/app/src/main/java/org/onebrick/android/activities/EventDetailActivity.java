@@ -9,16 +9,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 import org.onebrick.android.R;
 import org.onebrick.android.adapters.CardArrayAdapter;
 import org.onebrick.android.cards.ContactsCard;
@@ -27,14 +24,18 @@ import org.onebrick.android.cards.MapCard;
 import org.onebrick.android.cards.PhotoGalleryCard;
 import org.onebrick.android.cards.ShareCard;
 import org.onebrick.android.cards.TitleCard;
-import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
+import org.onebrick.android.models.RSVP;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  TODO this class should be revisited
@@ -44,6 +45,7 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     private static final String TAG = "EventDetailActivity";
     public static final String EXTRA__ID = "_id";
+    public static final String SUCCESS = "0";
 
     @InjectView(R.id.btn_rsvp) Button btnRsvp;
     @InjectView(R.id.lv_event_detail_cards) ListView mCardsListView;
@@ -51,58 +53,6 @@ public class EventDetailActivity extends ActionBarActivity implements
     private CardArrayAdapter mAdapter;
     private long _Id;
     private Event mEvent;
-
-    // TODO make REST calls in service
-    /*
-    This is the response handler to handle the callback from RSVP rest request
-     */
-    JsonHttpResponseHandler rsvpResponseHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            btnRsvp.setText(R.string.un_rsvp);
-            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-            mEvent.rsvp();
-            // TODO update through SyncAdapter
-            //Event.updateEvent(mEvent);
-
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.e("TAG", "Json Request to fetch event info failed");
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.e("TAG", "FAIL " + responseString);
-        }
-
-    };
-
-    /*
-    This is the response handle to handle the callbacks from unRSVP rest request
-     */
-    JsonHttpResponseHandler unRsvpResponseHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            btnRsvp.setText(R.string.rsvp);
-            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-            mEvent.unRsvp();
-            // TODO update through SyncAdapter
-            //Event.updateEvent(mEvent);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.e("TAG", "Json Request to fetch event info failed");
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            Log.e("TAG", "FAIL " + responseString);
-        }
-
-    };
 
     private void updateViews() {
         if(LoginManager.getInstance(this).isLoggedIn()) {
@@ -158,25 +108,89 @@ public class EventDetailActivity extends ActionBarActivity implements
             @Override
             public void onClick(View v) {
                 final LoginManager loginManager = LoginManager.getInstance(EventDetailActivity.this);
+                final long eventId = mEvent.getEventId();
                 if (!loginManager.isLoggedIn()) {
+                    // when a user is not logged in yet, redirect a user to login screen
                     final Intent loginActivity = new Intent(EventDetailActivity.this, LoginActivity.class);
                     startActivity(loginActivity);
                     if (mEvent.isRsvp()) {
+                        //processUnRSVP(ukey, eventId);
                         btnRsvp.setText(R.string.un_rsvp);
                         btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     } else {
+                        //processRSVP(ukey, eventId);
                         btnRsvp.setText(R.string.rsvp);
                         btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     }
                 } else {
-                    final String key = loginManager.getCurrentUserKey();
-                    if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
-                        //obClient.postRsvpToEvent(mEvent.getEventId(), key, rsvpResponseHandler);
-
-                    } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
-                        //obClient.postUnRsvpToEvent(mEvent.getEventId(), key, unRsvpResponseHandler);
+                    // already logged in. just get stored ukey
+                    final String ukey = loginManager.getCurrentUserKey();
+                    if (!TextUtils.isEmpty(ukey)){
+                        if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
+                            processRSVP(ukey, eventId);
+                        } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
+                            processUnRSVP(ukey, eventId);
+                        }
                     }
                 }
+            }
+        });
+    }
+
+    /**
+     * This is the response handler to handle the callback from RSVP rest request
+     * @param ukey
+     * @param eventId
+     */
+    private void processRSVP(String ukey, long eventId) {
+        OneBrickRESTClient.getInstance().rsvp(ukey, eventId, new Callback<RSVP>() {
+
+            @Override
+            public void success(RSVP result, Response response) {
+                if (result != null && SUCCESS.equals(result.getCode())) {
+                    Log.d(TAG, "rsvp result: " + result.getCode() + "---" + result.getMessage());
+                    btnRsvp.setText(R.string.un_rsvp);
+                    btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
+                    mEvent.rsvp();
+                    // TODO update through SyncAdapter
+                    //Event.updateEvent(mEvent);
+                }else{
+                    Log.d(TAG, "rsvp result return null: ");
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "failed rsvp");
+            }
+        });
+    }
+
+    /**
+     * This is the response handle to handle the callbacks from unRSVP rest request
+     * @param ukey
+     * @param eventId
+     */
+    private void processUnRSVP(String ukey, long eventId) {
+        //obClient.postUnRsvpToEvent(mEvent.getEventId(), key, unRsvpResponseHandler);
+        OneBrickRESTClient.getInstance().unrsvp(ukey, eventId, new Callback<RSVP>() {
+            @Override
+            public void success(RSVP result, Response response) {
+                if (result != null && SUCCESS.equals(result.getCode())) {
+                    Log.d(TAG, "unrsvp result: " + result.getCode() + "---" + result.getMessage());
+                    btnRsvp.setText(R.string.rsvp);
+                    btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
+                    mEvent.unRsvp();
+                    // TODO update through SyncAdapter
+                    //Event.updateEvent(mEvent);
+                }else{
+                    Log.d(TAG, "unrsvp result return null: ");
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "failed to unrsvp");
             }
         });
     }

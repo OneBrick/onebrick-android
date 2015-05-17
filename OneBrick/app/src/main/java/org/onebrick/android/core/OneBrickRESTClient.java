@@ -15,6 +15,7 @@ import org.onebrick.android.BuildConfig;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.models.Event;
+import org.onebrick.android.models.RSVP;
 import org.onebrick.android.providers.OneBrickContentProvider;
 import org.onebrick.android.sync.SyncAdapter;
 
@@ -22,6 +23,7 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
+import retrofit.client.Response;
 import se.akerfeldt.signpost.retrofit.RetrofitHttpOAuthConsumer;
 import se.akerfeldt.signpost.retrofit.SigningOkClient;
 
@@ -121,23 +123,23 @@ public class OneBrickRESTClient {
         mRestService.verify(ukey, cb);
     }
 
-    void eventInfo(int eventId) {
+    public void eventInfo(int eventId) {
 
     }
 
-    void rsvp(int eventId) {
+    public void rsvp(@NonNull String ukey, @NonNull long eventId, Callback<RSVP> cb) {
+        mRestService.rsvp(ukey, eventId, cb);
+    }
+
+    public void unrsvp(@NonNull String ukey, @NonNull long eventId, Callback<RSVP> cb) {
+        mRestService.unrsvp(ukey, eventId, cb);
+    }
+
+    public void myEvents(int includePastEvents) {
 
     }
 
-    void unrsvp(int eventId) {
-
-    }
-
-    void myEvents(int includePastEvents) {
-
-    }
-
-    void search(int chapterId, String search) {
+    public void search(int chapterId, String search) {
 
     }
 }
