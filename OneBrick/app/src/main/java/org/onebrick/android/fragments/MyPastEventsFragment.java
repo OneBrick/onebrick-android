@@ -14,6 +14,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.database.EventTable;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.providers.OneBrickContentProvider;
 
@@ -47,7 +48,7 @@ public class MyPastEventsFragment extends EventsListFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         final String[] projection = null;
-        final String selection = null;
+        final String selection = EventTable.Columns.USER_RSVP + "=1";
         final String[] selectionArgs = null;
         final String sortOrder = null;
         // TODO use appropriate params

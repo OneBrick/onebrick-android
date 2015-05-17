@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.onebrick.android.R;
+import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.fragments.MyPastEventsFragment;
 import org.onebrick.android.fragments.MyUpcomingEventsFragment;
 
@@ -25,6 +26,10 @@ public class MyEventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_events);
         setupTabs();
+
+        if (savedInstanceState == null) {
+            OneBrickRESTClient.getInstance().myEvents();
+        }
     }
 
     @Override

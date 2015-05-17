@@ -2,28 +2,25 @@ package org.onebrick.android.core;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.onebrick.android.BuildConfig;
 import org.onebrick.android.helpers.Utils;
+import org.onebrick.android.jobs.FetchChaptersJob;
+import org.onebrick.android.jobs.FetchEventsJob;
+import org.onebrick.android.jobs.FetchMyEventsJob;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.RSVP;
-import org.onebrick.android.providers.OneBrickContentProvider;
-import org.onebrick.android.sync.SyncAdapter;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
-import retrofit.client.Response;
 import se.akerfeldt.signpost.retrofit.RetrofitHttpOAuthConsumer;
 import se.akerfeldt.signpost.retrofit.SigningOkClient;
 
@@ -36,13 +33,9 @@ public class OneBrickRESTClient {
     // The account name
     public static final String ACCOUNT = "SyncAdapterAccount";
 
-    private Account mAccount;
-
     private OneBrickService mRestService;
 
-    private OneBrickRESTClient(Context appContext) {
-        mAccount = createSyncAccount(appContext);
-
+    private OneBrickRESTClient() {
         final Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Chapter.class, new Chapter.ChapterJsonDeserializer())
                 .registerTypeAdapter(Event.class, new Event.EventJsonDeserializer())
@@ -64,11 +57,11 @@ public class OneBrickRESTClient {
         mRestService = builder.build().create(OneBrickService.class);
     }
 
-    public static void init(Context appContext) {
+    public static void init() {
         if (sInstance != null) {
             throw new IllegalStateException("OneBrickRESTClient is already initialized");
         }
-        sInstance = new OneBrickRESTClient(appContext);
+        sInstance = new OneBrickRESTClient();
     }
 
     public static OneBrickRESTClient getInstance() {
@@ -100,20 +93,13 @@ public class OneBrickRESTClient {
     }
 
     public void requestChapters() {
-        final Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        settingsBundle.putInt(SyncAdapter.EXTRA_SYNC_TYPE, SyncAdapter.SYNC_CHAPTERS);
-        ContentResolver.requestSync(mAccount, OneBrickContentProvider.AUTHORITY, settingsBundle);
+        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
+                new FetchChaptersJob());
     }
 
     public void requestEvents(int chapterId) {
-        final Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        settingsBundle.putInt(SyncAdapter.EXTRA_SYNC_TYPE, SyncAdapter.SYNC_EVENTS);
-        settingsBundle.putInt(SyncAdapter.EXTRA_CHAPTER_ID, chapterId);
-        ContentResolver.requestSync(mAccount, OneBrickContentProvider.AUTHORITY, settingsBundle);
+        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
+                new FetchEventsJob(chapterId));
     }
 
     /**
@@ -135,8 +121,9 @@ public class OneBrickRESTClient {
         mRestService.unrsvp(ukey, eventId, cb);
     }
 
-    public void myEvents(int includePastEvents) {
-
+    public void myEvents() {
+        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
+                new FetchMyEventsJob());
     }
 
     public void search(int chapterId, String search) {

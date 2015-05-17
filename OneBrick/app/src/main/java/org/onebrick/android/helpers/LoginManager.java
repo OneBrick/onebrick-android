@@ -20,6 +20,9 @@ public class LoginManager {
 
     public static LoginManager getInstance(Context context) {
         if (instance == null) {
+            if (context == null) {
+                throw new IllegalStateException("Login manager should have initialized by now!");
+            }
             instance = new LoginManager(context.getApplicationContext());
         }
         return instance;

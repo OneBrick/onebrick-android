@@ -8,11 +8,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.core.OneBrickService;
 import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.database.EventTable;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Chapter;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.providers.OneBrickContentProvider;
@@ -29,6 +31,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final int SYNC_CHAPTERS = 1;
     public static final int SYNC_EVENTS = 2;
+    public static final int SYNC_MY_EVENTS = 3;
 
     private ContentResolver mContentResolver;
 
@@ -63,26 +66,35 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         } else if (syncType == SYNC_EVENTS) {
             final int chapterId = extras.getInt(EXTRA_CHAPTER_ID);
             List<Event> eventList = restService.getAllEvents(chapterId);
+            saveEvents(eventList, chapterId);
+        } else if (syncType == SYNC_MY_EVENTS) {
+            String ukey = LoginManager.getInstance(getContext()).getCurrentUserKey();
+            List<Event> eventList = restService.myEvents(ukey, 1);
+            saveEvents(eventList, -1);
+        }
+    }
 
-            final ContentValues values = new ContentValues(14);
-            for (Event event : eventList) {
-                values.clear();
-                values.put(EventTable.Columns.EVENT_ID, event.getEventId());
+    private void saveEvents(@NonNull List<Event> eventList, int chapterId) {
+        final ContentValues values = new ContentValues(14);
+        for (Event event : eventList) {
+            values.clear();
+            values.put(EventTable.Columns.EVENT_ID, event.getEventId());
+            if (chapterId > 0) {
                 values.put(EventTable.Columns.CHAPTER_ID, chapterId);
-                values.put(EventTable.Columns.TITLE, event.getTitle());
-                values.put(EventTable.Columns.ESN_TITLE, event.getEsnTitle());
-                values.put(EventTable.Columns.ADDRESS, event.getAddress());
-                values.put(EventTable.Columns.START_DATE, event.getStartDate());
-                values.put(EventTable.Columns.END_DATE, event.getEndDate());
-                values.put(EventTable.Columns.SUMMARY, event.getSummary());
-                values.put(EventTable.Columns.RSVP_CAPACITY, event.getRsvpCapacity());
-                values.put(EventTable.Columns.RSVP_COUNT, event.getRsvpCount());
-                values.put(EventTable.Columns.USER_RSVP, event.getUserRSVP());
-                values.put(EventTable.Columns.DESCRIPTION, event.getDescription());
-                values.put(EventTable.Columns.COORDINATOR_EMAIL, event.getCoordinatorEmail());
-                values.put(EventTable.Columns.MANAGER_EMAIL, event.getManagerEmail());
-                mContentResolver.insert(OneBrickContentProvider.EVENTS_URI, values);
             }
+            values.put(EventTable.Columns.TITLE, event.getTitle());
+            values.put(EventTable.Columns.ESN_TITLE, event.getEsnTitle());
+            values.put(EventTable.Columns.ADDRESS, event.getAddress());
+            values.put(EventTable.Columns.START_DATE, event.getStartDate());
+            values.put(EventTable.Columns.END_DATE, event.getEndDate());
+            values.put(EventTable.Columns.SUMMARY, event.getSummary());
+            values.put(EventTable.Columns.RSVP_CAPACITY, event.getRsvpCapacity());
+            values.put(EventTable.Columns.RSVP_COUNT, event.getRsvpCount());
+            values.put(EventTable.Columns.USER_RSVP, event.getUserRSVP());
+            values.put(EventTable.Columns.DESCRIPTION, event.getDescription());
+            values.put(EventTable.Columns.COORDINATOR_EMAIL, event.getCoordinatorEmail());
+            values.put(EventTable.Columns.MANAGER_EMAIL, event.getManagerEmail());
+            mContentResolver.insert(OneBrickContentProvider.EVENTS_URI, values);
         }
     }
 }

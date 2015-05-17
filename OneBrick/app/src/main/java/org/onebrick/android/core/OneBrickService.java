@@ -43,7 +43,7 @@ public interface OneBrickService {
      * @param includePastEvents 1 or 0
      */
     @GET("/event.json")
-    Response myEvents(@Query("ukey") String ukey, @Query("includePastEvents") int includePastEvents);
+    List<Event> myEvents(@Query("ukey") String ukey, @Query("includePastEvents") int includePastEvents);
 
     @GET("/event.json")
     Response search(@Query("chapter") int chapterId, @Query("search") String search);
