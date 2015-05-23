@@ -50,7 +50,7 @@ public abstract class EventsListFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Intent intent = new Intent(getActivity(), EventDetailActivity.class);
                 final Event event = Event.fromCursor((Cursor) mAdapter.getItem(position));
-                intent.putExtra(EventDetailActivity.EXTRA__ID, event.getID());
+                intent.putExtra(EventDetailActivity.EXTRA_EVENT_ID, event.getEventId());
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }

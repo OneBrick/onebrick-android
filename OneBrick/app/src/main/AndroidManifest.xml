@@ -25,11 +25,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
+        <!--active android sqlite-->
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="onebrick.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="org.onebrick.android.models.Event,
+                           org.onebrick.android.models.Chapter" />
+
         <provider
-            android:name=".providers.OneBrickContentProvider"
-            android:authorities="org.onebrick.android.provider"
-            android:exported="false"
-            android:syncable="true" />
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="org.onebrick.android"
+            android:exported="false" />
 
         <activity
             android:name=".activities.LoginActivity"
@@ -94,6 +105,5 @@
             android:value="AIzaSyDptYFq40HPrsj7FPbBFxf6xTQoESbSBdo"/>
 
     </application>
-
 
 </manifest>

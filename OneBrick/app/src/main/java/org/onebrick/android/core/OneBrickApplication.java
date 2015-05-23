@@ -1,12 +1,12 @@
 package org.onebrick.android.core;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.activeandroid.app.Application;
 import com.newrelic.agent.android.NewRelic;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

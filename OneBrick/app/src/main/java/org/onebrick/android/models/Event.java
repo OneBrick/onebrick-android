@@ -1,46 +1,61 @@
 package org.onebrick.android.models;
 
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.onebrick.android.database.EventTable;
-
 import java.lang.reflect.Type;
 
-public class Event {
-
+@Table(name = "event", id = BaseColumns._ID)
+public class Event extends Model {
     private static final String TAG = "Event";
+    public static final String EVENT_ID = "event_id";
+    public static final String USER_RSVP = "user_rsvp";
+    public static final String CHAPTER_ID = "chapter_id";
 
-    private long _id;
+    @Column(name = EVENT_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long eventId;
+    @Column(name = "title", index = true)
     private String title;
+    @Column(name = "start_date")
     private String startDate;
+    @Column(name = "end_date")
     private String endDate;
+    @Column(name = "address")
     private String address;
+    @Column(name = "esn_title")
     private String esnTitle;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "rsvp_capacity")
     private int rsvpCapacity;
+    @Column(name = "rsvp_count")
     private int rsvpCount;
+    @Column(name = USER_RSVP)
     private int userRSVP;
+    @Column(name = "description")
     private String description;
+    @Column(name = "coordinator_email")
     private String coordinatorEmail;
+    @Column(name = "manager_email")
     private String managerEmail;
-    private Chapter chapter;
-    private String photos;
+    @Column(name = CHAPTER_ID)
+    private int chapterId;
+
+//    private String photos;
 
     @Override
     public String toString() {
         return title;
-    }
-
-    public long getID() {
-        return _id;
     }
 
     public long getEventId() {
@@ -99,9 +114,9 @@ public class Event {
         return managerEmail;
     }
 
-    public Chapter getChapter() {
-        return chapter;
-    }
+//    public Chapter getChapter() {
+//        return chapter;
+//    }
 
     public String getProfilePhotoUri() {
         return getProfilePhotoUri(eventId);
@@ -115,6 +130,14 @@ public class Event {
         userRSVP = 0;
     }
 
+    public int getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(int chapterId) {
+        this.chapterId = chapterId;
+    }
+
     // TODO: this is hack need to get image uri from server
     private static String getProfilePhotoUri(long eventId) {
         long imageId = (eventId % 20) + 1;
@@ -123,23 +146,7 @@ public class Event {
 
     public static Event fromCursor(@NonNull Cursor cursor) {
         final Event event = new Event();
-        event._id = cursor.getLong(cursor.getColumnIndexOrThrow(EventTable.Columns._ID));
-        event.eventId = cursor.getInt(cursor.getColumnIndexOrThrow(EventTable.Columns.EVENT_ID));
-        int chapterId = cursor.getInt(cursor.getColumnIndexOrThrow(EventTable.Columns.CHAPTER_ID));
-        // TODO: get chapter object or make member chapterId
-        event.title = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.TITLE));
-        event.esnTitle = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.ESN_TITLE));
-        event.address = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.ADDRESS));
-        event.startDate = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.START_DATE));
-        event.endDate = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.END_DATE));
-        event.summary = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.SUMMARY));
-        event.rsvpCapacity = cursor.getInt(cursor.getColumnIndexOrThrow(EventTable.Columns.RSVP_CAPACITY));
-        event.rsvpCount = cursor.getInt(cursor.getColumnIndexOrThrow(EventTable.Columns.RSVP_COUNT));
-        event.userRSVP = cursor.getInt(cursor.getColumnIndexOrThrow(EventTable.Columns.USER_RSVP));
-        event.description = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.DESCRIPTION));
-        event.coordinatorEmail = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.COORDINATOR_EMAIL));
-        event.managerEmail = cursor.getString(cursor.getColumnIndexOrThrow(EventTable.Columns.MANAGER_EMAIL));
-        // TODO photos when urls are available from APIS
+        event.loadFromCursor(cursor);
         return event;
     }
 

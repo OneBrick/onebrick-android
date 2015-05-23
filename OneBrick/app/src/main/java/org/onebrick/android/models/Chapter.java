@@ -1,32 +1,37 @@
 package org.onebrick.android.models;
 
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.onebrick.android.database.ChapterTable;
-
 import java.lang.reflect.Type;
 
-public class Chapter {
+@Table(name = "chapter", id = BaseColumns._ID)
+public class Chapter extends Model {
     private static final String TAG = "Chapter";
+    public static final String NAME = "name";
+    public static final String CHAPTER_ID = "chapter_id";
 
-    private long _id;
+    @Column(name = CHAPTER_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private int chapterId;
+
+    @Column(name = NAME)
     private String name;
 
     @Override
     public String toString() {
         return name + " " + chapterId;
-    }
-
-    public long getID() {
-        return _id;
     }
 
     public int getChapterId() {
@@ -39,10 +44,14 @@ public class Chapter {
 
     public static Chapter fromCursor(@NonNull Cursor cursor) {
         final Chapter ch = new Chapter();
-        ch._id = cursor.getLong(cursor.getColumnIndexOrThrow(ChapterTable.Columns._ID));
-        ch.chapterId = cursor.getInt(cursor.getColumnIndexOrThrow(ChapterTable.Columns.CHAPTER_ID));
-        ch.name = cursor.getString(cursor.getColumnIndexOrThrow(ChapterTable.Columns.NAME));
+        ch.loadFromCursor(cursor);
         return ch;
+    }
+
+    @Nullable
+    public static Chapter findById(long chapterId) {
+        return new Select().from(Chapter.class).where("chapter_id=?",
+                chapterId).executeSingle();
     }
 
     public static class ChapterJsonDeserializer implements JsonDeserializer<Chapter> {

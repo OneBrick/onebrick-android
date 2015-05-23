@@ -9,7 +9,6 @@ import org.json.JSONObject;
 public class User {
 
     private static final String TAG = "User";
-
     public String name;
     public String email;
     public String profileImageUri;

@@ -16,10 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.activeandroid.content.ContentProvider;
+
 import org.onebrick.android.R;
-import org.onebrick.android.database.ChapterTable;
 import org.onebrick.android.models.Chapter;
-import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,7 +36,8 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
 
     private static final int CHAPTER_LOADER = 1;
 
-    @InjectView(R.id.lvChapters) ListView lvChapters;
+    @InjectView(R.id.lvChapters)
+    ListView lvChapters;
 
     private SimpleCursorAdapter mAdapter;
 
@@ -48,8 +49,11 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getActivity(),
-                OneBrickContentProvider.CHAPTERS_URI,
-                null, null, null, ChapterTable.Columns.NAME + " ASC");
+                ContentProvider.createUri(Chapter.class, null),
+                null,
+                null,
+                null,
+                Chapter.NAME + " ASC");
     }
 
     @Override
@@ -67,17 +71,17 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
         super.onCreate(savedInstanceState);
 
         mAdapter = new SimpleCursorAdapter(getActivity(),
-            android.R.layout.simple_list_item_1, null,
-            new String[] { "name" },
-            new int[] { android.R.id.text1 },
-            0);
+                android.R.layout.simple_list_item_1, null,
+                new String[]{Chapter.NAME},
+                new int[]{android.R.id.text1},
+                0);
 
         getLoaderManager().initLoader(CHAPTER_LOADER, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chapter_list, container, false);
         ButterKnife.inject(this, view);
         lvChapters.setAdapter(mAdapter);

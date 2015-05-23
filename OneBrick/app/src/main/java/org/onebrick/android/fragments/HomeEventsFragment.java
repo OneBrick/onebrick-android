@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
-import org.onebrick.android.core.OneBrickApplication;
+import com.activeandroid.content.ContentProvider;
+
 import org.onebrick.android.core.OneBrickRESTClient;
-import org.onebrick.android.database.EventTable;
-import org.onebrick.android.providers.OneBrickContentProvider;
+import org.onebrick.android.models.Event;
 
 public class HomeEventsFragment extends EventsListFragment {
 
@@ -28,9 +28,10 @@ public class HomeEventsFragment extends EventsListFragment {
         return fragment;
     }
 
-    public  int getChapterId() {
+    public int getChapterId() {
         return chapterId;
     }
+
     public String getChapterName() {
         return chapterName;
     }
@@ -65,16 +66,17 @@ public class HomeEventsFragment extends EventsListFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         final String[] projection = null;
-        final String selection = EventTable.Columns.CHAPTER_ID + "=?";
-        final String[] selectionArgs = new String[] {Integer.toString(chapterId)};
+        String selection = Event.CHAPTER_ID + "=?";
+        final String[] selectionArgs = new String[]{Integer.toString(chapterId)};
         final String sortOrder = null;
+
         // TODO use appropriate params
+
         return new CursorLoader(getActivity(),
-                OneBrickContentProvider.EVENTS_URI,
+                ContentProvider.createUri(Event.class, null),
                 projection,
                 selection,
                 selectionArgs,
-                sortOrder
-        );
+                sortOrder);
     }
 }

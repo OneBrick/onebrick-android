@@ -1,9 +1,7 @@
 package org.onebrick.android.activities;
 
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -16,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.activeandroid.content.ContentProvider;
 import com.squareup.otto.Subscribe;
 
 import org.onebrick.android.R;
@@ -34,7 +33,6 @@ import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.RSVP;
-import org.onebrick.android.providers.OneBrickContentProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,7 +47,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "EventDetailActivity";
-    public static final String EXTRA__ID = "_id";
+    public static final String EXTRA_EVENT_ID = "event_id";
     public static final String SUCCESS = "0";
 
     @InjectView(R.id.btn_rsvp)
@@ -58,7 +56,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     ListView mCardsListView;
 
     private CardArrayAdapter mAdapter;
-    private long _Id;
+    private long mEventId;
     private Event mEvent;
     private boolean mPendingRsvp;
 
@@ -107,7 +105,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         mCardsListView.setAdapter(mAdapter);
 
         Intent eventInfo = getIntent();
-        _Id = eventInfo.getLongExtra(EXTRA__ID, -1);
+        mEventId = eventInfo.getLongExtra(EXTRA_EVENT_ID, -1);
         getSupportLoaderManager().initLoader(0, null, this);
 
         OneBrickApplication.getInstance().getBus().register(this);
@@ -118,7 +116,6 @@ public class EventDetailActivity extends ActionBarActivity implements
         super.onDestroy();
         OneBrickApplication.getInstance().getBus().unregister(this);
     }
-
 
     private void setupListeners() {
         btnRsvp.setOnClickListener(new View.OnClickListener() {
@@ -215,9 +212,15 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        final Uri uri = ContentUris.withAppendedId(OneBrickContentProvider.EVENTS_URI, _Id);
-        return new CursorLoader(this, uri,
-                null, null, null, null);
+        String selection = Event.EVENT_ID + "=?";
+        String[] selectionArgs = new String[]{Long.toString(mEventId)};
+
+        return new CursorLoader(this,
+                ContentProvider.createUri(Event.class, null),
+                null,
+                selection,
+                selectionArgs,
+                null);
     }
 
     @Override
