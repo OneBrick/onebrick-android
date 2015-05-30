@@ -34,7 +34,7 @@ public class MyEventsActivity extends ActionBarActivity {
         setupTabs();
 
         if (savedInstanceState == null) {
-            OneBrickRESTClient.getInstance().myEvents();
+            OneBrickRESTClient.getInstance().requestMyEvents();
         }
         OneBrickApplication.getInstance().getBus().register(this);
     }
@@ -149,7 +149,7 @@ public class MyEventsActivity extends ActionBarActivity {
         if (event.status == Status.NO_NETWORK) {
             Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
         } else if (event.status == Status.FAILED) {
-            Toast.makeText(this, R.string.failed_to_fetch_chapters, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.failed_to_fetch_my_events, Toast.LENGTH_LONG).show();
         }
     }
 }

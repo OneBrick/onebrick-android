@@ -25,10 +25,10 @@ public class DescriptionCard extends EventCard {
     public View initView(@NonNull ViewGroup parent) {
         initView(parent, R.layout.card_event_detail_description);
 
-        if (mEvent.getDescription() != null) {
-            String eventDesc = Utils.removeImgTagsFromHTML(mEvent.getDescription());
-            eventDesc = Utils.removeHTagsFromHTML(eventDesc);
-            mDescriptionTextView.setText(Html.fromHtml(eventDesc));
+        if (mEvent.getSummary() != null) {
+            String eventSummary = Utils.removeImgTagsFromHTML(mEvent.getSummary());
+            eventSummary = Utils.removeHTagsFromHTML(eventSummary);
+            mDescriptionTextView.setText(Html.fromHtml(eventSummary));
         }
 
         return mView;

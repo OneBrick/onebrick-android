@@ -60,4 +60,6 @@
     <!-- Toasts messages -->
     <string name="no_network">No network</string>
     <string name="failed_to_fetch_chapters">Failed to fetch chapters</string>
+    <string name="failed_to_fetch_my_events">Failed to fetch events</string>
+    <string name="failed_to_fetch_event_detail">Failed to fetch event detail</string>
 </resources>

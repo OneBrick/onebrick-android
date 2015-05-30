@@ -61,7 +61,7 @@ public class MapCard extends EventCard implements
 
     private void setupMap() {
         if (mContext instanceof Activity){
-            mapFragment = (MapFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.map_frame);
+            mapFragment = (MapFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.map_frame_card);
             if (mapFragment != null) {
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override

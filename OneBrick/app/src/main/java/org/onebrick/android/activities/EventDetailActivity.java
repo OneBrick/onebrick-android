@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
 import com.squareup.otto.Subscribe;
@@ -27,6 +28,8 @@ import org.onebrick.android.cards.ShareCard;
 import org.onebrick.android.cards.TitleCard;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
+import org.onebrick.android.events.FetchEventDetailEvent;
+import org.onebrick.android.events.FetchMyEventsEvent;
 import org.onebrick.android.events.LoginStatusEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.DateTimeFormatter;
@@ -59,6 +62,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     private long mEventId;
     private Event mEvent;
     private boolean mPendingRsvp;
+    private MapCard mapCard;
 
     private void updateViews() {
         if (LoginManager.getInstance(this).isLoggedIn()) {
@@ -106,8 +110,11 @@ public class EventDetailActivity extends ActionBarActivity implements
 
         Intent eventInfo = getIntent();
         mEventId = eventInfo.getLongExtra(EXTRA_EVENT_ID, -1);
-        getSupportLoaderManager().initLoader(0, null, this);
 
+       if (savedInstanceState == null) {
+            OneBrickRESTClient.getInstance().requestEventDetail(mEventId);
+        }
+        getSupportLoaderManager().initLoader(0, null, this);
         OneBrickApplication.getInstance().getBus().register(this);
     }
 
@@ -232,7 +239,12 @@ public class EventDetailActivity extends ActionBarActivity implements
             mAdapter.add(new TitleCard(this, mEvent));
             mAdapter.add(new PhotoGalleryCard(this, mEvent));
             mAdapter.add(new DescriptionCard(this, mEvent));
-            mAdapter.add(new MapCard(this, mEvent));
+            if (mapCard == null){
+                mapCard = new MapCard(this, mEvent);
+                mAdapter.add(mapCard);
+            }else{
+                mAdapter.add(mapCard);
+            }
             mAdapter.add(new ContactsCard(this, mEvent));
             mAdapter.add(new ShareCard(this, mEvent));
             mAdapter.notifyDataSetChanged();
@@ -254,6 +266,15 @@ public class EventDetailActivity extends ActionBarActivity implements
     public void onLoginStatusEvent(LoginStatusEvent event) {
         if (mPendingRsvp && event.status == Status.SUCCESS) {
             processRsvpRequest(mEvent.getEventId());
+        }
+    }
+
+    @Subscribe
+    public void onFetchEventDetailEvent(FetchEventDetailEvent event) {
+        if (event.status == Status.NO_NETWORK) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
+        } else if (event.status == Status.FAILED) {
+            Toast.makeText(this, R.string.failed_to_fetch_event_detail, Toast.LENGTH_LONG).show();
         }
     }
 }

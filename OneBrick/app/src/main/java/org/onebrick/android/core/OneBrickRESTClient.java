@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import org.onebrick.android.BuildConfig;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.jobs.FetchChaptersJob;
+import org.onebrick.android.jobs.FetchEventDetailJob;
 import org.onebrick.android.jobs.FetchEventsJob;
 import org.onebrick.android.jobs.FetchMyEventsJob;
 import org.onebrick.android.models.Chapter;
@@ -102,15 +103,20 @@ public class OneBrickRESTClient {
                 new FetchEventsJob(chapterId));
     }
 
+    public void requestEventDetail(long eventId) {
+        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
+                new FetchEventDetailJob(eventId));
+    }
+
+    public void requestMyEvents() {
+        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
+                new FetchMyEventsJob());
+    }
     /**
      * Call retrofit asynchronously
      */
     public void verifyLogin(@NonNull String ukey, Callback<String[]> cb) {
         mRestService.verify(ukey, cb);
-    }
-
-    public void eventInfo(int eventId) {
-
     }
 
     public void rsvp(@NonNull String ukey, @NonNull long eventId, Callback<RSVP> cb) {
@@ -119,11 +125,6 @@ public class OneBrickRESTClient {
 
     public void unrsvp(@NonNull String ukey, @NonNull long eventId, Callback<RSVP> cb) {
         mRestService.unrsvp(ukey, eventId, cb);
-    }
-
-    public void myEvents() {
-        OneBrickApplication.getInstance().getJobManager().addJobInBackground(
-                new FetchMyEventsJob());
     }
 
     public void search(int chapterId, String search) {

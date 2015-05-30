@@ -42,8 +42,8 @@ public class Event extends Model {
     private int rsvpCount;
     @Column(name = USER_RSVP)
     private int userRSVP;
-    @Column(name = "description")
-    private String description;
+//    @Column(name = "description")
+//    private String description;
     @Column(name = "coordinator_email")
     private String coordinatorEmail;
     @Column(name = "manager_email")
@@ -102,9 +102,9 @@ public class Event extends Model {
         return userRSVP == 1;
     }
 
-    public String getDescription() {
-        return description;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
 
     public String getCoordinatorEmail() {
         return coordinatorEmail;
@@ -165,11 +165,17 @@ public class Event extends Model {
             event.address = jsonObject.get("address").getAsString();
 
             if (jsonObject.has("manager_email")) {
-                event.managerEmail = jsonObject.get("manager_email").getAsString();
+                final JsonElement jsonElement = jsonObject.get("manager_email");
+                if (!jsonElement.isJsonNull()) {
+                    event.managerEmail = jsonObject.get("manager_email").getAsString();
+                }
             }
             // should check json return. sometimes, there are multiple coordinators
             if (jsonObject.has("coordinator_email")) {
-                event.coordinatorEmail = jsonObject.get("coordinator_email").getAsString();
+                final JsonElement jsonElement = jsonObject.get("coordinator_email");
+                if (!jsonElement.isJsonNull()) {
+                    event.coordinatorEmail = jsonObject.get("coordinator_email").getAsString();
+                }
             }
             if (jsonObject.has("body_summary")) {
                 final JsonElement jsonElement = jsonObject.get("body_summary");
