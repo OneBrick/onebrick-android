@@ -32,6 +32,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_login_general">Email format incorrect or Password cannot be null or empty string.</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_credentials">Email or password is incorrect.</string>
 
 
     <string name="my_events">My Events</string>

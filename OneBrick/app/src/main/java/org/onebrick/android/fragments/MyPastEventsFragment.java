@@ -15,39 +15,25 @@ import org.onebrick.android.models.Event;
 
 public class MyPastEventsFragment extends EventsListFragment {
 
-    private int myChapterId;
-
     public MyPastEventsFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myChapterId = OneBrickApplication.getInstance().getChapterId();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LoginManager loginManager = LoginManager.getInstance(getActivity());
-
-//        if (loginManager.getCurrentUser() != null){
-//            populatePastEvents(loginManager.getCurrentUser().getUserId());
-//        }
-    }
-
-    private void populatePastEvents(long userId) {
-        // get all events: both past and upcoming events
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         final String[] projection = null;
-        String selection = Event.USER_RSVP + "=1";
+        String selection = Event.USER_RSVP + "=1 AND " + Event.PAST_EVENT + "=1";
         final String[] selectionArgs = null;
         final String sortOrder = null;
-
-        // TODO use appropriate params
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),

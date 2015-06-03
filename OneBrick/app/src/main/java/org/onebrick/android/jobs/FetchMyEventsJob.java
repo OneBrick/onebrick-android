@@ -9,11 +9,13 @@ import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.core.OneBrickService;
 import org.onebrick.android.events.FetchMyEventsEvent;
 import org.onebrick.android.events.Status;
+import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.NetworkUtil;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class FetchMyEventsJob extends OneBrickBaseJob {
@@ -47,6 +49,9 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
             //event.setChapterId(chapterId);
             if (chapterId > 0) {
                 event.setChapterId(chapterId);
+            }
+            if (DateTimeFormatter.getInstance().isPastEvent(event.getEndDate())) {
+                event.setPastEvent(true);
             }
             event.save();
         }

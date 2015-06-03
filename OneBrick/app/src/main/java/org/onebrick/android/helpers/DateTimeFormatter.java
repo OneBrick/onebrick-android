@@ -16,6 +16,7 @@ public class DateTimeFormatter {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat eventDate = new SimpleDateFormat("EEE, MMM d");
     private static SimpleDateFormat eventTime = new SimpleDateFormat("h:mm a");
+    private static SimpleDateFormat eventYear = new SimpleDateFormat("yyyy");
 
     private DateTimeFormatter() {};
 
@@ -31,7 +32,14 @@ public class DateTimeFormatter {
             final Date d = getLocalTime(dateFormat.parse(onebrickDate));
             final String date = eventDate.format(d);
             final String time = eventTime.format(d);
-            return date + " @ " + time;
+            final String year = eventYear.format(d);
+            StringBuilder builder = new StringBuilder();
+            builder.append(date);
+            builder.append(" ");
+            builder.append(year);
+            builder.append(" @ ");
+            builder.append(time);
+            return builder.toString();
         } catch (ParseException e) {
             Log.e(TAG, "cannot parse date: " + onebrickDate);
         }

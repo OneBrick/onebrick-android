@@ -137,6 +137,9 @@ public class LoginActivity extends ActionBarActivity {
                         OneBrickApplication.getInstance().getBus().post(
                                 new LoginStatusEvent(Status.FAILED));
                         Log.d(TAG, "invalid credential: " + strings[0]);
+                        Toast.makeText(getApplicationContext(),
+                                R.string.error_invalid_credentials,
+                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     OneBrickApplication.getInstance().getBus().post(

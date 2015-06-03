@@ -16,9 +16,6 @@ import org.onebrick.android.models.Event;
 
 public class MyUpcomingEventsFragment extends EventsListFragment {
 
-    private int myChapterId;
-    private LoginManager loginManager;
-
     public MyUpcomingEventsFragment() {
     }
 
@@ -30,32 +27,19 @@ public class MyUpcomingEventsFragment extends EventsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myChapterId = OneBrickApplication.getInstance().getChapterId();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loginManager = LoginManager.getInstance(getActivity());
-
-//        if (loginManager.getCurrentUser() != null){
-//            populateUpcomingEvents(loginManager.getCurrentUser().getUserId());
-//        }
-    }
-
-    private void populateUpcomingEvents(long userId) {
-        // get only upcoming events
-        final long id = userId;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         final String[] projection = null;
-        String selection = Event.USER_RSVP + "=1";
+        String selection = Event.USER_RSVP + "=1 AND " + Event.PAST_EVENT + "=0";
         final String[] selectionArgs = null;
         final String sortOrder = null;
-
-        // TODO use appropriate params
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),

@@ -21,6 +21,7 @@ public class Event extends Model {
     public static final String EVENT_ID = "event_id";
     public static final String USER_RSVP = "user_rsvp";
     public static final String CHAPTER_ID = "chapter_id";
+    public static final String PAST_EVENT = "past_event";
 
     @Column(name = EVENT_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long eventId;
@@ -50,6 +51,8 @@ public class Event extends Model {
     private String managerEmail;
     @Column(name = CHAPTER_ID)
     private int chapterId;
+    @Column(name = "past_event")
+    private boolean pastEvent ;
 
 //    private String photos;
 
@@ -136,6 +139,14 @@ public class Event extends Model {
 
     public void setChapterId(int chapterId) {
         this.chapterId = chapterId;
+    }
+
+    public boolean getPastEvent() {
+        return pastEvent;
+    }
+
+    public void setPastEvent(boolean pastEvent) {
+        this.pastEvent = pastEvent;
     }
 
     // TODO: this is hack need to get image uri from server
