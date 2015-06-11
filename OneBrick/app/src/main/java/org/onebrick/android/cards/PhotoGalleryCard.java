@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import butterknife.InjectView;
@@ -25,8 +26,12 @@ public class PhotoGalleryCard extends EventCard {
         initView(parent, R.layout.card_event_detail_photo_gallery);
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(mEvent.getProfilePhotoUri(), ivProfilePhoto);
-
+        String[] photos = Utils.getPhotos(mEvent);
+        if (photos != null && photos.length > 0){
+            imageLoader.displayImage(photos[0], ivProfilePhoto);
+        }
+//        String photo = mEvent.getPhoto();
+//        imageLoader.displayImage(photo, ivProfilePhoto);
         return mView;
     }
 }

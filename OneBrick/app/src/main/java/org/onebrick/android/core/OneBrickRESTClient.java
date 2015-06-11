@@ -33,6 +33,7 @@ public class OneBrickRESTClient {
     public static final String ACCOUNT_TYPE = "onebrick.org";
     // The account name
     public static final String ACCOUNT = "SyncAdapterAccount";
+    public static final int PHOTO_NUM_IN_LIST = 1;
 
     private OneBrickService mRestService;
 
@@ -48,7 +49,7 @@ public class OneBrickRESTClient {
         OkClient client = new SigningOkClient(oAuthConsumer);
 
         final RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint("http://dev-v3.gotpantheon.com/auth")
+                .setEndpoint("http://test-v3.gotpantheon.com/auth")
                 .setConverter(new GsonConverter(gson))
                 .setClient(client);
 

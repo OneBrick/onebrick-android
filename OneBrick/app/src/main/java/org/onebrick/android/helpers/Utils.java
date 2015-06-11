@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.models.Event;
 
 public class Utils {
     private static final String TAG = "Utils";
+    public static final String PHOTO_SEPARATOR = "^";
 
     /**
      * remove img tags from html inside event description
@@ -56,5 +58,14 @@ public class Utils {
                 OneBrickApplication.getInstance().getBus().post(event);
             }
         });
+    }
+
+    public static String[] getPhotos(Event event) {
+        String[] photos = null;
+        if ((event != null) && (event.getPhoto() != null) && (event.getPhoto().length() > 0)) {
+            photos = event.getPhoto().split("\\"+Utils.PHOTO_SEPARATOR);
+            return photos;
+        }
+        return photos;
     }
 }

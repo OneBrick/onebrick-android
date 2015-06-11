@@ -7,11 +7,14 @@ import android.support.annotation.NonNull;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+
+import org.onebrick.android.helpers.Utils;
 
 import java.lang.reflect.Type;
 
@@ -53,8 +56,8 @@ public class Event extends Model {
     private int chapterId;
     @Column(name = "past_event")
     private boolean pastEvent ;
-
-//    private String photos;
+    @Column(name = "photo")
+    private String photo;
 
     @Override
     public String toString() {
@@ -141,6 +144,10 @@ public class Event extends Model {
         this.chapterId = chapterId;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
     public boolean getPastEvent() {
         return pastEvent;
     }
@@ -174,7 +181,12 @@ public class Event extends Model {
             event.endDate = jsonObject.get("field_event_date_value2").getAsString();
             event.rsvpCapacity = jsonObject.get("field_event_max_rsvp_capacity_value").getAsInt();
             event.address = jsonObject.get("address").getAsString();
-
+            if (jsonObject.has("photos")) {
+                JsonArray photos=jsonObject.get("photos").getAsJsonArray();
+                if (photos.size() > 0) {
+                    event.photo = decodeElements(photos);
+                }
+            }
             if (jsonObject.has("manager_email")) {
                 final JsonElement jsonElement = jsonObject.get("manager_email");
                 if (!jsonElement.isJsonNull()) {
@@ -205,8 +217,18 @@ public class Event extends Model {
             if (jsonObject.has("usrRSVP")) {
                 event.userRSVP = jsonObject.get("usrRSVP").getAsInt();
             }
-
             return event;
+        }
+
+        private String decodeElements(JsonArray items) {
+            StringBuilder builder = new StringBuilder();
+            for (JsonElement item : items){
+                if (!item.isJsonNull()) {
+                    builder.append(item.getAsString());
+                    builder.append(Utils.PHOTO_SEPARATOR);
+                }
+            }
+            return builder.toString();
         }
     }
 }

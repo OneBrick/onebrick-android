@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
+import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.events.FetchChaptersEvent;
 import org.onebrick.android.events.FetchEventsEvent;
 import org.onebrick.android.events.Status;
@@ -53,6 +54,10 @@ public class HomeActivity extends ActionBarActivity
         getSupportActionBar().setTitle(chapterName);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
+
+        if (savedInstanceState == null) {
+            OneBrickRESTClient.getInstance().requestEvents(chapterId);
+        }
 
         OneBrickApplication.getInstance().getBus().register(this);
     }

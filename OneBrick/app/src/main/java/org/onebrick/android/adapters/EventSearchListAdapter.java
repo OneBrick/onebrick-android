@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
@@ -25,14 +26,20 @@ public class EventSearchListAdapter extends CursorAdapter {
     DateTimeFormatter dtf;
 
     static class ViewHolder {
-        @InjectView(R.id.front) LinearLayout front;
-        @InjectView(R.id.ivListItemEventImage) ImageView ivEventImage;
-        @InjectView(R.id.tvListItemEventName) TextView tvEventName;
-        @InjectView(R.id.tvListItemEventAddress) TextView tvEventAddress;
-        @InjectView(R.id.tvListItemEventDate) TextView tvEventDate;
-        @InjectView(R.id.btnListItemRsvp) Button btnRsvp;
+        @InjectView(R.id.front)
+        LinearLayout front;
+        @InjectView(R.id.ivListItemEventImage)
+        ImageView ivEventImage;
+        @InjectView(R.id.tvListItemEventName)
+        TextView tvEventName;
+        @InjectView(R.id.tvListItemEventAddress)
+        TextView tvEventAddress;
+        @InjectView(R.id.tvListItemEventDate)
+        TextView tvEventDate;
+        @InjectView(R.id.btnListItemRsvp)
+        Button btnRsvp;
 
-        ViewHolder(View view){
+        ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
     }
@@ -55,18 +62,21 @@ public class EventSearchListAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-
         // Return the completed view to render on screen
         final Event event = Event.fromCursor(cursor);
-            viewHolder.front.setVisibility(View.VISIBLE);
-            int eventId = (int) event.getEventId();
-            int imgId = (eventId%20)+1;
-            String imageUri = "assets://images/image"+imgId+".jpg";
-            imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
-            viewHolder.tvEventName.setText(event.getTitle());
-            viewHolder.tvEventAddress.setText(event.getAddress());
-            viewHolder.tvEventDate.setText(DateTimeFormatter.getInstance().getFormattedEventStartDate(
-                    event.getStartDate()));
-            viewHolder.btnRsvp.setVisibility(View.GONE);
+        viewHolder.front.setVisibility(View.VISIBLE);
+        int eventId = (int) event.getEventId();
+//            int imgId = (eventId%20)+1;
+//            String imageUri = "assets://images/image"+imgId+".jpg";
+//            imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
+        String[] photos = Utils.getPhotos(event);
+        if (photos != null && photos.length > 0) {
+            imgLoader.displayImage(photos[0], viewHolder.ivEventImage);
+        }
+        viewHolder.tvEventName.setText(event.getTitle());
+        viewHolder.tvEventAddress.setText(event.getAddress());
+        viewHolder.tvEventDate.setText(DateTimeFormatter.getInstance().getFormattedEventStartDate(
+                event.getStartDate()));
+        viewHolder.btnRsvp.setVisibility(View.GONE);
     }
 }

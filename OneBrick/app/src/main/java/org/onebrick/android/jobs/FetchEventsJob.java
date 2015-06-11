@@ -32,7 +32,7 @@ public class FetchEventsJob extends OneBrickBaseJob {
         }
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
-        List<Event> eventList = restService.getAllEvents(mChapterId);
+        List<Event> eventList = restService.getAllEvents(mChapterId, OneBrickRESTClient.PHOTO_NUM_IN_LIST);
         saveEvents(eventList, mChapterId);
 
         Utils.postEventOnUi(new FetchEventsEvent(Status.SUCCESS));
@@ -45,7 +45,6 @@ public class FetchEventsJob extends OneBrickBaseJob {
 
     private void saveEvents(@NonNull List<Event> eventList, int chapterId) {
         for (Event event : eventList) {
-            //event.setChapterId(chapterId);
             if (chapterId > 0) {
                 event.setChapterId(chapterId);
             }

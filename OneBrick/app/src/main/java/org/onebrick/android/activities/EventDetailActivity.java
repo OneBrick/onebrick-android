@@ -62,7 +62,8 @@ public class EventDetailActivity extends ActionBarActivity implements
     private long mEventId;
     private Event mEvent;
     private boolean mPendingRsvp;
-    private MapCard mapCard;
+    private MapCard mMapCard;
+    private PhotoGalleryCard mPhotoGalleryCard;
 
     private void updateViews() {
         if (LoginManager.getInstance(this).isLoggedIn()) {
@@ -237,13 +238,18 @@ public class EventDetailActivity extends ActionBarActivity implements
 
             mAdapter.clear();
             mAdapter.add(new TitleCard(this, mEvent));
-            mAdapter.add(new PhotoGalleryCard(this, mEvent));
-            mAdapter.add(new DescriptionCard(this, mEvent));
-            if (mapCard == null){
-                mapCard = new MapCard(this, mEvent);
-                mAdapter.add(mapCard);
+            if (mPhotoGalleryCard == null){
+                mPhotoGalleryCard = new PhotoGalleryCard(this, mEvent);
+                mAdapter.add(mPhotoGalleryCard);
             }else{
-                mAdapter.add(mapCard);
+                mAdapter.add(mPhotoGalleryCard);
+            }
+            mAdapter.add(new DescriptionCard(this, mEvent));
+            if (mMapCard == null){
+                mMapCard = new MapCard(this, mEvent);
+                mAdapter.add(mMapCard);
+            }else{
+                mAdapter.add(mMapCard);
             }
             mAdapter.add(new ContactsCard(this, mEvent));
             mAdapter.add(new ShareCard(this, mEvent));

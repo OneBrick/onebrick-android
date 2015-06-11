@@ -33,7 +33,7 @@ public interface OneBrickService {
      * @return all events of a chapter
      */
     @GET("/event.json")
-    List<Event> getAllEvents(@Query("chapter") int chapterId);
+    List<Event> getAllEvents(@Query("chapter") int chapterId, @Query("nphotos") int numOfPhotos);
 
     /**
      * get an event detail

@@ -3,12 +3,13 @@ package org.onebrick.android.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.View;
 
 import com.activeandroid.content.ContentProvider;
 
-import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.models.Event;
 
 public class HomeEventsFragment extends EventsListFragment {
@@ -48,19 +49,16 @@ public class HomeEventsFragment extends EventsListFragment {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
         }
-        populateHomeEventsList(chapterId);
+        //populateHomeEventsList(chapterId);
     }
 
-    private void populateHomeEventsList(final int chapterId) {
-        OneBrickRESTClient.getInstance().requestEvents(chapterId);
+//    private void populateHomeEventsList(final int chapterId) {
+//        OneBrickRESTClient.getInstance().requestEvents(chapterId);
+//    }
 
-//        LoginManager loginManager = LoginManager.getInstance(getActivity());
-//        if(loginManager.isLoggedIn()) {
-//            User usr = loginManager.getCurrentUser();
-//            client.getEventsList(chapterId, usr.getUserId(), eventListResponseHandler);
-//        } else {
-//            client.getEventsList(chapterId, -1, eventListResponseHandler);
-//        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -69,8 +67,6 @@ public class HomeEventsFragment extends EventsListFragment {
         String selection = Event.CHAPTER_ID + "=?";
         final String[] selectionArgs = new String[]{Integer.toString(chapterId)};
         final String sortOrder = null;
-
-        // TODO use appropriate params
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),
