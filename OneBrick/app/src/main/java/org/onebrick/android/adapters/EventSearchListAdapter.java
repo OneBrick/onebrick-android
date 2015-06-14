@@ -15,7 +15,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.DateTimeFormatter;
-import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
@@ -69,7 +68,7 @@ public class EventSearchListAdapter extends CursorAdapter {
 //            int imgId = (eventId%20)+1;
 //            String imageUri = "assets://images/image"+imgId+".jpg";
 //            imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
-        String[] photos = Utils.getPhotos(event);
+        String[] photos = event.getPhotos();
         if (photos != null && photos.length > 0) {
             imgLoader.displayImage(photos[0], viewHolder.ivEventImage);
         }

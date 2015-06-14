@@ -5,13 +5,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.models.Event;
 
 public class Utils {
     private static final String TAG = "Utils";
-    public static final String PHOTO_SEPARATOR = "^";
+    public static final String PHOTO_SEPARATOR = ",";
 
     /**
      * remove img tags from html inside event description
@@ -60,12 +60,10 @@ public class Utils {
         });
     }
 
-    public static String[] getPhotos(Event event) {
-        String[] photos = null;
-        if ((event != null) && (event.getPhoto() != null) && (event.getPhoto().length() > 0)) {
-            photos = event.getPhoto().split("\\"+Utils.PHOTO_SEPARATOR);
-            return photos;
+    public static String[] getPhotos(String photos) {
+        if (!TextUtils.isEmpty(photos)) {
+            return photos.split(Utils.PHOTO_SEPARATOR);
         }
-        return photos;
+        return new String[0];
     }
 }

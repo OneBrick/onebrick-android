@@ -144,8 +144,9 @@ public class Event extends Model {
         this.chapterId = chapterId;
     }
 
-    public String getPhoto() {
-        return photo;
+    @NonNull
+    public String[] getPhotos() {
+        return Utils.getPhotos(photo);
     }
 
     public boolean getPastEvent() {
