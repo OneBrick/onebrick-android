@@ -27,26 +27,30 @@ public class ContactsCard extends EventCard {
         initView(parent, R.layout.card_event_detail_contacts);
 
         // email to manager
-        btnEmailManager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mEvent.getManagerEmail();
-                if (Utils.isValidEmail(email)) {
-                    SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
+        if (mEvent.getManagerEmail() != null){
+            btnEmailManager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = mEvent.getManagerEmail();
+                    if (Utils.isValidEmail(email)) {
+                        SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        // email to coordinator
-        btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mEvent.getCoordinatorEmail();
-                if (Utils.isValidEmail(email)) {
-                    SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
+        if (mEvent.getCoordinatorEmail() != null){
+            // email to coordinator
+            btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = mEvent.getCoordinatorEmail();
+                    if (Utils.isValidEmail(email)) {
+                        SocialShareEmail.sendEmails(v, mEvent.getTitle(), mEvent.getEventId(), email);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return mView;
     }
