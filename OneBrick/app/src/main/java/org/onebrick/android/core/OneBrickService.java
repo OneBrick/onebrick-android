@@ -51,7 +51,7 @@ public interface OneBrickService {
      * @return all my events
      */
     @GET("/event.json")
-    List<Event> getMyEvents(@Query("ukey") String ukey, @Query("includePastEvents") int includePastEvents);
+    List<Event> getMyEvents(@Query("ukey") String ukey, @Query("includePastEvents") int includePastEvents, @Query("nphotos") int numOfPhotos);
 
     /**
      * verify a user

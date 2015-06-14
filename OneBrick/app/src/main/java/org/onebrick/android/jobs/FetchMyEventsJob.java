@@ -33,7 +33,7 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
         String ukey = LoginManager.getInstance(null).getCurrentUserKey();
-        List<Event> eventList = restService.getMyEvents(ukey, 1);
+        List<Event> eventList = restService.getMyEvents(ukey, OneBrickRESTClient.INCLUDE_PAST_EVENTS,  OneBrickRESTClient.PHOTO_NUM_IN_LIST);
         saveEvents(eventList, -1);
 
         Utils.postEventOnUi(new FetchMyEventsEvent(Status.SUCCESS));

@@ -33,6 +33,7 @@ public class OneBrickRESTClient {
     public static final String ACCOUNT_TYPE = "onebrick.org";
     // The account name
     public static final String ACCOUNT = "SyncAdapterAccount";
+    public static final int INCLUDE_PAST_EVENTS = 1;
     public static final int PHOTO_NUM_IN_LIST = 1;
 
     private OneBrickService mRestService;
