@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,12 +28,10 @@ import org.onebrick.android.cards.ContactsCard;
 import org.onebrick.android.cards.DescriptionCard;
 import org.onebrick.android.cards.MapCard;
 import org.onebrick.android.cards.PhotoGalleryCard;
-import org.onebrick.android.cards.ShareCard;
 import org.onebrick.android.cards.TitleCard;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.events.FetchEventDetailEvent;
-import org.onebrick.android.events.FetchMyEventsEvent;
 import org.onebrick.android.events.LoginStatusEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.DateTimeFormatter;
@@ -43,20 +45,20 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * TODO this class should be revisited
- */
 public class EventDetailActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "EventDetailActivity";
     public static final String EXTRA_EVENT_ID = "event_id";
     public static final String SUCCESS = "0";
+    private static final String SOCIAL_URL_PREFIX = "http://onebrick.org/event/?eventid=";
 
-    @InjectView(R.id.btn_rsvp)
-    Button btnRsvp;
     @InjectView(R.id.lv_event_detail_cards)
     ListView mCardsListView;
+    @InjectView(R.id.btn_rsvp)
+    Button btnRsvp;
+    @InjectView(R.id.ll_rsvp_segment)
+    LinearLayout llRsvpSegment;
 
     private CardArrayAdapter mAdapter;
     private long mEventId;
@@ -65,8 +67,11 @@ public class EventDetailActivity extends ActionBarActivity implements
     private MapCard mMapCard;
     private PhotoGalleryCard mPhotoGalleryCard;
 
+    private ShareActionProvider mShareActionProvider;
+
     private void updateViews() {
         if (LoginManager.getInstance(this).isLoggedIn()) {
+            Log.i(TAG, "event detail update view: login true");
             if (mEvent.isRsvp()) {
                 btnRsvp.setText(R.string.un_rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
@@ -74,11 +79,13 @@ public class EventDetailActivity extends ActionBarActivity implements
                 btnRsvp.setText(R.string.rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
             }
+        }else{
+            Log.i(TAG, "event detail update view: login false");
         }
 
         // TODO check current date for past events. if past events, don't show rsvp/unrsvp buttons
         if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())) {
-            //llRsvpSegment.setVisibility(View.GONE);
+            llRsvpSegment.setVisibility(View.GONE);
         }
     }
 
@@ -88,6 +95,10 @@ public class EventDetailActivity extends ActionBarActivity implements
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.mi_item_share:
+                Log.i(TAG, "clicked share");
+                //setShareIntent();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -96,6 +107,19 @@ public class EventDetailActivity extends ActionBarActivity implements
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu resource file.
+        getMenuInflater().inflate(R.menu.event_detail, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.mi_item_share);
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        setShareIntent();
+        // Return true to display menu
+        return true;
     }
 
     @Override
@@ -112,7 +136,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         Intent eventInfo = getIntent();
         mEventId = eventInfo.getLongExtra(EXTRA_EVENT_ID, -1);
 
-       if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             OneBrickRESTClient.getInstance().requestEventDetail(mEventId);
         }
         getSupportLoaderManager().initLoader(0, null, this);
@@ -218,6 +242,19 @@ public class EventDetailActivity extends ActionBarActivity implements
         });
     }
 
+    // Call to update the share intent
+    private void setShareIntent() {
+        if (mShareActionProvider != null) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            if (mEvent != null){
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, mEvent.getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mEvent.getTitle() + ":  " + SOCIAL_URL_PREFIX + mEvent.getEventId());
+            }
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         String selection = Event.EVENT_ID + "=?";
@@ -252,7 +289,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                 mAdapter.add(mMapCard);
             }
             mAdapter.add(new ContactsCard(this, mEvent));
-            mAdapter.add(new ShareCard(this, mEvent));
+            //mAdapter.add(new ShareCard(this, mEvent));
             mAdapter.notifyDataSetChanged();
 
             updateViews();

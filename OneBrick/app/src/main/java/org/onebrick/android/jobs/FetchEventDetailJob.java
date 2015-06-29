@@ -7,6 +7,7 @@ import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.core.OneBrickService;
 import org.onebrick.android.events.FetchEventDetailEvent;
 import org.onebrick.android.events.Status;
+import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.helpers.NetworkUtil;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
@@ -28,7 +29,10 @@ public class FetchEventDetailJob extends OneBrickBaseJob {
         }
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
-        Event event = restService.getEventDetail(mEventId);
+        String ukey = LoginManager.getInstance(null).getCurrentUserKey();
+        Event event = null;
+        // when ukey is null,
+        event = restService.getEventDetail(mEventId, ukey);
         event.save();
 
         Utils.postEventOnUi(new FetchEventDetailEvent(Status.SUCCESS));

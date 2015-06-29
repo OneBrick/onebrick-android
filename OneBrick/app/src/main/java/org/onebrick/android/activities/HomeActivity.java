@@ -1,12 +1,16 @@
 package org.onebrick.android.activities;
 
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,8 +19,6 @@ import com.squareup.otto.Subscribe;
 
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.core.OneBrickRESTClient;
-import org.onebrick.android.events.FetchChaptersEvent;
 import org.onebrick.android.events.FetchEventsEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.fragments.HomeEventsFragment;
@@ -27,7 +29,7 @@ import org.onebrick.android.models.Chapter;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends ActionBarActivity
-        implements SelectChapterFragment.OnSelectChapterListener {
+        implements SelectChapterFragment.OnSelectChapterListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -37,6 +39,8 @@ public class HomeActivity extends ActionBarActivity
     Fragment eventListFragment;
 
     private Dialog mSelectChapterDialog;
+    private SearchView mSearchView;
+    private String mSearchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +51,11 @@ public class HomeActivity extends ActionBarActivity
         Intent intent = getIntent();
         final int chapterId = intent.getIntExtra(EXTRA_CHAPTER_ID, -1);
         final String chapterName = intent.getStringExtra(EXTRA_CHAPTER_NAME);
-        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
+        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, mSearchQuery);
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
 
         getSupportActionBar().setTitle(chapterName);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-
-        if (savedInstanceState == null) {
-            OneBrickRESTClient.getInstance().requestEvents(chapterId);
-        }
-
         OneBrickApplication.getInstance().getBus().register(this);
     }
 
@@ -71,6 +68,12 @@ public class HomeActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = menu.findItem(R.id.mi_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setOnQueryTextListener(this);
+        MenuItemCompat.setOnActionExpandListener(searchItem, this);
         return true;
     }
 
@@ -79,11 +82,6 @@ public class HomeActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.mi_search:
-                final Intent i = new Intent(this, SearchActivity.class);
-                i.putExtra(SearchActivity.EXTRA_CHAPTER_ID, ((HomeEventsFragment) eventListFragment).getChapterId());
-                i.putExtra(SearchActivity.EXTRA_CHAPTER_NAME, ((HomeEventsFragment) eventListFragment).getChapterName());
-                startActivity(i);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 return true;
 
             case R.id.mi_login:
@@ -127,13 +125,9 @@ public class HomeActivity extends ActionBarActivity
     }
 
     private void displayEventsInChapter(Chapter ch) {
-        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(),
-                ch.getChapterId());
+        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(), ch.getChapterId(), null);
         final FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.flHomeContainer, eventListFragment)
-                .commit();
-
+        fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
         getSupportActionBar().setTitle(ch.getChapterName());
     }
 
@@ -143,11 +137,46 @@ public class HomeActivity extends ActionBarActivity
             mSelectChapterDialog.dismiss();
             mSelectChapterDialog = null;
         }
-
         OneBrickApplication.getInstance().setChapterName(chapter.getChapterName());
         OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
 
         displayEventsInChapter(chapter);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        mSearchQuery = query;
+        displaySearchResults(mSearchQuery);
+        // Reset SearchView
+        mSearchView.clearFocus();
+        mSearchView.setQuery(mSearchQuery, false);
+        mSearchView.setIconified(false);
+        return false;
+    }
+
+    private void displaySearchResults(String query) {
+        int chapterId = OneBrickApplication.getInstance().getChapterId();
+        String chapterName = OneBrickApplication.getInstance().getChapterName();
+        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, query);
+        final FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        // go back to initial status
+        displaySearchResults("");
+        return true;
     }
 
     @Subscribe
@@ -158,4 +187,5 @@ public class HomeActivity extends ActionBarActivity
             Toast.makeText(this, R.string.failed_to_fetch_chapters, Toast.LENGTH_LONG).show();
         }
     }
+
 }

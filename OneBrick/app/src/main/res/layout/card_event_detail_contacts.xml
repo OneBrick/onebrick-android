@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:gravity="center_horizontal"
-    android:background="@drawable/bg_card">
+    android:background="@drawable/bg_card"
+    android:paddingBottom="@dimen/rsvp_button_height">
 
     <TextView
         android:id="@+id/tv_contact_organizer"

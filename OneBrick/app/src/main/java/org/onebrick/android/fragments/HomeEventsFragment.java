@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.activeandroid.content.ContentProvider;
 
+import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.models.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeEventsFragment extends EventsListFragment {
 
@@ -18,13 +23,14 @@ public class HomeEventsFragment extends EventsListFragment {
 
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
+    private static final String ARG_SEARCH_QUERY = "search";
 
-
-    public static HomeEventsFragment newInstance(String chapterName, int chapterId) {
+    public static HomeEventsFragment newInstance(String chapterName, int chapterId, String searchQuery) {
         HomeEventsFragment fragment = new HomeEventsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_CHAPTER_NAME, chapterName);
         args.putInt(ARG_CHAPTER_ID, chapterId);
+        args.putString(ARG_SEARCH_QUERY, searchQuery);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,6 +41,10 @@ public class HomeEventsFragment extends EventsListFragment {
 
     public String getChapterName() {
         return chapterName;
+    }
+
+    public String getSearchQuery() {
+        return searchQuery;
     }
 
     public HomeEventsFragment() {
@@ -48,13 +58,14 @@ public class HomeEventsFragment extends EventsListFragment {
         if (args != null) {
             chapterName = args.getString(ARG_CHAPTER_NAME);
             chapterId = args.getInt(ARG_CHAPTER_ID);
+            searchQuery = args.getString(ARG_SEARCH_QUERY);
         }
-        //populateHomeEventsList(chapterId);
+        populateHomeEventsList(chapterId, searchQuery);
     }
 
-//    private void populateHomeEventsList(final int chapterId) {
-//        OneBrickRESTClient.getInstance().requestEvents(chapterId);
-//    }
+    private void populateHomeEventsList(final int chapterId, final String searchQuery) {
+        OneBrickRESTClient.getInstance().requestEvents(chapterId, searchQuery);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -64,14 +75,28 @@ public class HomeEventsFragment extends EventsListFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         final String[] projection = null;
-        String selection = Event.CHAPTER_ID + "=?";
-        final String[] selectionArgs = new String[]{Integer.toString(chapterId)};
+        StringBuilder selection = new StringBuilder();
+        selection.append(Event.CHAPTER_ID + "=? ");
+        List<String> args = new ArrayList<>();
+        args.add(Integer.toString(chapterId));
+
+        if (!TextUtils.isEmpty(searchQuery)){
+            // query setting
+            selection.append(" and ");
+            selection.append(Event.EVENT_TITLE + " like ? ");
+            selection.append(" or ");
+            selection.append(Event.EVENT_SUMMARY + " like ? ");
+            // parameter setting
+            args.add("%" + searchQuery + "%");
+            args.add("%" + searchQuery + "%");
+        }
         final String sortOrder = null;
+        String[] selectionArgs = args.toArray(new String[args.size()]);
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),
                 projection,
-                selection,
+                selection.toString(),
                 selectionArgs,
                 sortOrder);
     }

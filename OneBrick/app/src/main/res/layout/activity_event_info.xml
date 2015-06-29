@@ -1,3 +1,4 @@
+<!--suppress AndroidDomInspection -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
             android:layout_height="match_parent"/>
 
         <LinearLayout
+            android:id="@+id/ll_rsvp_segment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/rsvp_button_height"
             android:layout_alignParentBottom="true"

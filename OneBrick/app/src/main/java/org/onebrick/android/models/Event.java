@@ -25,10 +25,12 @@ public class Event extends Model {
     public static final String USER_RSVP = "user_rsvp";
     public static final String CHAPTER_ID = "chapter_id";
     public static final String PAST_EVENT = "past_event";
+    public static final String EVENT_TITLE = "title";
+    public static final String EVENT_SUMMARY = "summary";
 
     @Column(name = EVENT_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long eventId;
-    @Column(name = "title", index = true)
+    @Column(name = EVENT_TITLE, index = true)
     private String title;
     @Column(name = "start_date")
     private String startDate;
@@ -38,7 +40,7 @@ public class Event extends Model {
     private String address;
     @Column(name = "esn_title")
     private String esnTitle;
-    @Column(name = "summary")
+    @Column(name = EVENT_SUMMARY)
     private String summary;
     @Column(name = "rsvp_capacity")
     private int rsvpCapacity;

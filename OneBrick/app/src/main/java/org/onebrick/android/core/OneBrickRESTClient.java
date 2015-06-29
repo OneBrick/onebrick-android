@@ -34,7 +34,7 @@ public class OneBrickRESTClient {
     // The account name
     public static final String ACCOUNT = "SyncAdapterAccount";
     public static final int INCLUDE_PAST_EVENTS = 1;
-    public static final int PHOTO_NUM_IN_LIST = 1;
+    public static final int PHOTO_NUM_IN_LIST = 3;
 
     private OneBrickService mRestService;
 
@@ -100,9 +100,9 @@ public class OneBrickRESTClient {
                 new FetchChaptersJob());
     }
 
-    public void requestEvents(int chapterId) {
+    public void requestEvents(int chapterId, String searchQuery) {
         OneBrickApplication.getInstance().getJobManager().addJobInBackground(
-                new FetchEventsJob(chapterId));
+                new FetchEventsJob(chapterId, searchQuery));
     }
 
     public void requestEventDetail(long eventId) {
@@ -127,9 +127,5 @@ public class OneBrickRESTClient {
 
     public void unrsvp(@NonNull String ukey, @NonNull long eventId, Callback<RSVP> cb) {
         mRestService.unrsvp(ukey, eventId, cb);
-    }
-
-    public void search(int chapterId, String search) {
-
     }
 }

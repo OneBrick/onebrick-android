@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 
 import org.onebrick.android.R;
 import org.onebrick.android.activities.EventDetailActivity;
-import org.onebrick.android.adapters.EventSearchListAdapter;
+import org.onebrick.android.adapters.EventListAdapter;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
@@ -29,10 +29,10 @@ public abstract class EventsListFragment extends Fragment implements
     private static final String TAG = "EventsListFragment";
 
     @InjectView(R.id.progressBar) ProgressBar progressBar;
-    protected EventSearchListAdapter mAdapter;
+    protected EventListAdapter mAdapter;
     String chapterName;
     int chapterId;
-
+    String searchQuery;
 
     public EventsListFragment() {
     }
@@ -40,10 +40,10 @@ public abstract class EventsListFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_search, container, false);
+        View view = inflater.inflate(R.layout.activity_event_list, container, false);
         ButterKnife.inject(this, view);
-        ListView listView = findById(view, R.id.lvEventSearchList);
-        mAdapter = new EventSearchListAdapter(getActivity(), null);
+        ListView listView = findById(view, R.id.lvEventList);
+        mAdapter = new EventListAdapter(getActivity(), null);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
