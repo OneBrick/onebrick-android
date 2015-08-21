@@ -6,8 +6,10 @@
         android:id="@+id/mi_search"
         android:orderInCategory="10"
         android:title="@string/search"
+        android:inputType="textNoSuggestions"
         android:icon="@drawable/ic_ab_search"
-        app:showAsAction="always">
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView">
     </item>
     <item
         android:id="@+id/mi_login"

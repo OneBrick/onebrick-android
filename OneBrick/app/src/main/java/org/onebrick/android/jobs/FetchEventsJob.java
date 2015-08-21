@@ -18,10 +18,12 @@ import java.util.List;
 public class FetchEventsJob extends OneBrickBaseJob {
 
     private int mChapterId;
+    private String mSearchQuery;
 
-    public FetchEventsJob(int chapterId) {
+    public FetchEventsJob(int chapterId, String searchQuery) {
         super(new Params(Priority.MEDIUM));
         mChapterId = chapterId;
+        mSearchQuery = searchQuery;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class FetchEventsJob extends OneBrickBaseJob {
         }
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
-        List<Event> eventList = restService.getAllEvents(mChapterId, OneBrickRESTClient.PHOTO_NUM_IN_LIST);
+        List<Event> eventList = restService.getAllEvents(mChapterId, OneBrickRESTClient.PHOTO_NUM_IN_LIST, mSearchQuery);
         saveEvents(eventList, mChapterId);
 
         Utils.postEventOnUi(new FetchEventsEvent(Status.SUCCESS));

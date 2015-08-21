@@ -1,0 +1,64 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
+        <!--<item name="android:actionBarTabStyle">@style/AppTheme.ActionBar.TabView</item>-->
+        <item name="android:actionBarTabBarStyle">@style/AppTheme.ActionBar.TabBar</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/onebrick_blue</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabBar" parent="android:style/Widget.Holo.Light.ActionBar.TabBar">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabView" parent="android:style/Widget.Holo.ActionBar.TabView">
+        <!-- This is a GREEN background -->
+        <item name="android:background">@color/onebrick_orange</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabText" parent="android:style/Widget.Holo.ActionBar.TabText">
+        <!-- This is a WHITE tab color -->
+        <item name="android:textColor">@color/onebrick_blue</item>
+    </style>
+
+    <!-- card styles -->
+    <style name="card">
+        <item name="android:paddingBottom">@dimen/card_padding_top_bottom</item>
+        <item name="android:paddingTop">@dimen/card_padding_top_bottom</item>
+        <item name="android:paddingLeft">@dimen/card_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/card_padding_left_right</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <!-- Drawer Items -->
+    <style name="drawerItem">
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">@dimen/medium</item>
+        <item name="android:textColor">@color/text_grey</item>
+        <!--<item name="android:typeface">monospace</item>-->
+        <item name="android:background">@drawable/onebrick_background_selector</item>
+    </style>
+
+    <style name="progressBar.Medium" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:minWidth">28dip</item>
+        <item name="android:maxWidth">28dip</item>
+        <item name="android:minHeight">28dip</item>
+        <item name="android:maxHeight">28dip</item>
+    </style>
+
+    <style name="SelectChapterList" parent="Widget.AppCompat.ListView.Menu">
+        <item name="android:textColor">@color/text_grey</item>
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+
+</resources>

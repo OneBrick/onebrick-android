@@ -20,7 +20,7 @@ import org.onebrick.android.models.Event;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EventSearchListAdapter extends CursorAdapter {
+public class EventListAdapter extends CursorAdapter {
     ImageLoader imgLoader;
     DateTimeFormatter dtf;
 
@@ -43,7 +43,7 @@ public class EventSearchListAdapter extends CursorAdapter {
         }
     }
 
-    public EventSearchListAdapter(Context context, Cursor cursor) {
+    public EventListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
         imgLoader = ImageLoader.getInstance();
         dtf = DateTimeFormatter.getInstance();
@@ -64,10 +64,6 @@ public class EventSearchListAdapter extends CursorAdapter {
         // Return the completed view to render on screen
         final Event event = Event.fromCursor(cursor);
         viewHolder.front.setVisibility(View.VISIBLE);
-        int eventId = (int) event.getEventId();
-//            int imgId = (eventId%20)+1;
-//            String imageUri = "assets://images/image"+imgId+".jpg";
-//            imgLoader.displayImage(imageUri,viewHolder.ivEventImage);
         String[] photos = event.getPhotos();
         if (photos != null && photos.length > 0) {
             imgLoader.displayImage(photos[0], viewHolder.ivEventImage);
