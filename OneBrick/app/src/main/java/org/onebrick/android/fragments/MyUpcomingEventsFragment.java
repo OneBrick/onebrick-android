@@ -10,8 +10,6 @@ import android.view.View;
 
 import com.activeandroid.content.ContentProvider;
 
-import org.onebrick.android.core.OneBrickApplication;
-import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 
 public class MyUpcomingEventsFragment extends EventsListFragment {

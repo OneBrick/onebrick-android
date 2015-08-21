@@ -50,7 +50,7 @@ public class OneBrickRESTClient {
         OkClient client = new SigningOkClient(oAuthConsumer);
 
         final RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint("http://dev-v3.gotpantheon.com/auth")
+                .setEndpoint("http://test-v3.gotpantheon.com/auth")
                 .setConverter(new GsonConverter(gson))
                 .setClient(client);
 

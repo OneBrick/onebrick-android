@@ -54,7 +54,6 @@ public class HomeActivity extends ActionBarActivity
         eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, mSearchQuery);
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
-
         getSupportActionBar().setTitle(chapterName);
         OneBrickApplication.getInstance().getBus().register(this);
     }

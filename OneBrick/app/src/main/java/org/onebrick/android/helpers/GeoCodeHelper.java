@@ -19,10 +19,10 @@ public class GeoCodeHelper {
 
             if (!geocodeMatches.isEmpty())
             {
-                double latitude = geocodeMatches.get(0).getLatitude();
-                double longitude = geocodeMatches.get(0).getLongitude();
-                Log.d("latitude: ", latitude + "");
-                Log.d("longitude", longitude + "");
+//                double latitude = geocodeMatches.get(0).getLatitude();
+//                double longitude = geocodeMatches.get(0).getLongitude();
+//                Log.d("latitude: ", latitude + "");
+//                Log.d("longitude", longitude + "");
 
                 return geocodeMatches;
             }

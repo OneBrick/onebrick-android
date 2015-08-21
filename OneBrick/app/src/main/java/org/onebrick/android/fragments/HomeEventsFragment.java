@@ -74,6 +74,7 @@ public class HomeEventsFragment extends EventsListFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+
         final String[] projection = null;
         StringBuilder selection = new StringBuilder();
         selection.append(Event.CHAPTER_ID + "=? ");

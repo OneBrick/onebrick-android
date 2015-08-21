@@ -52,6 +52,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     public static final String EXTRA_EVENT_ID = "event_id";
     public static final String SUCCESS = "0";
     private static final String SOCIAL_URL_PREFIX = "http://onebrick.org/event/?eventid=";
+    private static final int EVENT_DETAIL_LOADER = 77;
 
     @InjectView(R.id.lv_event_detail_cards)
     ListView mCardsListView;
@@ -64,6 +65,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     private long mEventId;
     private Event mEvent;
     private boolean mPendingRsvp;
+    private TitleCard mTitleCard;
     private MapCard mMapCard;
     private PhotoGalleryCard mPhotoGalleryCard;
 
@@ -71,7 +73,6 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     private void updateViews() {
         if (LoginManager.getInstance(this).isLoggedIn()) {
-            Log.i(TAG, "event detail update view: login true");
             if (mEvent.isRsvp()) {
                 btnRsvp.setText(R.string.un_rsvp);
                 btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
@@ -96,7 +97,6 @@ public class EventDetailActivity extends ActionBarActivity implements
                 onBackPressed();
                 return true;
             case R.id.mi_item_share:
-                Log.i(TAG, "clicked share");
                 //setShareIntent();
                 return true;
         }
@@ -105,6 +105,8 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     @Override
     public void onBackPressed() {
+        // call onLoaderReset
+        getLoaderManager().destroyLoader(EVENT_DETAIL_LOADER);
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
@@ -139,7 +141,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         if (savedInstanceState == null) {
             OneBrickRESTClient.getInstance().requestEventDetail(mEventId);
         }
-        getSupportLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(EVENT_DETAIL_LOADER, null, this);
         OneBrickApplication.getInstance().getBus().register(this);
     }
 
@@ -272,29 +274,25 @@ public class EventDetailActivity extends ActionBarActivity implements
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         if (cursor != null && cursor.moveToFirst()) {
             mEvent = Event.fromCursor(cursor);
-
             mAdapter.clear();
-            mAdapter.add(new TitleCard(this, mEvent));
+            if (mTitleCard == null){
+                mTitleCard = new TitleCard(this, mEvent);
+            }
+            mAdapter.add(mTitleCard);
             if (mPhotoGalleryCard == null){
                 mPhotoGalleryCard = new PhotoGalleryCard(this, mEvent);
-                mAdapter.add(mPhotoGalleryCard);
-            }else{
-                mAdapter.add(mPhotoGalleryCard);
             }
+            mAdapter.add(mPhotoGalleryCard);
             mAdapter.add(new DescriptionCard(this, mEvent));
             if (mMapCard == null){
                 mMapCard = new MapCard(this, mEvent);
-                mAdapter.add(mMapCard);
-            }else{
-                mAdapter.add(mMapCard);
             }
+            mAdapter.add(mMapCard);
             mAdapter.add(new ContactsCard(this, mEvent));
-            //mAdapter.add(new ShareCard(this, mEvent));
             mAdapter.notifyDataSetChanged();
 
             updateViews();
             setupListeners();
-
         } else {
             // TODO error
         }
@@ -302,6 +300,8 @@ public class EventDetailActivity extends ActionBarActivity implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mAdapter.clear();
+        mEvent = null;
     }
 
 

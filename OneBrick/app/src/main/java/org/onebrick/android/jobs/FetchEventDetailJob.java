@@ -30,11 +30,12 @@ public class FetchEventDetailJob extends OneBrickBaseJob {
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
         String ukey = LoginManager.getInstance(null).getCurrentUserKey();
-        Event event = null;
-        // when ukey is null,
-        event = restService.getEventDetail(mEventId, ukey);
-        event.save();
-
+        Event existingEvent = Event.findById(mEventId);
+        Event event = restService.getEventDetail(mEventId, ukey);
+        if (existingEvent != null && event != null) {
+            existingEvent.setSummary(event.getSummary());
+            existingEvent.save();
+        }
         Utils.postEventOnUi(new FetchEventDetailEvent(Status.SUCCESS));
     }
 

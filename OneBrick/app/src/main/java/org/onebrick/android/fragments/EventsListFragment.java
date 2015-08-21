@@ -27,6 +27,7 @@ public abstract class EventsListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "EventsListFragment";
+    private static final int EVENTS_LIST_LOADER = 25;
 
     @InjectView(R.id.progressBar) ProgressBar progressBar;
     protected EventListAdapter mAdapter;
@@ -56,7 +57,7 @@ public abstract class EventsListFragment extends Fragment implements
             }
         });
 
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(EVENTS_LIST_LOADER, null, this);
         return view;
     }
 

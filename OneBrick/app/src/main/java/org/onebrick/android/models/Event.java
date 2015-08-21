@@ -3,10 +3,12 @@ package org.onebrick.android.models;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -48,8 +50,6 @@ public class Event extends Model {
     private int rsvpCount;
     @Column(name = USER_RSVP)
     private int userRSVP;
-//    @Column(name = "description")
-//    private String description;
     @Column(name = "coordinator_email")
     private String coordinatorEmail;
     @Column(name = "manager_email")
@@ -110,10 +110,6 @@ public class Event extends Model {
         return userRSVP == 1;
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
-
     public String getCoordinatorEmail() {
         return coordinatorEmail;
     }
@@ -121,10 +117,6 @@ public class Event extends Model {
     public String getManagerEmail() {
         return managerEmail;
     }
-
-//    public Chapter getChapter() {
-//        return chapter;
-//    }
 
     public String getProfilePhotoUri() {
         return getProfilePhotoUri(eventId);
@@ -232,5 +224,15 @@ public class Event extends Model {
             }
             return builder.toString();
         }
+    }
+
+    @Nullable
+    public static Event findById(long eventId) {
+        return new Select().from(Event.class).where(EVENT_ID + "=?",
+                eventId).executeSingle();
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }
