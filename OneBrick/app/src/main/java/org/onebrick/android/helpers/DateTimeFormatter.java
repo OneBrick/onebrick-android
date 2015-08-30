@@ -1,12 +1,12 @@
 package org.onebrick.android.helpers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateTimeFormatter {
@@ -18,7 +18,9 @@ public class DateTimeFormatter {
     private static SimpleDateFormat eventTime = new SimpleDateFormat("h:mm a");
     private static SimpleDateFormat eventYear = new SimpleDateFormat("yyyy");
 
-    private DateTimeFormatter() {};
+    private DateTimeFormatter() {
+        dateFormat.setTimeZone(TimeZone.getDefault());
+    }
 
     public static DateTimeFormatter getInstance() {
         if(dtf == null) {
@@ -29,7 +31,7 @@ public class DateTimeFormatter {
 
     public String getFormattedEventStartDate(String onebrickDate) {
         try {
-            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final Date d = dateFormat.parse(onebrickDate);
             final String date = eventDate.format(d);
             final String time = eventTime.format(d);
             final String year = eventYear.format(d);
@@ -47,7 +49,7 @@ public class DateTimeFormatter {
     }
     public String getFormattedEventDate(String onebrickDate) {
         try {
-            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final Date d = dateFormat.parse(onebrickDate);
             final String date = eventDate.format(d);
             final String time = eventTime.format(d);
             return date + " " + time;
@@ -57,11 +59,11 @@ public class DateTimeFormatter {
         return "";
     }
 
+    @NonNull
     public String getFormattedEventDateOnly(String onebrickDate) {
         try {
-            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
-            final String date = eventDate.format(d);
-            return date;
+            final Date d = dateFormat.parse(onebrickDate);
+            return eventDate.format(d);
         } catch (ParseException e) {
             Log.e(TAG, "cannot parse date: " + onebrickDate);
         }
@@ -69,17 +71,13 @@ public class DateTimeFormatter {
     }
     public String getFormattedEventEndTime(String onebrickDate) {
         try {
-            final Date d = getLocalTime(dateFormat.parse(onebrickDate));
+            final Date d = dateFormat.parse(onebrickDate);
             final String time = eventTime.format(d);
             return time;
         } catch (ParseException e) {
             Log.e(TAG, "cannot parse date: " + onebrickDate);
         }
         return "";
-    }
-
-    public Date getLocalTime(Date utc) {
-        return new Date(utc.getTime() + TimeZone.getDefault().getOffset(System.currentTimeMillis()));
     }
 
     public String getFormattedTimeEndOnly(String start, String end){
@@ -94,31 +92,18 @@ public class DateTimeFormatter {
     }
 
     @Nullable
-    public Date getDate(String onebrickDate) {
-        try {
-            return dateFormat.parse(onebrickDate);
-        } catch (Exception e) {
-            Log.w(TAG, "Exception while date format: " + onebrickDate);
-            return null;
-        }
-    }
-
     public Date getDateFromString(String dateTime) {
-        String obDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat sf = new SimpleDateFormat(obDateTimeFormat, Locale.ENGLISH);
-        Date eDateTime = null;
         try {
-            eDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
+            return dateFormat.parse(dateTime);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, "cannot parse date", e);
         }
-        return new Date(eDateTime.getTime() + TimeZone.getDefault().getOffset(
-                System.currentTimeMillis()));
+        return null;
     }
 
     public boolean isPastEvent(String endDate){
         try {
-            Date eventDate = getLocalTime(dateFormat.parse(endDate));
+            Date eventDate = dateFormat.parse(endDate);
             Date currentDate = new Date();
             if (eventDate.before(currentDate)){
                 return true;
@@ -129,5 +114,4 @@ public class DateTimeFormatter {
         return false;
 
     }
-
 }
