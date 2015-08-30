@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import org.onebrick.android.R;
 import org.onebrick.android.activities.EventDetailActivity;
@@ -19,7 +18,6 @@ import org.onebrick.android.adapters.EventListAdapter;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 import static butterknife.ButterKnife.findById;
 
@@ -29,7 +27,6 @@ public abstract class EventsListFragment extends Fragment implements
     private static final String TAG = "EventsListFragment";
     private static final int EVENTS_LIST_LOADER = 25;
 
-    @InjectView(R.id.progressBar) ProgressBar progressBar;
     protected EventListAdapter mAdapter;
     String chapterName;
     int chapterId;

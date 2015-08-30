@@ -19,6 +19,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -115,13 +117,17 @@ public class MapCard extends EventCard implements
     public void onConnected(Bundle dataBundle) {
         List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
         if (geoCode != null && !geoCode.isEmpty() ){
+            // Use green marker icon
+            BitmapDescriptor defaultMarker =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
             LatLng location = new LatLng(
                     geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
             map.setMyLocationEnabled(true);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
             map.addMarker(new MarkerOptions()
                     .title(eventLocation)
-                    .position(location));
+                    .position(location)
+                    .icon(defaultMarker));
         }
     }
 

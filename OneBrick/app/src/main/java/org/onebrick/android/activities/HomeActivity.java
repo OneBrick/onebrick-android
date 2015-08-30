@@ -52,7 +52,7 @@ public class HomeActivity extends ActionBarActivity
         Intent intent = getIntent();
         final int chapterId = intent.getIntExtra(EXTRA_CHAPTER_ID, -1);
         final String chapterName = intent.getStringExtra(EXTRA_CHAPTER_NAME);
-        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, mSearchQuery);
+        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId);
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
         getSupportActionBar().setTitle(chapterName);
@@ -145,7 +145,7 @@ public class HomeActivity extends ActionBarActivity
     }
 
     private void displayEventsInChapter(Chapter ch) {
-        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(), ch.getChapterId(), null);
+        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(), ch.getChapterId());
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
         getSupportActionBar().setTitle(ch.getChapterName());
@@ -165,7 +165,6 @@ public class HomeActivity extends ActionBarActivity
     private void displaySearchResults(String query) {
         int chapterId = OneBrickApplication.getInstance().getChapterId();
         String chapterName = OneBrickApplication.getInstance().getChapterName();
-        //eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, query);
         eventListFragment = SearchResultsFragment.newInstance(chapterName, chapterId, query);
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
@@ -196,5 +195,4 @@ public class HomeActivity extends ActionBarActivity
             Toast.makeText(this, R.string.failed_to_fetch_chapters, Toast.LENGTH_LONG).show();
         }
     }
-
 }

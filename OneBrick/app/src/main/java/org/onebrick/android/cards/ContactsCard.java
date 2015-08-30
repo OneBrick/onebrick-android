@@ -2,9 +2,11 @@ package org.onebrick.android.cards;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.onebrick.android.R;
 import org.onebrick.android.helpers.SocialShareEmail;
@@ -17,6 +19,7 @@ import butterknife.InjectView;
 public class ContactsCard extends EventCard {
     @InjectView(R.id.btn_email_manager) Button btnEmailManager;
     @InjectView(R.id.btn_email_coordinator) Button btnEmailCoordinator;
+    @InjectView(R.id.tv_contact_organizer) TextView tvContactOrganizer;
 
     public ContactsCard(Context context, @NonNull Event event) {
         super(context, event);
@@ -26,8 +29,15 @@ public class ContactsCard extends EventCard {
     public View initView(@NonNull ViewGroup parent) {
         initView(parent, R.layout.card_event_detail_contacts);
 
-        // email to manager
-        if (mEvent.getManagerEmail() != null){
+        if (TextUtils.isEmpty(mEvent.getManagerEmail()) && TextUtils.isEmpty(mEvent.getCoordinatorEmail())) {
+            btnEmailManager.setVisibility(View.INVISIBLE);
+            btnEmailCoordinator.setVisibility(View.INVISIBLE);
+            tvContactOrganizer.setVisibility(View.INVISIBLE);
+            return mView;
+        }
+        if (TextUtils.isEmpty(mEvent.getManagerEmail())){
+            btnEmailManager.setVisibility(View.INVISIBLE);
+        }else{
             btnEmailManager.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -38,8 +48,9 @@ public class ContactsCard extends EventCard {
                 }
             });
         }
-
-        if (mEvent.getCoordinatorEmail() != null){
+        if (TextUtils.isEmpty(mEvent.getCoordinatorEmail())){
+            btnEmailCoordinator.setVisibility(View.INVISIBLE);
+        }else{
             // email to coordinator
             btnEmailCoordinator.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -51,7 +62,6 @@ public class ContactsCard extends EventCard {
                 }
             });
         }
-
         return mView;
     }
 }

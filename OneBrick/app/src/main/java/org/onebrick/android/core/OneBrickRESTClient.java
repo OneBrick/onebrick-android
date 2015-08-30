@@ -1,8 +1,5 @@
 package org.onebrick.android.core;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -27,12 +24,6 @@ import se.akerfeldt.signpost.retrofit.SigningOkClient;
 
 public class OneBrickRESTClient {
     private static OneBrickRESTClient sInstance;
-
-    // The authority for the sync adapter's content provider
-    // An account type, in the form of a domain name
-    public static final String ACCOUNT_TYPE = "onebrick.org";
-    // The account name
-    public static final String ACCOUNT = "SyncAdapterAccount";
     public static final int INCLUDE_PAST_EVENTS = 1;
     public static final int PHOTO_NUM_IN_LIST = 3;
 
@@ -72,23 +63,6 @@ public class OneBrickRESTClient {
             throw new IllegalStateException("OneBrickRESTClient is not initialized, call init() first");
         }
         return sInstance;
-    }
-
-    /**
-     * Create a new dummy account for the sync adapter
-     *
-     * @param context The application context
-     */
-    private Account createSyncAccount(Context context) {
-        // Create the account type and default account
-        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
-        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-        /*
-         * Add the account and account type, no password or user data
-         * If successful, return the Account object, otherwise report an error.
-         */
-        accountManager.addAccountExplicitly(newAccount, null, null);
-        return newAccount;
     }
 
     public OneBrickService getRestService() {
