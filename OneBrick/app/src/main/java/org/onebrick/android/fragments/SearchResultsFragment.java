@@ -1,6 +1,5 @@
 package org.onebrick.android.fragments;
 
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
@@ -15,37 +14,21 @@ import org.onebrick.android.models.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeEventsFragment extends EventsListFragment {
+public class SearchResultsFragment extends EventsListFragment {
 
-    private static final String TAG = "HomeEventsFragment";
-
+    private static final String TAG = "SearchResultsFragment";
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
     private static final String ARG_SEARCH_QUERY = "search";
 
-    public static HomeEventsFragment newInstance(String chapterName, int chapterId, String searchQuery) {
-        HomeEventsFragment fragment = new HomeEventsFragment();
+    public static SearchResultsFragment newInstance(String chapterName, int chapterId, String searchQuery) {
+        SearchResultsFragment fragment = new SearchResultsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_CHAPTER_NAME, chapterName);
         args.putInt(ARG_CHAPTER_ID, chapterId);
         args.putString(ARG_SEARCH_QUERY, searchQuery);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public int getChapterId() {
-        return chapterId;
-    }
-
-    public String getChapterName() {
-        return chapterName;
-    }
-
-    public String getSearchQuery() {
-        return searchQuery;
-    }
-
-    public HomeEventsFragment() {
     }
 
     @Override
@@ -58,16 +41,15 @@ public class HomeEventsFragment extends EventsListFragment {
             chapterId = args.getInt(ARG_CHAPTER_ID);
             searchQuery = args.getString(ARG_SEARCH_QUERY);
         }
-        populateHomeEventsList(chapterId, searchQuery);
+        populateSearchResultsList(chapterId, searchQuery);
     }
 
-    private void populateHomeEventsList(final int chapterId, final String searchQuery) {
+    private void populateSearchResultsList(final int chapterId, final String searchQuery) {
         OneBrickRESTClient.getInstance().requestEvents(chapterId, searchQuery);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-
         final String[] projection = null;
         StringBuilder selection = new StringBuilder();
         selection.append(Event.CHAPTER_ID + "=? ");

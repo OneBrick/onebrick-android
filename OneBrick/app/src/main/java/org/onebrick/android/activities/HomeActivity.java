@@ -22,6 +22,7 @@ import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.events.FetchEventsEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.fragments.HomeEventsFragment;
+import org.onebrick.android.fragments.SearchResultsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
 import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Chapter;
@@ -55,6 +56,15 @@ public class HomeActivity extends ActionBarActivity
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
         getSupportActionBar().setTitle(chapterName);
+
+        // close fragment when back button is pressed
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getFragmentManager().getBackStackEntryCount() == 0) finish();
+            }
+        });
+
         OneBrickApplication.getInstance().getBus().register(this);
     }
 
@@ -123,13 +133,6 @@ public class HomeActivity extends ActionBarActivity
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void displayEventsInChapter(Chapter ch) {
-        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(), ch.getChapterId(), null);
-        final FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
-        getSupportActionBar().setTitle(ch.getChapterName());
-    }
-
     @Override
     public void onSelectChapter(@NonNull Chapter chapter) {
         if (mSelectChapterDialog != null && mSelectChapterDialog.isShowing()) {
@@ -138,8 +141,14 @@ public class HomeActivity extends ActionBarActivity
         }
         OneBrickApplication.getInstance().setChapterName(chapter.getChapterName());
         OneBrickApplication.getInstance().setChapterId(chapter.getChapterId());
-
         displayEventsInChapter(chapter);
+    }
+
+    private void displayEventsInChapter(Chapter ch) {
+        eventListFragment = HomeEventsFragment.newInstance(ch.getChapterName(), ch.getChapterId(), null);
+        final FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
+        getSupportActionBar().setTitle(ch.getChapterName());
     }
 
     @Override
@@ -156,7 +165,8 @@ public class HomeActivity extends ActionBarActivity
     private void displaySearchResults(String query) {
         int chapterId = OneBrickApplication.getInstance().getChapterId();
         String chapterName = OneBrickApplication.getInstance().getChapterName();
-        eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, query);
+        //eventListFragment = HomeEventsFragment.newInstance(chapterName, chapterId, query);
+        eventListFragment = SearchResultsFragment.newInstance(chapterName, chapterId, query);
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.flHomeContainer, eventListFragment).commit();
     }
