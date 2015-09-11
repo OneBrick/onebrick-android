@@ -29,7 +29,7 @@ User Stories
 
 ## Screen captures of OneBrick app
 ### Select a chapter
-![Select a chapter](1_select_chapter.png =400x711)
+![Select a chapter](1_select_chapter.png)
 
 ### Event list 
 ![Event list](2_event_list.png)
