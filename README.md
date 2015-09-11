@@ -35,7 +35,7 @@ User Stories
 ![Event list](2_event_list.png)
 
 ### Event details 
-![Event detail](3_event_details_1.png)
+![Event detail - main details](3_event_details_1.png)
 ![Event detail - map and share](3_event_details_2.png)
 
 ### Event search
