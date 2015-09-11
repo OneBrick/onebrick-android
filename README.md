@@ -32,14 +32,14 @@ User Stories
 ![Select a chapter](1_select_chapter.png)
 
 ### Event list 
-![Event list](2_event_list.png)
+![Event list](2_event_list.png =400x711)
 
 ### Event details 
-![Event detail - main details](3_event_details_1.png)
-![Event detail - map and share](3_event_details_2.png)
+![Event detail - main details](3_event_details_1.png =400x711)
+![Event detail - map and share](3_event_details_2.png =400x711)
 
 ### Event search
-![Event search](4_event_search.png)
+![Event search](4_event_search.png =400x711)
 
 ### My Events 
-![My past and future events](5_my_events.png)
+![My past and future events](5_my_events.png =400x711)
