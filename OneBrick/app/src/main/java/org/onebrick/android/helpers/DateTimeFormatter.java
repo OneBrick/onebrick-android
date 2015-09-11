@@ -7,7 +7,6 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class DateTimeFormatter {
     private static final String TAG = "DateTimeFormatter";
@@ -19,7 +18,6 @@ public class DateTimeFormatter {
     private static SimpleDateFormat eventYear = new SimpleDateFormat("yyyy");
 
     private DateTimeFormatter() {
-        dateFormat.setTimeZone(TimeZone.getDefault());
     }
 
     public static DateTimeFormatter getInstance() {

@@ -81,7 +81,6 @@ public class MapCard extends EventCard implements
 
     protected void loadMap(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        map.setMyLocationEnabled(true);
         // Now that map has loaded, let's get our location!
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API)
@@ -115,12 +114,12 @@ public class MapCard extends EventCard implements
      */
     @Override
     public void onConnected(Bundle dataBundle) {
-        List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
+        final List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
         if (geoCode != null && !geoCode.isEmpty() ){
             // Use green marker icon
             BitmapDescriptor defaultMarker =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-            LatLng location = new LatLng(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+            final LatLng location = new LatLng(
                     geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
             map.setMyLocationEnabled(true);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
