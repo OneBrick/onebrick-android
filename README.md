@@ -29,17 +29,17 @@ User Stories
 
 ## Screen captures of OneBrick app
 ### Select a chapter
-!(1_select_chapter.png)
+![Select a chapter](1_select_chapter.png)
 
 ### Event list 
-!(2_event_list.png)
+![Event list](2_event_list.png)
 
 ### Event details 
-!(3_event_details_1.png)
-!(3_event_details_2.png)
+![Event detail](3_event_details_1.png)
+![Event detail - map and share](3_event_details_2.png)
 
 ### Event search
-!(4_event_search.png)
+![Event search](4_event_search.png)
 
 ### My Events 
-!(5_my_events.png)
+![My past and future events](5_my_events.png)
