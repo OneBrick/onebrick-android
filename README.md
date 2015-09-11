@@ -8,7 +8,6 @@ OneBrick does not yet have any mobile application. Our goal is to prvide onebric
 
 User Stories
 ==============
-
 ### Events:
 * Select Chapter (Location)
 * Display a list of events of a selected chapter
@@ -27,7 +26,8 @@ User Stories
 * Show future and past events of mine
 * Show event details of mine
 
-## Screen captures of OneBrick app
+Screen captures of OneBrick app
+===============
 ### Select a chapter
 ![Select a chapter](1_select_chapter.png)
 
