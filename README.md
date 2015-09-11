@@ -17,7 +17,7 @@ User Stories
 * Tap to see details of an event 
 
 ### Event Details:
-* Show events for selected chapter or current location 
+* Show event details
 * Event RSVP and Un-RSVP
 * Request log in if not logged in / Sign up
 * Display event location
@@ -26,7 +26,7 @@ User Stories
 
 ### My Events:
 * Show future and past events of mine
-* Show event details of mine
+* Show event details of my event
 
 Screen captures of OneBrick app
 ===============
