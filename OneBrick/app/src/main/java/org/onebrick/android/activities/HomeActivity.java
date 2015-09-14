@@ -112,10 +112,17 @@ public class HomeActivity extends ActionBarActivity
                 return true;
 
             case R.id.mi_logout:
+                logout();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        final LoginManager loginManager = LoginManager.getInstance(this);
+        loginManager.logout();
+        getSupportActionBar().invalidateOptionsMenu();
     }
 
     @Override
