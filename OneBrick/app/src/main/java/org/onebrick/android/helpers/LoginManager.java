@@ -46,4 +46,9 @@ public class LoginManager {
         }
         return mCurrentUserKey;
     }
+
+    public void logout(){
+        setCurrentUserKey("");
+        instance = null;
+    }
 }
