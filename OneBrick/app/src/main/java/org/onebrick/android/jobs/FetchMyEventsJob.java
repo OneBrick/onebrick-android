@@ -15,7 +15,6 @@ import org.onebrick.android.helpers.NetworkUtil;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class FetchMyEventsJob extends OneBrickBaseJob {
@@ -46,10 +45,6 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
 
     private void saveEvents(@NonNull List<Event> eventList, int chapterId) {
         for (Event event : eventList) {
-            //event.setChapterId(chapterId);
-            if (chapterId > 0) {
-                event.setChapterId(chapterId);
-            }
             if (DateTimeFormatter.getInstance().isPastEvent(event.getEndDate())) {
                 event.setPastEvent(true);
             }

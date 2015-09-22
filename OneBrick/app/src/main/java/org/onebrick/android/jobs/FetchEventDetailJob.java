@@ -33,7 +33,9 @@ public class FetchEventDetailJob extends OneBrickBaseJob {
         Event existingEvent = Event.findById(mEventId);
         Event event = restService.getEventDetail(mEventId, ukey);
         if (existingEvent != null && event != null) {
-            existingEvent.setSummary(event.getSummary());
+            //existingEvent.setSummary(event.getSummary()); // summary is from even list call
+            existingEvent.setManagerEmail(event.getManagerEmail());
+            existingEvent.setCoordinatorEmail(event.getCoordinatorEmail());
             existingEvent.save();
         }
         Utils.postEventOnUi(new FetchEventDetailEvent(Status.SUCCESS));
