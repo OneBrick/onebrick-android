@@ -68,6 +68,7 @@ public class EventDetailActivity extends ActionBarActivity implements
     private TitleCard mTitleCard;
     private MapCard mMapCard;
     private PhotoGalleryCard mPhotoGalleryCard;
+    private DescriptionCard mDescriptionCard;
 
     private ShareActionProvider mShareActionProvider;
 
@@ -200,6 +201,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                     btnRsvp.setText(R.string.un_rsvp);
                     btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     mEvent.rsvp();
+                    mEvent.save();
                     // TODO update through SyncAdapter
                     //Event.updateEvent(mEvent);
                 } else {
@@ -230,8 +232,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                     btnRsvp.setText(R.string.rsvp);
                     btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     mEvent.unRsvp();
-                    // TODO update through SyncAdapter
-                    //Event.updateEvent(mEvent);
+                    mEvent.save();
                 } else {
                     Log.d(TAG, "unrsvp result return null: ");
                 }
@@ -283,7 +284,10 @@ public class EventDetailActivity extends ActionBarActivity implements
                 mPhotoGalleryCard = new PhotoGalleryCard(this, mEvent);
             }
             mAdapter.add(mPhotoGalleryCard);
-            mAdapter.add(new DescriptionCard(this, mEvent));
+            if (mDescriptionCard == null){
+                mDescriptionCard = new DescriptionCard(this, mEvent);
+            }
+            mAdapter.add(mDescriptionCard);
             if (mMapCard == null){
                 mMapCard = new MapCard(this, mEvent);
             }

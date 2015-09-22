@@ -114,8 +114,16 @@ public class Event extends Model {
         return coordinatorEmail;
     }
 
+    public void setCoordinatorEmail(String coordinatorEmail) {
+        this.coordinatorEmail = coordinatorEmail;
+    }
+
     public String getManagerEmail() {
         return managerEmail;
+    }
+
+    public void setManagerEmail(String managerEmail) {
+        this.managerEmail = managerEmail;
     }
 
     public String getProfilePhotoUri() {
@@ -195,13 +203,14 @@ public class Event extends Model {
                     event.coordinatorEmail = jsonObject.get("coordinator_email").getAsString();
                 }
             }
-            if (jsonObject.has("body_summary")) {
-                final JsonElement jsonElement = jsonObject.get("body_summary");
-                if (!jsonElement.isJsonNull()) {
-                    event.summary = jsonElement.getAsString();
-                }
-            } else if (jsonObject.has("body_value")) {
-                final JsonElement jsonElement = jsonObject.get("body_value");
+//            if (jsonObject.has("body_summary")) {
+//                final JsonElement jsonElement = jsonObject.get("body_summary");
+//                if (!jsonElement.isJsonNull()) {
+//                    event.summary = jsonElement.getAsString();
+//                }
+//            }
+            if (jsonObject.has("body_value")) {
+                 final JsonElement jsonElement = jsonObject.get("body_value");
                 if (!jsonElement.isJsonNull()) {
                     event.summary = jsonElement.getAsString();
                 }
