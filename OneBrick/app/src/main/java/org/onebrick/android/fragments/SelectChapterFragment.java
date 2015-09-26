@@ -22,7 +22,7 @@ import org.onebrick.android.R;
 import org.onebrick.android.models.Chapter;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * A fragment representing a list to select chapter.
@@ -36,7 +36,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
 
     private static final int CHAPTER_LOADER = 1;
 
-    @InjectView(R.id.lvChapters)
+    @Bind(R.id.lvChapters)
     ListView lvChapters;
 
     private SimpleCursorAdapter mAdapter;
@@ -47,7 +47,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Chapter.class, null),
                 null,
@@ -83,7 +83,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chapter_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lvChapters.setAdapter(mAdapter);
         lvChapters.setOnItemClickListener(this);
 

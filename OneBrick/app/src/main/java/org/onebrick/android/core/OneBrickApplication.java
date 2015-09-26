@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.activeandroid.app.Application;
-import com.newrelic.agent.android.NewRelic;
+//import com.newrelic.agent.android.NewRelic;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -41,9 +41,9 @@ public class OneBrickApplication extends Application {
 
         OneBrickRESTClient.init();
 
-        NewRelic.withApplicationToken(
-                "AAd5aec03c54ce6bd6d21ae5b4168b5342bf276e97"
-        ).start(this);
+//        NewRelic.withApplicationToken(
+//                "AAd5aec03c54ce6bd6d21ae5b4168b5342bf276e97"
+//        ).start(this);
 
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().

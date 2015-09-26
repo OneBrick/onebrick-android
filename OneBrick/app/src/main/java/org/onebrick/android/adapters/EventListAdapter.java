@@ -18,28 +18,28 @@ import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.models.Event;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class EventListAdapter extends CursorAdapter {
     ImageLoader imgLoader;
     DateTimeFormatter dtf;
 
     static class ViewHolder {
-        @InjectView(R.id.front)
+        @Bind(R.id.front)
         LinearLayout front;
-        @InjectView(R.id.ivListItemEventImage)
+        @Bind(R.id.ivListItemEventImage)
         ImageView ivEventImage;
-        @InjectView(R.id.tvListItemEventName)
+        @Bind(R.id.tvListItemEventName)
         TextView tvEventName;
-        @InjectView(R.id.tvListItemEventAddress)
+        @Bind(R.id.tvListItemEventAddress)
         TextView tvEventAddress;
-        @InjectView(R.id.tvListItemEventDate)
+        @Bind(R.id.tvListItemEventDate)
         TextView tvEventDate;
-        @InjectView(R.id.btnListItemRsvp)
+        @Bind(R.id.btnListItemRsvp)
         Button btnRsvp;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

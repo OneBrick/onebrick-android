@@ -20,13 +20,13 @@ import butterknife.ButterKnife;
 public class SelectChapterActivity extends ActionBarActivity implements
         SelectChapterFragment.OnSelectChapterListener {
 
-    private static final String TAG = SelectChapterActivity.class.getName();
+    private static final String TAG = "SelectChapterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         OneBrickApplication.getInstance().getBus().register(this);
     }
 

@@ -26,7 +26,7 @@ public abstract class BaseCard implements Card {
         final LayoutInflater inflater = (LayoutInflater)
                 mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = inflater.inflate(resId, parent, false);
-        ButterKnife.inject(this, mView);
+        ButterKnife.bind(this, mView);
         return mView;
     }
 }

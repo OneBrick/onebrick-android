@@ -19,7 +19,7 @@ import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.LoginManager;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -30,18 +30,18 @@ public class LoginActivity extends ActionBarActivity {
     private static final String SUCCESS = "1";
 
     // UI references.
-    @InjectView(R.id.email)
+    @Bind(R.id.email)
     EditText mEmailView;
-    @InjectView(R.id.password)
+    @Bind(R.id.password)
     EditText mPasswordView;
-    @InjectView(R.id.email_sign_in_button)
+    @Bind(R.id.email_sign_in_button)
     Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override

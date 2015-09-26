@@ -40,7 +40,7 @@ import org.onebrick.android.models.Event;
 import org.onebrick.android.models.RSVP;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -54,11 +54,11 @@ public class EventDetailActivity extends ActionBarActivity implements
     private static final String SOCIAL_URL_PREFIX = "http://onebrick.org/event/?eventid=";
     private static final int EVENT_DETAIL_LOADER = 77;
 
-    @InjectView(R.id.lv_event_detail_cards)
+    @Bind(R.id.lv_event_detail_cards)
     ListView mCardsListView;
-    @InjectView(R.id.btn_rsvp)
+    @Bind(R.id.btn_rsvp)
     Button btnRsvp;
-    @InjectView(R.id.ll_rsvp_segment)
+    @Bind(R.id.ll_rsvp_segment)
     LinearLayout llRsvpSegment;
 
     private CardArrayAdapter mAdapter;
@@ -130,7 +130,7 @@ public class EventDetailActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
         getSupportActionBar().setTitle("Event Details");
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mAdapter = new CardArrayAdapter(this);
         mAdapter.setNotifyOnChange(false);

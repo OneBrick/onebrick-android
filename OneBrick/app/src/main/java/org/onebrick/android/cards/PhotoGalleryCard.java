@@ -10,10 +10,10 @@ import org.onebrick.android.R;
 import org.onebrick.android.adapters.ImagePagerAdapter;
 import org.onebrick.android.models.Event;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class PhotoGalleryCard extends EventCard {
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     ViewPager viewPager;
 
     public PhotoGalleryCard(Context context, @NonNull Event event) {

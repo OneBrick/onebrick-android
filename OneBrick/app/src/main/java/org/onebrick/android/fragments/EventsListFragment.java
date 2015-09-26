@@ -39,7 +39,7 @@ public abstract class EventsListFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_event_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         ListView listView = findById(view, R.id.lvEventList);
         mAdapter = new EventListAdapter(getActivity(), null);
         listView.setAdapter(mAdapter);

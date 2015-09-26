@@ -11,11 +11,11 @@ import org.onebrick.android.R;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class DescriptionCard extends EventCard {
 
-    @InjectView(R.id.tv_event_description) TextView mDescriptionTextView;
+    @Bind(R.id.tv_event_description) TextView mDescriptionTextView;
 
     public DescriptionCard(Context context, @NonNull Event event) {
         super(context, event);

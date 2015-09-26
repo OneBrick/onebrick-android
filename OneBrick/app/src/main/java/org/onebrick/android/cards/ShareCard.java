@@ -10,12 +10,12 @@ import org.onebrick.android.R;
 import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.models.Event;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class ShareCard extends EventCard {
-    @InjectView(R.id.iv_share_fb) ImageView ivEventInfoFbShare;
-    @InjectView(R.id.iv_share_twitter) ImageView ivEventInfoTwitterShare;
-    @InjectView(R.id.iv_share) ImageView ivEventInfoGenShare;
+    @Bind(R.id.iv_share_fb) ImageView ivEventInfoFbShare;
+    @Bind(R.id.iv_share_twitter) ImageView ivEventInfoTwitterShare;
+    @Bind(R.id.iv_share) ImageView ivEventInfoGenShare;
 
     public ShareCard(Context context, @NonNull Event event) {
         super(context, event);

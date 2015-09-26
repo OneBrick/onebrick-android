@@ -15,14 +15,14 @@ import org.onebrick.android.models.Event;
 
 import java.util.Calendar;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class TitleCard extends EventCard {
 
-    @InjectView(R.id.tv_event_title) TextView mTitleTextView;
-    @InjectView(R.id.tv_event_time) TextView mDateTimeTextView;
-    @InjectView(R.id.tv_event_address) TextView mLocationTextView;
-    @InjectView(R.id.iv_calendar) ImageView mCalendarImageView;
+    @Bind(R.id.tv_event_title) TextView mTitleTextView;
+    @Bind(R.id.tv_event_time) TextView mDateTimeTextView;
+    @Bind(R.id.tv_event_address) TextView mLocationTextView;
+    @Bind(R.id.iv_calendar) ImageView mCalendarImageView;
 
     public TitleCard(Context context, @NonNull Event event) {
         super(context, event);

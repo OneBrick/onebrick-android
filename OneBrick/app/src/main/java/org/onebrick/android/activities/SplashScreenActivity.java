@@ -15,24 +15,23 @@ import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.helpers.FontsHelper;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class SplashScreenActivity extends ActionBarActivity {
     private static final String TAG = "SplashScreenActivity";
 
     private static final String imageUri = "assets://volunteer_hands.png";
 
-    @InjectView(R.id.ivSplashScreenFooter) ImageView ivFooter;
-    @InjectView(R.id.tvWelcomeNote) TextView tvWelcomeNote;
+    @Bind(R.id.ivSplashScreenFooter) ImageView ivFooter;
+    @Bind(R.id.tvWelcomeNote) TextView tvWelcomeNote;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
-        tvWelcomeNote.setTypeface(FontsHelper.getRobotoRegular());
         final ImageLoader imgLoader =  ImageLoader.getInstance();
         imgLoader.displayImage(imageUri, ivFooter);
 

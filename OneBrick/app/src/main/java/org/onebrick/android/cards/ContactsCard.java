@@ -13,13 +13,13 @@ import org.onebrick.android.helpers.SocialShareEmail;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 
 public class ContactsCard extends EventCard {
-    @InjectView(R.id.btn_email_manager) Button btnEmailManager;
-    @InjectView(R.id.btn_email_coordinator) Button btnEmailCoordinator;
-    @InjectView(R.id.tv_contact_organizer) TextView tvContactOrganizer;
+    @Bind(R.id.btn_email_manager) Button btnEmailManager;
+    @Bind(R.id.btn_email_coordinator) Button btnEmailCoordinator;
+    @Bind(R.id.tv_contact_organizer) TextView tvContactOrganizer;
 
     public ContactsCard(Context context, @NonNull Event event) {
         super(context, event);
