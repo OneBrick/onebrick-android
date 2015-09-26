@@ -45,3 +45,12 @@ Screen captures of OneBrick app
 
 ### My Events 
 ![My past and future events](5_my_events.png)
+
+API use
+==============
+* Path (Android Priority Job Queue - Job Manager): https://github.com/path/android-priority-jobqueue
+* Otto (Event bus): https://github.com/square/otto
+* Butter Knife (Binding for Android Views): http://jakewharton.github.io/butterknife/
+* Active Android (Sqlite Object relational mapper): http://www.activeandroid.com/
+* Loader (Asynchronous data load): http://developer.android.com/guide/components/loaders.html
+* Gson (JSON deserialization): https://github.com/google/gson
