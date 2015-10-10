@@ -49,6 +49,7 @@ Screen captures of OneBrick app
 API use
 ==============
 * Path (Android Priority Job Queue - Job Manager): https://github.com/path/android-priority-jobqueue
+* Retrofit (A type-safe HTTP client): http://square.github.io/retrofit/
 * Otto (Event bus): https://github.com/square/otto
 * Butter Knife (Binding for Android Views): http://jakewharton.github.io/butterknife/
 * Active Android (Sqlite Object relational mapper): http://www.activeandroid.com/
