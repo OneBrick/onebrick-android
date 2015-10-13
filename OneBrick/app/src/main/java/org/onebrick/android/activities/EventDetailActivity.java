@@ -68,7 +68,6 @@ public class EventDetailActivity extends ActionBarActivity implements
     private TitleCard mTitleCard;
     private MapCard mMapCard;
     private PhotoGalleryCard mPhotoGalleryCard;
-    private DescriptionCard mDescriptionCard;
 
     private ShareActionProvider mShareActionProvider;
 
@@ -284,10 +283,7 @@ public class EventDetailActivity extends ActionBarActivity implements
                 mPhotoGalleryCard = new PhotoGalleryCard(this, mEvent);
             }
             mAdapter.add(mPhotoGalleryCard);
-            if (mDescriptionCard == null){
-                mDescriptionCard = new DescriptionCard(this, mEvent);
-            }
-            mAdapter.add(mDescriptionCard);
+            mAdapter.add(new DescriptionCard(this, mEvent));
             if (mMapCard == null){
                 mMapCard = new MapCard(this, mEvent);
             }
