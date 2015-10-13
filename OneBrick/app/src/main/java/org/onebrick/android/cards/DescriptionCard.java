@@ -24,13 +24,11 @@ public class DescriptionCard extends EventCard {
     @Override
     public View initView(@NonNull ViewGroup parent) {
         initView(parent, R.layout.card_event_detail_description);
-
         if (mEvent.getSummary() != null) {
             String eventSummary = Utils.removeImgTagsFromHTML(mEvent.getSummary());
             eventSummary = Utils.removeHTagsFromHTML(eventSummary);
             mDescriptionTextView.setText(Html.fromHtml(eventSummary));
         }
-
         return mView;
     }
 }

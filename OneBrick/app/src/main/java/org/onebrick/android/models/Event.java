@@ -193,22 +193,16 @@ public class Event extends Model {
             if (jsonObject.has("manager_email")) {
                 final JsonElement jsonElement = jsonObject.get("manager_email");
                 if (!jsonElement.isJsonNull()) {
-                    event.managerEmail = jsonObject.get("manager_email").getAsString();
+                    event.managerEmail = jsonElement.getAsString();
                 }
             }
             // should check json return. sometimes, there are multiple coordinators
             if (jsonObject.has("coordinator_email")) {
                 final JsonElement jsonElement = jsonObject.get("coordinator_email");
                 if (!jsonElement.isJsonNull()) {
-                    event.coordinatorEmail = jsonObject.get("coordinator_email").getAsString();
+                    event.coordinatorEmail = jsonElement.getAsString();
                 }
             }
-//            if (jsonObject.has("body_summary")) {
-//                final JsonElement jsonElement = jsonObject.get("body_summary");
-//                if (!jsonElement.isJsonNull()) {
-//                    event.summary = jsonElement.getAsString();
-//                }
-//            }
             if (jsonObject.has("body_value")) {
                  final JsonElement jsonElement = jsonObject.get("body_value");
                 if (!jsonElement.isJsonNull()) {
