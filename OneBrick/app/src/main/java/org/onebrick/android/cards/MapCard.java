@@ -3,7 +3,6 @@ package org.onebrick.android.cards;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
-import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -28,8 +27,6 @@ import org.onebrick.android.R;
 import org.onebrick.android.helpers.GeoCodeHelper;
 import org.onebrick.android.models.Event;
 
-import java.util.List;
-
 public class MapCard extends EventCard implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -53,7 +50,7 @@ public class MapCard extends EventCard implements
     public View initView(@NonNull ViewGroup parent) {
         initView(parent, R.layout.card_event_detail_map);
 
-        if (!mEvent.getAddress().isEmpty() ){
+        if (!mEvent.getAddress().isEmpty()) {
             eventLocation = mEvent.getAddress();
             Log.d(TAG, "event location: " + eventLocation);
             setupMap();
@@ -62,7 +59,7 @@ public class MapCard extends EventCard implements
     }
 
     private void setupMap() {
-        if (mContext instanceof Activity){
+        if (mContext instanceof Activity) {
             mapFragment = (MapFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.map_frame_card);
             if (mapFragment != null) {
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -71,7 +68,7 @@ public class MapCard extends EventCard implements
                         loadMap(googleMap);
                     }
                 });
-            }else{
+            } else {
                 Log.d(TAG, "Error - Map Fragment was null.");
             }
         } else {
@@ -114,20 +111,21 @@ public class MapCard extends EventCard implements
      */
     @Override
     public void onConnected(Bundle dataBundle) {
-        final List<Address> geoCode = GeoCodeHelper.getGeoCode(mContext, eventLocation);
-        if (geoCode != null && !geoCode.isEmpty() ){
-            // Use green marker icon
-            BitmapDescriptor defaultMarker =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-            final LatLng location = new LatLng(
-                    geoCode.get(0).getLatitude(), geoCode.get(0).getLongitude());
-            map.setMyLocationEnabled(true);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
-            map.addMarker(new MarkerOptions()
-                    .title(eventLocation)
-                    .position(location)
-                    .icon(defaultMarker));
-        }
+        GeoCodeHelper.getGeoCode(mContext, eventLocation, new GeoCodeHelper.GeoCoderCallback() {
+            @Override
+            public void onResponse(double latitude, double longitude) {
+                // Use green marker icon
+                BitmapDescriptor defaultMarker =
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                final LatLng location = new LatLng(latitude, longitude);
+                map.setMyLocationEnabled(true);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
+                map.addMarker(new MarkerOptions()
+                        .title(eventLocation)
+                        .position(location)
+                        .icon(defaultMarker));
+            }
+        });
     }
 
     /*
@@ -148,7 +146,7 @@ public class MapCard extends EventCard implements
      */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-		/*
+        /*
 		 * Google Play services can resolve some errors it detects. If the error
 		 * has a resolution, try sending an Intent to start a Google Play
 		 * services activity that can resolve error.
