@@ -39,11 +39,11 @@ public class MapCard extends EventCard implements
     //Define a request code to send to Google Play services
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static final int ZOOM_LEVEL = 13;
-    private static Context mContext;
+    private Context mContext;
 
     public MapCard(Context context, @NonNull Event event) {
         super(context, event);
-        this.mContext = context;
+        mContext = context;
     }
 
     @Override
