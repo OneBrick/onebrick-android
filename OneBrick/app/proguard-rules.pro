@@ -64,3 +64,10 @@
 -dontwarn javax.xml.**
 
 -keep class android.support.v7.widget.SearchView { *; }
+
+-dontwarn org.apache.http.**
+-dontwarn android.net.http.AndroidHttpClient
+-dontwarn com.google.android.gms.**
+-dontwarn com.android.volley.toolbox.**
+
+-dontwarn org.apache.commons.codec.binary.Base64
