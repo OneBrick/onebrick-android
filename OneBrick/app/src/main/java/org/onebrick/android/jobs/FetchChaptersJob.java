@@ -2,6 +2,7 @@ package org.onebrick.android.jobs;
 
 import com.path.android.jobqueue.Params;
 
+import org.onebrick.android.activities.SelectChapterActivity;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.core.OneBrickService;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 public class FetchChaptersJob extends OneBrickBaseJob {
 
+    SelectChapterActivity mSelectChapterActivity;
+
     public FetchChaptersJob() {
         super(new Params(Priority.MEDIUM));
     }
@@ -23,6 +26,8 @@ public class FetchChaptersJob extends OneBrickBaseJob {
     public void onRun() throws Throwable {
         if (!NetworkUtil.isConnected(OneBrickApplication.getInstance())) {
             Utils.postEventOnUi(new FetchChaptersEvent(Status.NO_NETWORK));
+
+            mSelectChapterActivity.onFetchChaptersEvent(new FetchChaptersEvent(Status.NO_NETWORK));
             return;
         }
 
