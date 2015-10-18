@@ -46,6 +46,8 @@ public class Event extends Model {
     private String summary;
     @Column(name = "rsvp_capacity")
     private int rsvpCapacity;
+    @Column(name = "rsvp_date")
+    private String rsvpOpenDate;
     @Column(name = "rsvp_count")
     private int rsvpCount;
     @Column(name = USER_RSVP)
@@ -104,6 +106,10 @@ public class Event extends Model {
 
     public int getRsvpCount() {
         return rsvpCount;
+    }
+
+    public String getRSVPOpenDate() {
+        return rsvpOpenDate;
     }
 
     public boolean isRsvp() {
@@ -183,6 +189,7 @@ public class Event extends Model {
             event.startDate = jsonObject.get("field_event_date_value").getAsString();
             event.endDate = jsonObject.get("field_event_date_value2").getAsString();
             event.rsvpCapacity = jsonObject.get("field_event_max_rsvp_capacity_value").getAsInt();
+            event.rsvpOpenDate = jsonObject.get("field_rsvp_date_value").getAsString();
             event.address = jsonObject.get("address").getAsString();
             if (jsonObject.has("photos")) {
                 JsonArray photos=jsonObject.get("photos").getAsJsonArray();
