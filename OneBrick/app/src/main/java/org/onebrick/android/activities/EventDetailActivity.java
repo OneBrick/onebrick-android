@@ -72,18 +72,13 @@ public class EventDetailActivity extends ActionBarActivity implements
     private ShareActionProvider mShareActionProvider;
 
     private void updateViews() {
-        if (LoginManager.getInstance(this).isLoggedIn()) {
-            if (mEvent.isRsvp()) {
-                btnRsvp.setText(R.string.un_rsvp);
-                btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-            } else {
-                btnRsvp.setText(R.string.rsvp);
-                btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-            }
+        if (LoginManager.getInstance(this).isLoggedIn() && mEvent.isRsvp()) {
+            btnRsvp.setText(R.string.un_rsvp);
+            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
         }else{
-            Log.i(TAG, "event detail update view: login false");
+            btnRsvp.setText(DateTimeFormatter.getInstance().getRSVPStatusText(getApplicationContext(), mEvent.getRSVPOpenDate()));
+            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
         }
-
         // TODO check current date for past events. if past events, don't show rsvp/unrsvp buttons
         if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())) {
             llRsvpSegment.setVisibility(View.GONE);

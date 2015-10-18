@@ -18,6 +18,7 @@
     <string name="search_hint">Search events</string>
     <string name="welcome_message">Welcome!\nHappy Volunteering</string>
     <string name="rsvp">RSVP</string>
+    <string name="rsvp_not_open">RSVP open after </string>
     <string name="un_rsvp">UnRSVP</string>
     <string name="manager_label"> Manager</string>
     <string name="coordinator_label"> Coordinator</string>
