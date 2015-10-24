@@ -6,7 +6,7 @@
     <string name="authorities">org.onebrick.android.provider</string>
 
 
-    <string name="app_name">OneBrick</string>
+    <string name="app_name">One Brick</string>
     <string name="more_continue">More&#8230;</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_event_info">EventInfoActivity</string>
