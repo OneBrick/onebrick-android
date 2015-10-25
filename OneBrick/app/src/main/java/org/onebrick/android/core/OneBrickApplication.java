@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.activeandroid.app.Application;
 //import com.newrelic.agent.android.NewRelic;
+import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -16,6 +17,7 @@ import com.path.android.jobqueue.config.Configuration;
 import com.path.android.jobqueue.log.CustomLogger;
 import com.squareup.otto.Bus;
 
+import io.fabric.sdk.android.Fabric;
 import org.onebrick.android.helpers.Utils;
 
 public class OneBrickApplication extends Application {
@@ -36,6 +38,7 @@ public class OneBrickApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         sInstance = this;
 
