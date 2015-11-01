@@ -11,9 +11,6 @@ import com.activeandroid.content.ContentProvider;
 import org.onebrick.android.core.OneBrickRESTClient;
 import org.onebrick.android.models.Event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HomeEventsFragment extends EventsListFragment {
 
     private static final String TAG = "HomeEventsFragment";
@@ -58,18 +55,14 @@ public class HomeEventsFragment extends EventsListFragment {
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 
         final String[] projection = null;
-        StringBuilder selection = new StringBuilder();
-        selection.append(Event.CHAPTER_ID + "=? ");
-        List<String> args = new ArrayList<>();
-        args.add(Integer.toString(chapterId));
-
+        String selection = Event.CHAPTER_ID + "=? ";
         final String sortOrder = null;
-        String[] selectionArgs = args.toArray(new String[args.size()]);
+        String[] selectionArgs = new String[]{Integer.toString(chapterId)};
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),
                 projection,
-                selection.toString(),
+                selection,
                 selectionArgs,
                 sortOrder);
     }
