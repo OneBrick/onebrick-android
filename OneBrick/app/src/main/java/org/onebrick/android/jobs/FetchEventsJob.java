@@ -2,7 +2,7 @@ package org.onebrick.android.jobs;
 
 import android.support.annotation.NonNull;
 
-import com.activeandroid.query.Select;
+import com.activeandroid.query.Delete;
 import com.path.android.jobqueue.Params;
 
 import org.onebrick.android.core.OneBrickApplication;
@@ -43,7 +43,7 @@ public class FetchEventsJob extends OneBrickBaseJob {
     }
 
     private void deleteOldEvents() {
-        new Select().from(Event.class).where(Event.USER_RSVP + "!=1").executeSingle();
+        new Delete().from(Event.class).where(Event.USER_RSVP + "!=1").execute();
     }
 
     @Override
