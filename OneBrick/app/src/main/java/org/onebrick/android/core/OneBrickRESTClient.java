@@ -1,11 +1,13 @@
 package org.onebrick.android.core;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.onebrick.android.BuildConfig;
+import org.onebrick.android.R;
 import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.jobs.FetchChaptersJob;
 import org.onebrick.android.jobs.FetchEventDetailJob;
@@ -29,7 +31,7 @@ public class OneBrickRESTClient {
 
     private OneBrickService mRestService;
 
-    private OneBrickRESTClient() {
+    private OneBrickRESTClient(@NonNull Context context) {
         final Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Chapter.class, new Chapter.ChapterJsonDeserializer())
                 .registerTypeAdapter(Event.class, new Event.EventJsonDeserializer())
@@ -41,7 +43,7 @@ public class OneBrickRESTClient {
         OkClient client = new SigningOkClient(oAuthConsumer);
 
         final RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint("http://dev-v3.gotpantheon.com/auth")
+                .setEndpoint(context.getString(R.string.endpoint))
                 .setConverter(new GsonConverter(gson))
                 .setClient(client);
 
@@ -51,11 +53,11 @@ public class OneBrickRESTClient {
         mRestService = builder.build().create(OneBrickService.class);
     }
 
-    public static void init() {
+    public static void init(@NonNull Context context) {
         if (sInstance != null) {
             throw new IllegalStateException("OneBrickRESTClient is already initialized");
         }
-        sInstance = new OneBrickRESTClient();
+        sInstance = new OneBrickRESTClient(context);
     }
 
     public static OneBrickRESTClient getInstance() {
@@ -88,6 +90,7 @@ public class OneBrickRESTClient {
         OneBrickApplication.getInstance().getJobManager().addJobInBackground(
                 new FetchMyEventsJob());
     }
+
     /**
      * Call retrofit asynchronously
      */

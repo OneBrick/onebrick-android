@@ -42,7 +42,7 @@ public class OneBrickApplication extends Application {
 
         sInstance = this;
 
-        OneBrickRESTClient.init();
+        OneBrickRESTClient.init(this);
         OneBrickMapRESTClient.init();
 
 //        NewRelic.withApplicationToken(
