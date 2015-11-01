@@ -2,6 +2,7 @@ package org.onebrick.android.jobs;
 
 import android.support.annotation.NonNull;
 
+import com.activeandroid.query.Select;
 import com.path.android.jobqueue.Params;
 
 import org.onebrick.android.core.OneBrickApplication;
@@ -35,9 +36,14 @@ public class FetchEventsJob extends OneBrickBaseJob {
 
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
         List<Event> eventList = restService.getAllEvents(mChapterId, OneBrickRESTClient.PHOTO_NUM_IN_LIST, mSearchQuery);
+        deleteOldEvents();
         saveEvents(eventList, mChapterId);
 
         Utils.postEventOnUi(new FetchEventsEvent(Status.SUCCESS));
+    }
+
+    private void deleteOldEvents() {
+        new Select().from(Event.class).where(Event.USER_RSVP + "!=1").executeSingle();
     }
 
     @Override
