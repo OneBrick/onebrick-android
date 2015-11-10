@@ -63,7 +63,7 @@ public class HomeEventsFragment extends EventsListFragment {
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(chapterId));
 
-        final String sortOrder = null;
+        final String sortOrder = Event.START_DATE + " ASC";
         String[] selectionArgs = args.toArray(new String[args.size()]);
 
         return new CursorLoader(getActivity(),

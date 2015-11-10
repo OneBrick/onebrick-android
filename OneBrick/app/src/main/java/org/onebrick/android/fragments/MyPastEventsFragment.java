@@ -31,7 +31,7 @@ public class MyPastEventsFragment extends EventsListFragment {
         final String[] projection = null;
         String selection = Event.USER_RSVP + "=1 AND " + Event.PAST_EVENT + "=1";
         final String[] selectionArgs = null;
-        final String sortOrder = null;
+        final String sortOrder = Event.START_DATE + " ASC";
 
         return new CursorLoader(getActivity(),
                 ContentProvider.createUri(Event.class, null),

@@ -1,6 +1,7 @@
 package org.onebrick.android.jobs;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.path.android.jobqueue.Params;
 
@@ -50,6 +51,7 @@ public class FetchEventsJob extends OneBrickBaseJob {
             if (chapterId > 0) {
                 event.setChapterId(chapterId);
             }
+            Log.i("EVENT:", "chapter id: " + event.getEventId() + "--" + event.getChapterId());
             event.save();
         }
     }

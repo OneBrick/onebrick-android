@@ -24,17 +24,21 @@ import java.lang.reflect.Type;
 public class Event extends Model {
     private static final String TAG = "Event";
     public static final String EVENT_ID = "event_id";
+    public static final String SORT_ID = "sort_id";
     public static final String USER_RSVP = "user_rsvp";
     public static final String CHAPTER_ID = "chapter_id";
     public static final String PAST_EVENT = "past_event";
     public static final String EVENT_TITLE = "title";
     public static final String EVENT_SUMMARY = "summary";
+    public static final String START_DATE = "start_date";
 
     @Column(name = EVENT_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long eventId;
     @Column(name = EVENT_TITLE, index = true)
     private String title;
-    @Column(name = "start_date")
+//    @Column(name = SORT_ID, unique = true)
+//    private long sortId;
+    @Column(name = START_DATE)
     private String startDate;
     @Column(name = "end_date")
     private String endDate;
