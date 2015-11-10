@@ -53,10 +53,9 @@ public class HomeEventsFragment extends EventsListFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-
         final String[] projection = null;
         String selection = Event.CHAPTER_ID + "=? ";
-        final String sortOrder = null;
+        final String sortOrder = Event.START_DATE + " ASC";
         String[] selectionArgs = new String[]{Integer.toString(chapterId)};
 
         return new CursorLoader(getActivity(),

@@ -66,7 +66,7 @@ public class SearchResultsFragment extends EventsListFragment {
             args.add("%" + searchQuery + "%");
             args.add("%" + searchQuery + "%");
         }
-        final String sortOrder = null;
+        final String sortOrder = Event.START_DATE + " ASC";
         String[] selectionArgs = args.toArray(new String[args.size()]);
 
         return new CursorLoader(getActivity(),

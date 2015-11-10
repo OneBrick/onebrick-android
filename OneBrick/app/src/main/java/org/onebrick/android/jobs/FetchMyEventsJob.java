@@ -1,6 +1,7 @@
 package org.onebrick.android.jobs;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.path.android.jobqueue.Params;
 
@@ -33,7 +34,7 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
         final OneBrickService restService = OneBrickRESTClient.getInstance().getRestService();
         String ukey = LoginManager.getInstance(null).getCurrentUserKey();
         List<Event> eventList = restService.getMyEvents(ukey, OneBrickRESTClient.INCLUDE_PAST_EVENTS,  OneBrickRESTClient.PHOTO_NUM_IN_LIST);
-        saveEvents(eventList, -1);
+        saveEvents(eventList);
 
         Utils.postEventOnUi(new FetchMyEventsEvent(Status.SUCCESS));
     }
@@ -43,10 +44,18 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
         Utils.postEventOnUi(new FetchMyEventsEvent(Status.FAILED));
     }
 
-    private void saveEvents(@NonNull List<Event> eventList, int chapterId) {
+    private void saveEvents(@NonNull List<Event> eventList) {
         for (Event event : eventList) {
+            Event existingEvent = Event.findById(event.getEventId());
+            Log.i("event before:", "chapter id: " + event.getEventId() + "--" + event.getChapterId());
+            if ((existingEvent != null) && (existingEvent.getChapterId() > 0)) {
+                event.setChapterId(existingEvent.getChapterId());
+                Log.i("event after:", "chapter id: " + event.getEventId() + "--" + event.getChapterId());
+            }
             if (DateTimeFormatter.getInstance().isPastEvent(event.getEndDate())) {
+
                 event.setPastEvent(true);
+                Log.i("event before:", "past event: " + event.getEventId());
             }
             event.save();
         }
