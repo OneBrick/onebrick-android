@@ -1,6 +1,6 @@
 About OneBrick
 ===============
-One Brick provides support to local non-profit and community organizations by creating a unique, social and flexible volunteer environment for those interested in making a concrete difference in the community. We enable people to get involved, have an impact and have fun, without the requirements of individual long-term commitments.
+One Brick is a 501(c)3 non-profit organization (Federal ID: 77-0593889) that provides support to local non-profit and community organizations by creating a unique, social and flexible volunteer environment for those interested in making a concrete difference in the community. We enable people to get involved, have an impact and have fun, without the requirements of individual long-term commitments.
 http://onebrick.org/about/ - 
 [OneBrick](http://onebrick.org/about/)
 
