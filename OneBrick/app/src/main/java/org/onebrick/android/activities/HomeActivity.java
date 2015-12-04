@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +21,7 @@ import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.events.FetchEventsEvent;
 import org.onebrick.android.events.Status;
+import org.onebrick.android.fragments.DialogSelectChapterFragment;
 import org.onebrick.android.fragments.HomeEventsFragment;
 import org.onebrick.android.fragments.SearchResultsFragment;
 import org.onebrick.android.fragments.SelectChapterFragment;
@@ -29,7 +30,7 @@ import org.onebrick.android.models.Chapter;
 
 import butterknife.ButterKnife;
 
-public class HomeActivity extends ActionBarActivity
+public class HomeActivity extends AppCompatActivity
         implements SelectChapterFragment.OnSelectChapterListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     private static final String TAG = "HomeActivity";
@@ -98,17 +99,12 @@ public class HomeActivity extends ActionBarActivity
                 return true;
 
             case R.id.mi_select_chapter: {
-                // TODO this is holding reference for long time
-                mSelectChapterDialog = new Dialog(this);
-                mSelectChapterDialog.setContentView(R.layout.dialog_select_chapter);
-                mSelectChapterDialog.setTitle(R.string.select_chapter);
-                mSelectChapterDialog.show();
+                showDialogToSelectChapter();
                 return true;
             }
 
             case R.id.mi_my_events:
-                startActivity(new Intent(HomeActivity.this, MyEventsActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                showMyEvents();
                 return true;
 
             case R.id.mi_logout:
@@ -117,6 +113,23 @@ public class HomeActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showMyEvents() {
+        final LoginManager loginManager = LoginManager.getInstance(HomeActivity.this);
+        if (!loginManager.isLoggedIn()) {
+            final Intent loginActivity = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(loginActivity);
+        } else {
+            startActivity(new Intent(HomeActivity.this, MyEventsActivity.class));
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }
+    }
+
+    private void showDialogToSelectChapter() {
+        FragmentManager fm = getSupportFragmentManager();
+        DialogSelectChapterFragment selectChapterFragment = DialogSelectChapterFragment.newInstance(getString(R.string.select_chapter));
+        selectChapterFragment.show(fm, "dialog fragment");
     }
 
     private void logout() {
@@ -131,11 +144,9 @@ public class HomeActivity extends ActionBarActivity
         if (loginManager.isLoggedIn()) {
             menu.findItem(R.id.mi_login).setVisible(false);
             menu.findItem(R.id.mi_logout).setVisible(true);
-            menu.findItem(R.id.mi_my_events).setVisible(true);
         } else {
             menu.findItem(R.id.mi_login).setVisible(true);
             menu.findItem(R.id.mi_logout).setVisible(false);
-            menu.findItem(R.id.mi_my_events).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
     }

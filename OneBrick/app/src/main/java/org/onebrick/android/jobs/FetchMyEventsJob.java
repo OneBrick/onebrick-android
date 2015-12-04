@@ -1,7 +1,6 @@
 package org.onebrick.android.jobs;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.path.android.jobqueue.Params;
 
@@ -47,15 +46,11 @@ public class FetchMyEventsJob extends OneBrickBaseJob {
     private void saveEvents(@NonNull List<Event> eventList) {
         for (Event event : eventList) {
             Event existingEvent = Event.findById(event.getEventId());
-            Log.i("event before:", "chapter id: " + event.getEventId() + "--" + event.getChapterId());
             if ((existingEvent != null) && (existingEvent.getChapterId() > 0)) {
                 event.setChapterId(existingEvent.getChapterId());
-                Log.i("event after:", "chapter id: " + event.getEventId() + "--" + event.getChapterId());
             }
             if (DateTimeFormatter.getInstance().isPastEvent(event.getEndDate())) {
-
                 event.setPastEvent(true);
-                Log.i("event before:", "past event: " + event.getEventId());
             }
             event.save();
         }

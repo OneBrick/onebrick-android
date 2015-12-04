@@ -3,7 +3,8 @@ package org.onebrick.android.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -17,7 +18,7 @@ import org.onebrick.android.models.Chapter;
 
 import butterknife.ButterKnife;
 
-public class SelectChapterActivity extends ActionBarActivity implements
+public class SelectChapterActivity extends AppCompatActivity implements
         SelectChapterFragment.OnSelectChapterListener {
 
     private static final String TAG = "SelectChapterActivity";
@@ -27,6 +28,11 @@ public class SelectChapterActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
         ButterKnife.bind(this);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.select_chapter_fragment, new SelectChapterFragment());
+        ft.commit();
+
         OneBrickApplication.getInstance().getBus().register(this);
     }
 

@@ -3,7 +3,7 @@ package org.onebrick.android.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,12 +12,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
 import org.onebrick.android.core.OneBrickRESTClient;
-import org.onebrick.android.helpers.FontsHelper;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class SplashScreenActivity extends ActionBarActivity {
+public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
 
     private static final String imageUri = "assets://volunteer_hands.png";

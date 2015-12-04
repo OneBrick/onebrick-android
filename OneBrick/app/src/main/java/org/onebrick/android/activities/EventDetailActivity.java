@@ -7,7 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,13 +39,13 @@ import org.onebrick.android.helpers.LoginManager;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.RSVP;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class EventDetailActivity extends ActionBarActivity implements
+public class EventDetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "EventDetailActivity";
@@ -92,7 +92,6 @@ public class EventDetailActivity extends ActionBarActivity implements
                 onBackPressed();
                 return true;
             case R.id.mi_item_share:
-                //setShareIntent();
                 return true;
         }
         return super.onOptionsItemSelected(item);
