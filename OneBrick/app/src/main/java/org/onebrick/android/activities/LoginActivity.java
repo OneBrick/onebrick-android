@@ -2,7 +2,7 @@ package org.onebrick.android.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,13 +18,13 @@ import org.onebrick.android.events.LoginStatusEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.LoginManager;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final String SUCCESS = "1";

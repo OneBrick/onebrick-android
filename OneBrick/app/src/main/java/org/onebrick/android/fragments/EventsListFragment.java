@@ -11,15 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.onebrick.android.R;
 import org.onebrick.android.activities.EventDetailActivity;
 import org.onebrick.android.adapters.EventListAdapter;
 import org.onebrick.android.models.Event;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static butterknife.ButterKnife.findById;
 
 public abstract class EventsListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -31,6 +31,10 @@ public abstract class EventsListFragment extends Fragment implements
     String chapterName;
     int chapterId;
     String searchQuery;
+    @Bind(R.id.lvEventList)
+    ListView lvEventList;
+    @Bind(R.id.tvEmptyEventList)
+    TextView tvEmptyEventList;
 
     public EventsListFragment() {
     }
@@ -40,10 +44,9 @@ public abstract class EventsListFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_event_list, container, false);
         ButterKnife.bind(this, view);
-        ListView listView = findById(view, R.id.lvEventList);
         mAdapter = new EventListAdapter(getActivity(), null);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvEventList.setAdapter(mAdapter);
+        lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Intent intent = new Intent(getActivity(), EventDetailActivity.class);
@@ -53,14 +56,25 @@ public abstract class EventsListFragment extends Fragment implements
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
-
         getLoaderManager().initLoader(EVENTS_LIST_LOADER, null, this);
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
+        if ((cursor != null) && (cursor.getCount() < 1)) {
+            tvEmptyEventList.setVisibility(View.VISIBLE);
+        } else {
+            tvEmptyEventList.setVisibility(View.GONE);
+        }
     }
 
     @Override

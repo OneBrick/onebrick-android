@@ -3,15 +3,13 @@ package org.onebrick.android.fragments;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -24,15 +22,11 @@ import org.onebrick.android.models.Chapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * A fragment representing a list to select chapter.
- * Activities containing this fragment MUST implement the {@link org.onebrick.android.fragments.SelectChapterFragment.OnSelectChapterListener}
- * interface.
- */
-public class SelectChapterFragment extends Fragment implements AbsListView.OnItemClickListener,
+
+public class DialogSelectChapterFragment extends DialogFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = SelectChapterFragment.class.getName();
+    private static final String TAG = DialogSelectChapterFragment.class.getName();
 
     private static final int CHAPTER_LOADER = 1;
 
@@ -40,9 +34,19 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     ListView lvChapters;
 
     private SimpleCursorAdapter mAdapter;
-    private OnSelectChapterListener mListener;
+    private SelectChapterFragment.OnSelectChapterListener mListener;
+    private static View mView;
 
-    public SelectChapterFragment() {
+
+    public DialogSelectChapterFragment() {
+    }
+
+    public static DialogSelectChapterFragment newInstance(String title) {
+        DialogSelectChapterFragment dialog = new DialogSelectChapterFragment();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        dialog.setArguments(args);
+        return dialog;
     }
 
     @Override
@@ -53,31 +57,42 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
                 new String[]{Chapter.NAME},
                 new int[]{android.R.id.text1},
                 0);
-
         getLoaderManager().initLoader(CHAPTER_LOADER, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_chapter_list, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        mView = inflater.inflate(R.layout.fragment_chapter_list, container, false);
+        ButterKnife.bind(this, mView);
+        return mView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String title = getArguments().getString("title");
+        getDialog().setTitle(title);
+
         lvChapters.setAdapter(mAdapter);
-        lvChapters.setOnItemClickListener(this);
+        lvChapters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mListener != null) {
+                    final Cursor cursor = (Cursor) mAdapter.getItem(position);
+                    final Chapter chapter = Chapter.fromCursor(cursor);
+                    mListener.onSelectChapter(chapter);
+                    dismiss();
+                }
+            }
+        });
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnSelectChapterListener) activity;
+            mListener = (SelectChapterFragment.OnSelectChapterListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -94,6 +109,7 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mView = null;
     }
 
     @Override
@@ -116,22 +132,4 @@ public class SelectChapterFragment extends Fragment implements AbsListView.OnIte
         mAdapter.swapCursor(null);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mListener != null) {
-            final Cursor cursor = (Cursor) mAdapter.getItem(position);
-            final Chapter chapter = Chapter.fromCursor(cursor);
-            mListener.onSelectChapter(chapter);
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnSelectChapterListener {
-        public void onSelectChapter(@NonNull Chapter chapter);
-    }
 }

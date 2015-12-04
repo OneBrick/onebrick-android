@@ -1,15 +1,12 @@
 package org.onebrick.android.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.util.AttributeSet;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -22,7 +19,7 @@ import org.onebrick.android.events.Status;
 import org.onebrick.android.fragments.MyPastEventsFragment;
 import org.onebrick.android.fragments.MyUpcomingEventsFragment;
 
-public class MyEventsActivity extends ActionBarActivity {
+public class MyEventsActivity extends AppCompatActivity {
 
     public static final String UPCOMING_EVENTS_TAG = "upcoming";
     public static final String PAST_EVENTS_TAG = "past_events";

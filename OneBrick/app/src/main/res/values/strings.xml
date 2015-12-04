@@ -14,6 +14,7 @@
     <string name="title_activity_my_events">My Events</string>
     <string name="upcoming">Upcoming</string>
     <string name="past_events">Past Events</string>
+    <string name="empty_events">Sorry, no events right now.</string>
     <string name="search">Search</string>
     <string name="search_hint">Search events</string>
     <string name="welcome_message">Welcome!\nHappy Volunteering</string>
