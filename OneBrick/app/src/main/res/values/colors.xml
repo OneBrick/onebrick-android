@@ -27,4 +27,6 @@
     <color name="deep_tranparent_white">#40FFFFFF</color> <!-- 25% -->
     <color name="faint_tranparent_white">#20FFFFFF</color> <!-- 12% -->
 
+    <color name="grey_300">#E0E0E0</color>
+
 </resources>

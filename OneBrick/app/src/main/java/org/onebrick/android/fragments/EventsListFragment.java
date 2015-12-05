@@ -46,6 +46,8 @@ public abstract class EventsListFragment extends Fragment implements
         ButterKnife.bind(this, view);
         mAdapter = new EventListAdapter(getActivity(), null);
         lvEventList.setAdapter(mAdapter);
+        lvEventList.setEmptyView(tvEmptyEventList);
+
         lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,11 +72,6 @@ public abstract class EventsListFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
-        if ((cursor != null) && (cursor.getCount() < 1)) {
-            tvEmptyEventList.setVisibility(View.VISIBLE);
-        } else {
-            tvEmptyEventList.setVisibility(View.GONE);
-        }
     }
 
     @Override
