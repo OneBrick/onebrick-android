@@ -27,7 +27,6 @@ import retrofit.client.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-    private static final String SUCCESS = "1";
 
     // UI references.
     @Bind(R.id.email)
@@ -62,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     /**
@@ -124,7 +121,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void success(String[] strings, Response response) {
                 if (strings != null && strings.length > 0) {
-                    if (SUCCESS.equals(strings[0])) {
+                    try{
+                        // as long as return value is number, it's valid.
+                        long userId = Long.parseLong(strings[0]);
                         // successful
                         LoginManager manager = LoginManager.getInstance(LoginActivity.this);
                         manager.setCurrentUserKey(finalEncrypted);
@@ -132,11 +131,10 @@ public class LoginActivity extends AppCompatActivity {
                                 new LoginStatusEvent(Status.SUCCESS));
                         updateMyEvents();
                         finish();
-
-                    } else {
+                    } catch (NumberFormatException e) {
+                        Log.e(TAG, "login failed due to invalid key.");
                         OneBrickApplication.getInstance().getBus().post(
                                 new LoginStatusEvent(Status.FAILED));
-                        Log.d(TAG, "invalid credential: " + strings[0]);
                         Toast.makeText(getApplicationContext(),
                                 R.string.error_invalid_credentials,
                                 Toast.LENGTH_SHORT).show();
