@@ -33,8 +33,6 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity
         implements SelectChapterFragment.OnSelectChapterListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
-    private static final String TAG = "HomeActivity";
-
     public static final String EXTRA_CHAPTER_ID = "chapter_id";
     public static final String EXTRA_CHAPTER_NAME = "chapter_name";
 

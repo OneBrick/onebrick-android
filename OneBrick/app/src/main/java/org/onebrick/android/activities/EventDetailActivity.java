@@ -48,7 +48,7 @@ import retrofit.client.Response;
 public class EventDetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = "EventDetailActivity";
+    private static final String TAG = EventDetailActivity.class.getSimpleName();
     public static final String EXTRA_EVENT_ID = "event_id";
     public static final String SUCCESS = "0";
     private static final String SOCIAL_URL_PREFIX = "http://onebrick.org/event/?eventid=";

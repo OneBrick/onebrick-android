@@ -16,7 +16,6 @@ import java.util.List;
 
 public class SearchResultsFragment extends EventsListFragment {
 
-    private static final String TAG = "SearchResultsFragment";
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
     private static final String ARG_SEARCH_QUERY = "search";

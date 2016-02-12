@@ -17,8 +17,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    private static final String TAG = "SplashScreenActivity";
-
     private static final String imageUri = "assets://volunteer_hands.png";
 
     @Bind(R.id.ivSplashScreenFooter) ImageView ivFooter;

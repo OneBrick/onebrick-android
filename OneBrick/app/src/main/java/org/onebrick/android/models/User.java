@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class User {
 
-    private static final String TAG = "User";
+    private static final String TAG = User.class.getSimpleName();
     public String name;
     public String email;
     public String profileImageUri;

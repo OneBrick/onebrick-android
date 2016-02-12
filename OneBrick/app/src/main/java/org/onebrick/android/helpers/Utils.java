@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import org.onebrick.android.core.OneBrickApplication;
 
 public class Utils {
-    private static final String TAG = "Utils";
+
     public static final String PHOTO_SEPARATOR = ",";
 
     /**

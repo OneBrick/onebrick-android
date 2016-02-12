@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="endpoint">http://dev-v3.gotpantheon.com/auth</string>
+    <string name="endpoint">http://live-v3.gotpantheon.com/auth</string>
 </resources>

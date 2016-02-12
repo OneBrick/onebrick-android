@@ -18,9 +18,7 @@ import retrofit.client.Response;
 
 public class GeoCodeHelper {
 
-    private static final String TAG = "GeoCodeHelper";
-
-    private static final String GEOCODE_BASE_URL = "https://maps.googleapis.com/";
+    private static final String TAG = GeoCodeHelper.class.getSimpleName();
 
     public static void getGeoCode(@NonNull Context context, @NonNull String address, @NonNull final GeoCoderCallback callback) {
         try {

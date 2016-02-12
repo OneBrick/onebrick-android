@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
 
 @Table(name = "chapter", id = BaseColumns._ID)
 public class Chapter extends Model {
-    private static final String TAG = "Chapter";
+
     public static final String NAME = "name";
     public static final String CHAPTER_ID = "chapter_id";
 

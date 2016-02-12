@@ -32,8 +32,6 @@ import butterknife.ButterKnife;
 public class SelectChapterFragment extends Fragment implements AbsListView.OnItemClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = SelectChapterFragment.class.getName();
-
     private static final int CHAPTER_LOADER = 1;
 
     @Bind(R.id.lvChapters)

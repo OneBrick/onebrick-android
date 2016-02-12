@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.activeandroid.app.Application;
-//import com.newrelic.agent.android.NewRelic;
 import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -17,11 +16,13 @@ import com.path.android.jobqueue.config.Configuration;
 import com.path.android.jobqueue.log.CustomLogger;
 import com.squareup.otto.Bus;
 
-import io.fabric.sdk.android.Fabric;
 import org.onebrick.android.helpers.Utils;
 
+import io.fabric.sdk.android.Fabric;
+
+//import com.newrelic.agent.android.NewRelic;
+
 public class OneBrickApplication extends Application {
-    private static final String TAG = "OneBrickApplication";
 
     private static final String PREF_CHAPTER_NAME = "CHAPTER_NAME";
     private static final String PREF_CHAPTER_ID = "CHAPTER_ID";

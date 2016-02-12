@@ -31,7 +31,7 @@ public class MapCard extends EventCard implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = "MapCard";
+    private static final String TAG = MapCard.class.getSimpleName();
     private MapFragment mapFragment;
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;

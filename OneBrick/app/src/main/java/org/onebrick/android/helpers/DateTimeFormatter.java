@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateTimeFormatter {
-    private static final String TAG = "DateTimeFormatter";
+    private static final String TAG = DateTimeFormatter.class.getSimpleName();
 
     private static DateTimeFormatter dtf;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
 
 @Table(name = "event", id = BaseColumns._ID)
 public class Event extends Model {
-    private static final String TAG = "Event";
+
     public static final String EVENT_ID = "event_id";
     public static final String SORT_ID = "sort_id";
     public static final String USER_RSVP = "user_rsvp";

@@ -13,8 +13,6 @@ import org.onebrick.android.models.Event;
 
 public class HomeEventsFragment extends EventsListFragment {
 
-    private static final String TAG = "HomeEventsFragment";
-
     private static final String ARG_CHAPTER_NAME = "chapter_name";
     private static final String ARG_CHAPTER_ID = "chapter_id";
 

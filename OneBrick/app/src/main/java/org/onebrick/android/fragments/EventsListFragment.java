@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 public abstract class EventsListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = "EventsListFragment";
     private static final int EVENTS_LIST_LOADER = 25;
 
     protected EventListAdapter mAdapter;
@@ -45,8 +44,8 @@ public abstract class EventsListFragment extends Fragment implements
         View view = inflater.inflate(R.layout.activity_event_list, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new EventListAdapter(getActivity(), null);
-        lvEventList.setAdapter(mAdapter);
         lvEventList.setEmptyView(tvEmptyEventList);
+        lvEventList.setAdapter(mAdapter);
         lvEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

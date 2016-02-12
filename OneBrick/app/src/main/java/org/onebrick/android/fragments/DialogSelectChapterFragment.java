@@ -26,8 +26,6 @@ import butterknife.ButterKnife;
 public class DialogSelectChapterFragment extends DialogFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = DialogSelectChapterFragment.class.getName();
-
     private static final int CHAPTER_LOADER = 1;
 
     @Bind(R.id.lvChapters)

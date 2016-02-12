@@ -21,8 +21,6 @@ import butterknife.ButterKnife;
 public class SelectChapterActivity extends AppCompatActivity implements
         SelectChapterFragment.OnSelectChapterListener {
 
-    private static final String TAG = "SelectChapterActivity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
