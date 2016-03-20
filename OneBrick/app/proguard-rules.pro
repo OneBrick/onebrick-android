@@ -72,3 +72,5 @@
 -dontwarn com.android.volley.toolbox.**
 
 -dontwarn org.apache.commons.codec.binary.Base64
+
+-keepnames class * implements java.io.Serializable
