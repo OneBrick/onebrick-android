@@ -31,20 +31,20 @@ User Stories
 Screen captures of OneBrick app
 ===============
 ### Select a chapter
-![Select a chapter](1_select_chapter.png)
+![Select a chapter](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/1_select_chapter.png)
 
 ### Event list 
-![Event list](2_event_list.png)
+![Event list](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/2_event_list.png)
 
 ### Event details 
-![Event detail - main details](3_event_details_1.png)
-![Event detail - map and share](3_event_details_2.png)
+![Event detail - main details](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_1.png)
+![Event detail - map and share](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_2.png)
 
 ### Event search
-![Event search](4_event_search.png)
+![Event search](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/4_event_search.png)
 
 ### My Events 
-![My past and future events](5_my_events.png)
+![My past and future events](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/5_my_events.png)
 
 API use
 ==============
@@ -55,3 +55,7 @@ API use
 * Active Android (Sqlite Object relational mapper): http://www.activeandroid.com/
 * Loader (Asynchronous data load): http://developer.android.com/guide/components/loaders.html
 * Gson (JSON deserialization): https://github.com/google/gson
+
+Google Playstore
+==============
+* https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
