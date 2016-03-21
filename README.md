@@ -8,6 +8,12 @@ About The App
 ==================
 OneBrick does not yet have any mobile application. Our goal is to prvide onebrick users/volunteers with android mobile application.
 
+
+[1]: https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
+[2]: https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/google-play-badge.png
+[![One Brick app][2]][1]
+
+
 User Stories
 ==============
 ### Events:
@@ -55,8 +61,3 @@ API use
 * Active Android (Sqlite Object relational mapper): http://www.activeandroid.com/
 * Loader (Asynchronous data load): http://developer.android.com/guide/components/loaders.html
 * Gson (JSON deserialization): https://github.com/google/gson
-
-
-[1]: https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
-[2]: https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/google-play-badge.png
-[![One Brick app][2]][1]
