@@ -58,4 +58,4 @@ API use
 
 Google Playstore
 ==============
-* <a href="https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en" target="_blank">One Brick app</a>
+* <a href="https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en" target="_blank">(https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/google-play-badge.png)</a>
