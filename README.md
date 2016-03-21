@@ -58,4 +58,4 @@ API use
 
 Google Playstore
 ==============
-* https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
+* <a href="https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en" target="_blank">One Brick app</a>
