@@ -6,7 +6,7 @@ http://onebrick.org/about/ -
 
 About The App
 ==================
-OneBrick does not yet have any mobile application. Our goal is to prvide onebrick users/volunteers with android mobile application.
+Our goal is to prvide onebrick users/volunteers with android mobile application.
 
 
 [1]: https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
