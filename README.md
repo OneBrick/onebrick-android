@@ -56,8 +56,7 @@ API use
 * Loader (Asynchronous data load): http://developer.android.com/guide/components/loaders.html
 * Gson (JSON deserialization): https://github.com/google/gson
 
-Google Playstore
-==============
+
 [1]: https://play.google.com/store/apps/details?id=org.onebrick.android&hl=en
 [2]: https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/google-play-badge.png
 [![One Brick app][2]][1]
