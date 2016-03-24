@@ -44,12 +44,14 @@ Screen captures of OneBrick app
 
 ### Event details 
 ![Event detail - main details](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_1.png)
-![Event detail - map and share](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_2.png)
+![Event detail - map](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_2.png)
+![Event detail - share](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/3_event_details_3.png)
 
 ### Event search
 ![Event search](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/4_event_search.png)
 
 ### My Events 
+![Login](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/6_login.png)
 ![My past and future events](https://raw.githubusercontent.com/OneBrick/onebrick-android/master/images/5_my_events.png)
 
 API use
