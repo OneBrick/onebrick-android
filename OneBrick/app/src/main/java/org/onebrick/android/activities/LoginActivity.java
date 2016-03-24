@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.onebrick.android.R;
@@ -35,12 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     EditText mPasswordView;
     @Bind(R.id.email_sign_in_button)
     Button mEmailSignInButton;
+    @Bind(R.id.signup)
+    TextView mSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        // add a join click link. adding attributes in xml didn't work so..
+        mSignUp.setMovementMethod(LinkMovementMethod.getInstance());
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override

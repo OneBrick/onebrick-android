@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
@@ -92,9 +91,11 @@ public class EventDetailActivity extends AppCompatActivity implements
                 onBackPressed();
                 return true;
             case R.id.mi_item_share:
+                setShareIntent();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,12 +110,7 @@ public class EventDetailActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu resource file.
         getMenuInflater().inflate(R.menu.event_detail, menu);
-        // Locate MenuItem with ShareActionProvider
-        MenuItem item = menu.findItem(R.id.mi_item_share);
-        // Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        setShareIntent();
-        // Return true to display menu
+//        // Return true to display menu
         return true;
     }
 
@@ -240,15 +236,13 @@ public class EventDetailActivity extends AppCompatActivity implements
 
     // Call to update the share intent
     private void setShareIntent() {
-        if (mShareActionProvider != null) {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            if (mEvent != null){
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, mEvent.getTitle());
-                shareIntent.putExtra(Intent.EXTRA_TEXT, mEvent.getTitle() + ":  " + SOCIAL_URL_PREFIX + mEvent.getEventId());
-            }
-            mShareActionProvider.setShareIntent(shareIntent);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        if (mEvent != null) {
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, mEvent.getTitle());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mEvent.getTitle() + ":  " + SOCIAL_URL_PREFIX + mEvent.getEventId());
         }
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.send_intent_title)));
     }
 
     @Override
