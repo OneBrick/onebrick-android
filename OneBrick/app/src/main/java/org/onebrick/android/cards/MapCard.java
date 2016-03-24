@@ -1,10 +1,13 @@
 package org.onebrick.android.cards;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +35,16 @@ public class MapCard extends EventCard implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MapCard.class.getSimpleName();
+    //Define a request code to send to Google Play services
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final int ZOOM_LEVEL = 13;
+    private static final int REQUEST_CODE_LOCATION = 2;
+
     private MapFragment mapFragment;
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private String eventLocation;
-    //Define a request code to send to Google Play services
-    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private static final int ZOOM_LEVEL = 13;
+
     private Context mContext;
 
     public MapCard(Context context, @NonNull Event event) {
@@ -118,7 +124,13 @@ public class MapCard extends EventCard implements
                 BitmapDescriptor defaultMarker =
                         BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                 final LatLng location = new LatLng(latitude, longitude);
-                map.setMyLocationEnabled(true);
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions((Activity) mContext,
+//                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                            REQUEST_CODE_LOCATION);
+                    // do nothing for now
+                }
+//                map.setMyLocationEnabled(true);
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, ZOOM_LEVEL));
                 map.addMarker(new MarkerOptions()
                         .title(eventLocation)

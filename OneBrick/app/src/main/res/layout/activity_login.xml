@@ -60,6 +60,16 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:background="@drawable/btn_login_cancel"/>
+
+        <TextView
+            android:id="@+id/signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="@string/sign_up_link"/>
     </LinearLayout>
 
 </RelativeLayout>

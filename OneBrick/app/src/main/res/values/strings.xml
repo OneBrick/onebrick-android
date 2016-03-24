@@ -36,11 +36,12 @@
     <string name="error_login_general">Email format incorrect or Password cannot be null or empty string.</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_credentials">Email or password is incorrect.</string>
-
+    <string name="sign_up_link">New User? <a href="http://www.onebrick.org/join/">Join Now</a></string>
 
     <string name="my_events">My Events</string>
     <string name="select_chapter">Select Chapter</string>
     <string name="select_your_chapter">Select Your Chapter</string>
+    <string name="send_intent_title">Share an event via:</string>
 
     <!-- event detail: google map -->
     <string name="map_disconnected">Disconnected. Please re-connect.</string>
