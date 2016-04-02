@@ -1,11 +1,8 @@
 package org.onebrick.android.helpers;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import org.onebrick.android.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,7 +99,7 @@ public class DateTimeFormatter {
         return null;
     }
 
-    public boolean isPastEvent(String endDate){
+    public boolean isPastEvent(@NonNull String endDate){
         try {
             Date eventDate = dateFormat.parse(endDate);
             Date currentDate = new Date();
@@ -115,7 +112,7 @@ public class DateTimeFormatter {
         return false;
     }
 
-    private boolean isRSVPOpen(String openDate){
+    public boolean isRSVPOpen(@NonNull String openDate){
         try {
             Date rsvpOpenDate = dateFormat.parse(openDate);
             Date currentDate = new Date();
@@ -128,11 +125,4 @@ public class DateTimeFormatter {
         return true;
     }
 
-    public String getRSVPStatusText(Context context, String openDate){
-        if (DateTimeFormatter.getInstance().isRSVPOpen(openDate)){
-            return context.getResources().getString(R.string.rsvp);
-        }else{
-            return context.getResources().getString(R.string.rsvp_not_open) + " " + DateTimeFormatter.getInstance().getFormattedEventDateOnly(openDate);
-        }
-    }
 }

@@ -24,20 +24,18 @@ import java.lang.reflect.Type;
 public class Event extends Model {
 
     public static final String EVENT_ID = "event_id";
-    public static final String SORT_ID = "sort_id";
     public static final String USER_RSVP = "user_rsvp";
     public static final String CHAPTER_ID = "chapter_id";
     public static final String PAST_EVENT = "past_event";
     public static final String EVENT_TITLE = "title";
     public static final String EVENT_SUMMARY = "summary";
     public static final String START_DATE = "start_date";
+    public static final String EVENT_STATUS = "event_status";
 
     @Column(name = EVENT_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long eventId;
     @Column(name = EVENT_TITLE, index = true)
     private String title;
-//    @Column(name = SORT_ID, unique = true)
-//    private long sortId;
     @Column(name = START_DATE)
     private String startDate;
     @Column(name = "end_date")
@@ -66,6 +64,8 @@ public class Event extends Model {
     private boolean pastEvent ;
     @Column(name = "photo")
     private String photo;
+    @Column(name = EVENT_STATUS)
+    private String eventStatus;
 
     @Override
     public String toString() {
@@ -161,10 +161,6 @@ public class Event extends Model {
         return Utils.getPhotos(photo);
     }
 
-    public boolean getPastEvent() {
-        return pastEvent;
-    }
-
     public void setPastEvent(boolean pastEvent) {
         this.pastEvent = pastEvent;
     }
@@ -173,6 +169,14 @@ public class Event extends Model {
     private static String getProfilePhotoUri(long eventId) {
         long imageId = (eventId % 20) + 1;
         return "assets://images/image" + imageId + ".jpg";
+    }
+
+    /**
+     * Get event status: either open or cancelled
+     * @return
+     */
+    public String getEventStatus() {
+        return eventStatus;
     }
 
     public static Event fromCursor(@NonNull Cursor cursor) {
@@ -194,6 +198,8 @@ public class Event extends Model {
             event.endDate = jsonObject.get("field_event_date_value2").getAsString();
             event.rsvpCapacity = jsonObject.get("field_event_max_rsvp_capacity_value").getAsInt();
             event.rsvpOpenDate = jsonObject.get("field_rsvp_date_value").getAsString();
+            // event status either open or cancelled
+            event.eventStatus = jsonObject.get("field_event_status_value").getAsString();
             event.address = jsonObject.get("address").getAsString();
             if (jsonObject.has("photos")) {
                 JsonArray photos=jsonObject.get("photos").getAsJsonArray();

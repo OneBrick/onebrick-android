@@ -7,7 +7,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
@@ -35,6 +35,7 @@ import org.onebrick.android.events.LoginStatusEvent;
 import org.onebrick.android.events.Status;
 import org.onebrick.android.helpers.DateTimeFormatter;
 import org.onebrick.android.helpers.LoginManager;
+import org.onebrick.android.helpers.Utils;
 import org.onebrick.android.models.Event;
 import org.onebrick.android.models.RSVP;
 
@@ -56,9 +57,11 @@ public class EventDetailActivity extends AppCompatActivity implements
     @Bind(R.id.lv_event_detail_cards)
     ListView mCardsListView;
     @Bind(R.id.btn_rsvp)
-    Button btnRsvp;
+    Button mBtnRsvp;
+    @Bind(R.id.tvStatusMessage)
+    TextView mTvStatusMessage;
     @Bind(R.id.ll_rsvp_segment)
-    LinearLayout llRsvpSegment;
+    LinearLayout mLlRsvpSegment;
 
     private CardArrayAdapter mAdapter;
     private long mEventId;
@@ -67,20 +70,27 @@ public class EventDetailActivity extends AppCompatActivity implements
     private TitleCard mTitleCard;
     private MapCard mMapCard;
     private PhotoGalleryCard mPhotoGalleryCard;
-
-    private ShareActionProvider mShareActionProvider;
-
+    
     private void updateViews() {
-        if (LoginManager.getInstance(this).isLoggedIn() && mEvent.isRsvp()) {
-            btnRsvp.setText(R.string.un_rsvp);
-            btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
-        }else{
-            btnRsvp.setText(DateTimeFormatter.getInstance().getRSVPStatusText(getApplicationContext(), mEvent.getRSVPOpenDate()));
-            btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
-        }
         // TODO check current date for past events. if past events, don't show rsvp/unrsvp buttons
-        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate())) {
-            llRsvpSegment.setVisibility(View.GONE);
+        if (DateTimeFormatter.getInstance().isPastEvent(mEvent.getEndDate()) || Utils.isEventCancelled(mEvent.getEventStatus())) {
+            mLlRsvpSegment.setVisibility(View.GONE);
+        } else if (LoginManager.getInstance(this).isLoggedIn() && mEvent.isRsvp()) {
+            mBtnRsvp.setText(R.string.un_rsvp);
+            mBtnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
+        } else if (!DateTimeFormatter.getInstance().isRSVPOpen(mEvent.getRSVPOpenDate())){
+            // event will open later
+            mBtnRsvp.setVisibility(View.GONE);
+            mTvStatusMessage.setVisibility(View.VISIBLE);
+            mTvStatusMessage.setText(getResources().getText(R.string.rsvp_not_open) + DateTimeFormatter.getInstance().getFormattedEventDateOnly(mEvent.getRSVPOpenDate()));
+        } else if (mEvent.getRsvpCount() >= mEvent.getRsvpCapacity()) {
+            // event is full
+            mBtnRsvp.setVisibility(View.GONE);
+            mTvStatusMessage.setVisibility(View.VISIBLE);
+            mTvStatusMessage.setText(getResources().getText(R.string.event_full));
+        } else {
+            mBtnRsvp.setText(R.string.rsvp);
+            mBtnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
         }
     }
 
@@ -142,7 +152,7 @@ public class EventDetailActivity extends AppCompatActivity implements
     }
 
     private void setupListeners() {
-        btnRsvp.setOnClickListener(new View.OnClickListener() {
+        mBtnRsvp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final LoginManager loginManager = LoginManager.getInstance(EventDetailActivity.this);
@@ -166,9 +176,9 @@ public class EventDetailActivity extends AppCompatActivity implements
         final LoginManager loginManager = LoginManager.getInstance(this);
         final String ukey = loginManager.getCurrentUserKey();
         if (!TextUtils.isEmpty(ukey)) {
-            if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
+            if (mBtnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.rsvp))) {
                 processRSVP(ukey, eventId);
-            } else if (btnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
+            } else if (mBtnRsvp.getText().toString().equalsIgnoreCase(getString(R.string.un_rsvp))) {
                 processUnRSVP(ukey, eventId);
             }
         }
@@ -187,8 +197,8 @@ public class EventDetailActivity extends AppCompatActivity implements
             public void success(RSVP result, Response response) {
                 if (result != null && SUCCESS.equals(result.getCode())) {
                     Log.d(TAG, "rsvp result: " + result.getCode() + "---" + result.getMessage());
-                    btnRsvp.setText(R.string.un_rsvp);
-                    btnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
+                    mBtnRsvp.setText(R.string.un_rsvp);
+                    mBtnRsvp.setBackgroundResource(R.drawable.btn_unrsvp_small);
                     mEvent.rsvp();
                     mEvent.save();
                     // TODO update through SyncAdapter
@@ -218,8 +228,8 @@ public class EventDetailActivity extends AppCompatActivity implements
             public void success(RSVP result, Response response) {
                 if (result != null && SUCCESS.equals(result.getCode())) {
                     Log.d(TAG, "unrsvp result: " + result.getCode() + "---" + result.getMessage());
-                    btnRsvp.setText(R.string.rsvp);
-                    btnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
+                    mBtnRsvp.setText(R.string.rsvp);
+                    mBtnRsvp.setBackgroundResource(R.drawable.btn_rsvp_small);
                     mEvent.unRsvp();
                     mEvent.save();
                 } else {
@@ -292,7 +302,6 @@ public class EventDetailActivity extends AppCompatActivity implements
         mEvent = null;
     }
 
-
     @Subscribe
     public void onLoginStatusEvent(LoginStatusEvent event) {
         if (mPendingRsvp && event.status == Status.SUCCESS) {
@@ -309,5 +318,3 @@ public class EventDetailActivity extends AppCompatActivity implements
         }
     }
 }
-
-

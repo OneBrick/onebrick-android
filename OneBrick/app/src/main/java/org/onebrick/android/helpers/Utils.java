@@ -1,5 +1,6 @@
 package org.onebrick.android.helpers;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,11 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import org.onebrick.android.R;
 import org.onebrick.android.core.OneBrickApplication;
 
 public class Utils {
 
     public static final String PHOTO_SEPARATOR = ",";
+    private static final String EVENT_CANCELLED = "Cancelled";
 
     /**
      * remove img tags from html inside event description
@@ -65,5 +68,20 @@ public class Utils {
             return photos.split(Utils.PHOTO_SEPARATOR);
         }
         return new String[0];
+    }
+
+    public static boolean isEventCancelled(@NonNull String eventStatus) {
+        if (EVENT_CANCELLED.equalsIgnoreCase(eventStatus)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String getRSVPStatusText(Context context, @NonNull String openDate){
+        if (DateTimeFormatter.getInstance().isRSVPOpen(openDate)){
+            return context.getResources().getString(R.string.rsvp);
+        }else{
+            return context.getResources().getString(R.string.rsvp_not_open) + " " + DateTimeFormatter.getInstance().getFormattedEventDateOnly(openDate);
+        }
     }
 }

@@ -27,6 +27,13 @@
                 android:text="@string/rsvp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/btn_rsvp_small"/>
+            <TextView
+                android:id="@+id/tvStatusMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:visibility="gone"/>
         </LinearLayout>
 
 </RelativeLayout>
