@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="endpoint">http://live-v3.pantheonsite.io/auth</string>
+    <string name="endpoint">http://onebrick.org/auth</string>
 </resources>
